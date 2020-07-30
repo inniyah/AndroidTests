@@ -50,6 +50,14 @@ CLANGXX_X86_64 = $(NDK)/toolchains/llvm/prebuilt/linux-x86_64/bin/x86_64-linux-a
 CLANGXX_MIPS = $(NDK)/toolchains/llvm/prebuilt/linux-x86_64/bin/mipsel-linux-android$(ANDROID_API)-clang++
 CLANGXX_MIPS64 = $(NDK)/toolchains/llvm/prebuilt/linux-x86_64/bin/mips64el-linux-android$(ANDROID_API)-clang++
 
+NDK_SYSROOT = $(NDK)/toolchains/llvm/prebuilt/linux-x86_64/sysroot
+NDK_LIBS_ARM = $(NDK_SYSROOT)/usr/lib/arm-linux-androideabi
+NDK_LIBS_AARCH64 = $(NDK_SYSROOT)/usr/lib/aarch64-linux-android
+NDK_LIBS_X86 = $(NDK_SYSROOT)/usr/lib/i686-linux-android
+NDK_LIBS_X86_64 = $(NDK_SYSROOT)/usr/lib/x86_64-linux-android
+NDK_LIBS_MIPS = $(NDK_SYSROOT)/usr/lib/mipsel-linux-android
+NDK_LIBS_MIPS64 = $(NDK_SYSROOT)/usr/lib/mips64el-linux-android
+
 ORG_DIRS = $(subst .,/,$(PACKAGE_NAME))
 
 all: test
@@ -68,6 +76,7 @@ check:
 	@test -n "$(APKSIGNER)" -o ! -x "$(APKSIGNER)" || ( >&2 echo "Package 'apksigner' is needed" ; false )
 	@test -n "$(ADB)" -o ! -x "$(ADB)" || ( >&2 echo "Package 'adb' is needed" ; false )
 	@test -n "$(PLATFORM)" -o ! -r "$(PLATFORM)" || ( >&2 echo "Package 'libandroid-$(ANDROID_API)-java' is needed" ; false )
+	@test -n "$(NDK_SYSROOT)" -a -d "$(NDK_SYSROOT)" || ( >&2 echo "Package 'google-android-ndk-installer' is needed" ; false )
 
 clean:
 	rm -rf build
@@ -170,6 +179,15 @@ build/obj/mips64/%.o: jni/%.cpp
 build/apk/lib/mips64/lib$(JNI_NAME).so: $(JNI_OBJS_MIPS64)
 	mkdir -p -p $(dir $@) && $(CLANGXX_MIPS64) -shared -o $@ $+ $(JNI_LDFLAGS) $(JNI_LIBS)
 
+deps:
+	mkdir -p build/apk/lib/armeabi/
+	install -m 755 $(NDK_LIBS_ARM)/libc++_shared.so build/apk/lib/armeabi/
+	mkdir -p build/apk/lib/arm64-v8a/
+	install -m 755 $(NDK_LIBS_AARCH64)/libc++_shared.so build/apk/lib/arm64-v8a/
+	mkdir -p build/apk/lib/x86/
+	install -m 755 $(NDK_LIBS_X86)/libc++_shared.so build/apk/lib/x86/
+	mkdir -p build/apk/lib/x86_x64/
+	install -m 755 $(NDK_LIBS_X86_64)/libc++_shared.so build/apk/lib/x86_x64/
 
 libs: \
 	build/apk/lib/armeabi/lib$(JNI_NAME).so \
@@ -180,7 +198,7 @@ libs: \
 # Package to create APK using the aapt tool 
 ############################################
 
-build/$(APK_NAME).unsigned.apk: build/apk/classes.dex libs
+build/$(APK_NAME).unsigned.apk: build/apk/classes.dex deps libs
 	@mkdir -p "build/apk"
 	$(AAPT) package -f -M "AndroidManifest.xml" -S res/ -I "$(PLATFORM)" -F "build/$(APK_NAME).unsigned.apk" "build/apk/"
 
