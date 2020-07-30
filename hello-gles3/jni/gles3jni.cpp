@@ -251,6 +251,8 @@ static GLboolean gl3stubInit() {
 
 JNIEXPORT void JNICALL
 Java_com_android_gles3jni_GLES3JNILib_init(JNIEnv* env, jobject obj) {
+    ALOGI("GLES3JNILib_init");
+
     if (g_renderer) {
         delete g_renderer;
         g_renderer = NULL;
@@ -273,6 +275,8 @@ Java_com_android_gles3jni_GLES3JNILib_init(JNIEnv* env, jobject obj) {
 
 JNIEXPORT void JNICALL
 Java_com_android_gles3jni_GLES3JNILib_resize(JNIEnv* env, jobject obj, jint width, jint height) {
+    ALOGI("GLES3JNILib_resize");
+
     if (g_renderer) {
         g_renderer->resize(width, height);
     }

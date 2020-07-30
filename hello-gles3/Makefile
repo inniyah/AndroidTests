@@ -2,10 +2,20 @@ APK_NAME = APKName
 PACKAGE_NAME = com.android.gles3jni
 KEYS_DIR = ../keys
 
-JNI_SRCS = $(shell find jni -name "*.cpp") $(shell find jni -name "*.c")
-JNI_CFLAGS = -fPIC -Wall
+JNI_SRCS_C = $(shell find jni -name "*.c")
+JNI_SRCS_CXX = $(shell find jni -name "*.cpp")
+
+JNI_OBJS_ARM = $(patsubst jni/%,build/obj/armeabi/%,$(JNI_SRCS_C:.c=.o) $(JNI_SRCS_CXX:.cpp=.o))
+JNI_OBJS_AARCH64 = $(patsubst jni/%,build/obj/arm64-v8a/%,$(JNI_SRCS_C:.c=.o) $(JNI_SRCS_CXX:.cpp=.o))
+JNI_OBJS_X86 = $(patsubst jni/%,build/obj/x86/%,$(JNI_SRCS_C:.c=.o) $(JNI_SRCS_CXX:.cpp=.o))
+JNI_OBJS_X86_64= $(patsubst jni/%,build/obj/x86_x64/%,$(JNI_SRCS_C:.c=.o) $(JNI_SRCS_CXX:.cpp=.o))
+JNI_OBJS_MIPS = $(patsubst jni/%,build/obj/mips/%,$(JNI_SRCS_C:.c=.o) $(JNI_SRCS_CXX:.cpp=.o))
+JNI_OBJS_MIPS64 = $(patsubst jni/%,build/obj/mips64/%,$(JNI_SRCS_C:.c=.o) $(JNI_SRCS_CXX:.cpp=.o))
+
+JNI_CFLAGS = -std=c11 -fPIC -Wall -DDEBUG
+JNI_CXXFLAGS = -std=c++11 -fPIC -Wall -DDEBUG -DANDROID_STL=c++_shared
 JNI_LDFLAGS = -Wl,--as-needed -Wl,--no-undefined -Wl,--no-allow-shlib-undefined
-JNI_LIBS = -llog -landroid -lEGL -lGLESv3 -lm -lstdc++
+JNI_LIBS = -llog -landroid -lEGL -lGLESv2 -lGLESv3 -lm
 JNI_NAME = gles3jni
 
 JDK = /usr/lib/jvm/java-8-openjdk-amd64
@@ -32,6 +42,13 @@ CLANG_X86 = $(NDK)/toolchains/llvm/prebuilt/linux-x86_64/bin/i686-linux-android$
 CLANG_X86_64 = $(NDK)/toolchains/llvm/prebuilt/linux-x86_64/bin/x86_64-linux-android$(ANDROID_API)-clang
 CLANG_MIPS = $(NDK)/toolchains/llvm/prebuilt/linux-x86_64/bin/mipsel-linux-android$(ANDROID_API)-clang
 CLANG_MIPS64 = $(NDK)/toolchains/llvm/prebuilt/linux-x86_64/bin/mips64el-linux-android$(ANDROID_API)-clang
+
+CLANGXX_ARM = $(NDK)/toolchains/llvm/prebuilt/linux-x86_64/bin/armv7a-linux-androideabi$(ANDROID_API)-clang++
+CLANGXX_AARCH64 = $(NDK)/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android$(ANDROID_API)-clang++
+CLANGXX_X86 = $(NDK)/toolchains/llvm/prebuilt/linux-x86_64/bin/i686-linux-android$(ANDROID_API)-clang++
+CLANGXX_X86_64 = $(NDK)/toolchains/llvm/prebuilt/linux-x86_64/bin/x86_64-linux-android$(ANDROID_API)-clang++
+CLANGXX_MIPS = $(NDK)/toolchains/llvm/prebuilt/linux-x86_64/bin/mipsel-linux-android$(ANDROID_API)-clang++
+CLANGXX_MIPS64 = $(NDK)/toolchains/llvm/prebuilt/linux-x86_64/bin/mips64el-linux-android$(ANDROID_API)-clang++
 
 ORG_DIRS = $(subst .,/,$(PACKAGE_NAME))
 
@@ -72,47 +89,98 @@ build/gen/$(ORG_DIRS)/R.java: check
 # Compile the java files with javac
 ####################################
 
-build/obj/$(ORG_DIRS)/MainActivity.class build/obj/$(ORG_DIRS)/R.class: build/gen/$(ORG_DIRS)/R.java
-	@mkdir -p "build/obj"
-	$(JAVAC) -bootclasspath "$(SDK)/jre/lib/rt.jar" -classpath "$(PLATFORM)" -d "build/obj" $+ "src/$(ORG_DIRS)"/*.java
+build/classes/$(ORG_DIRS)/MainActivity.class build/classes/$(ORG_DIRS)/R.class: build/gen/$(ORG_DIRS)/R.java
+	@mkdir -p "build/classes"
+	$(JAVAC) -bootclasspath "$(SDK)/jre/lib/rt.jar" -classpath "$(PLATFORM)" -d "build/classes" $+ "src/$(ORG_DIRS)"/*.java
 
-# Translate the .class files in build/obj/ to Dalvik byte code with dx tool
+# Translate the .class files in build/classes/ to Dalvik byte code with dx tool
 ############################################################################
 
-build/apk/classes.dex: build/obj/$(ORG_DIRS)/R.class
+build/apk/classes.dex: build/classes/$(ORG_DIRS)/R.class
 	@mkdir -p "build/apk"
-	$(DX) --dex --output=build/apk/classes.dex build/obj/
+	$(DX) --dex --output=build/apk/classes.dex build/classes/
 
 # Search the C function signature that corresponds to the Java method with javah tool
 ######################################################################################
 
-build/tmp/jni.h: build/obj/$(ORG_DIRS)/MainActivity.class
+build/tmp/jni.h: build/classes/$(ORG_DIRS)/MainActivity.class
 	@mkdir -p "build/tmp"
 	$(JAVAH) -classpath "$(PLATFORM):build/obj" -o "build/tmp/jni.h" "$(PACKAGE_NAME).MainActivity"
 	grep -A1 _getMessage "build/tmp/jni.h"
 
-# Create the libhello.so shared objects with the toolchains provided
-#####################################################################
+# Create the shared objects with the toolchains provided
+#########################################################
 
-build/apk/lib: $(JNI_SRCS)
-	@mkdir -p "build/apk/lib"
-	if [ -x $(CLANG_ARM) ]; then \
-		mkdir -p build/apk/lib/armeabi && $(CLANG_ARM) -shared $(JNI_CFLAGS) -o build/apk/lib/armeabi/lib$(JNI_NAME).so $(JNI_SRCS) $(JNI_LDFLAGS) $(JNI_LIBS) ; fi
-	if [ -x $(CLANG_AARCH64) ]; then \
-		mkdir -p build/apk/lib/arm64-v8a && $(CLANG_AARCH64) -shared $(JNI_CFLAGS) -o build/apk/lib/arm64-v8a/lib$(JNI_NAME).so $(JNI_SRCS) $(JNI_LDFLAGS) $(JNI_LIBS) ; fi
-	if [ -x $(CLANG_X86) ]; then \
-		mkdir -p build/apk/lib/x86 && $(CLANG_X86) -shared $(JNI_CFLAGS) -o build/apk/lib/x86/lib$(JNI_NAME).so $(JNI_SRCS) $(JNI_LDFLAGS) $(JNI_LIBS) ; fi
-	if [ -x $(CLANG_X86_64) ]; then \
-		mkdir -p build/apk/lib/x86_x64 && $(CLANG_X86_64) -shared $(JNI_CFLAGS) -o build/apk/lib/x86_x64/lib$(JNI_NAME).so $(JNI_SRCS) $(JNI_LDFLAGS) $(JNI_LIBS) ; fi
-	if [ -x $(CLANG_MIPS) ]; then \
-		mkdir -p build/apk/lib/mips && $(CLANG_MIPS) -shared $(JNI_CFLAGS) -o build/apk/lib/mips/lib$(JNI_NAME).so $(JNI_SRCS) $(JNI_LDFLAGS) $(JNI_LIBS) ; fi
-	if [ -x $(CLANG_MIPS64) ]; then \
-		mkdir -p build/apk/lib/mips64 && $(CLANG_MIPS64) -shared $(JNI_CFLAGS) -o build/apk/lib/mips64/lib$(JNI_NAME).so $(JNI_SRCS) $(JNI_LDFLAGS) $(JNI_LIBS) ; fi
+build/obj/armeabi/%.o: jni/%.c
+	mkdir -p $(dir $@) && $(CLANG_ARM) $(JNI_CFLAGS) -c -o $@ $<
+
+build/obj/armeabi/%.o: jni/%.cpp
+	mkdir -p $(dir $@) && $(CLANG_ARM) $(JNI_CXXFLAGS) -c -o $@ $<
+
+build/apk/lib/armeabi/lib$(JNI_NAME).so: $(JNI_OBJS_ARM)
+	mkdir -p -p $(dir $@) && $(CLANGXX_ARM) -shared -o $@ $+ $(JNI_LDFLAGS) $(JNI_LIBS)
+
+
+build/obj/arm64-v8a/%.o: jni/%.c
+	mkdir -p $(dir $@) && $(CLANG_AARCH64) $(JNI_CFLAGS) -c -o $@ $<
+
+build/obj/arm64-v8a/%.o: jni/%.cpp
+	mkdir -p $(dir $@) && $(CLANG_AARCH64) $(JNI_CXXFLAGS) -c -o $@ $<
+
+build/apk/lib/arm64-v8a/lib$(JNI_NAME).so: $(JNI_OBJS_AARCH64)
+	mkdir -p -p $(dir $@) && $(CLANGXX_AARCH64) -shared -o $@ $+ $(JNI_LDFLAGS) $(JNI_LIBS)
+
+
+build/obj/x86/%.o: jni/%.c
+	mkdir -p $(dir $@) && $(CLANG_X86) $(JNI_CFLAGS) -c -o $@ $<
+
+build/obj/x86/%.o: jni/%.cpp
+	mkdir -p $(dir $@) && $(CLANG_X86) $(JNI_CXXFLAGS) -c -o $@ $<
+
+build/apk/lib/x86/lib$(JNI_NAME).so: $(JNI_OBJS_X86)
+	mkdir -p -p $(dir $@) && $(CLANGXX_X86) -shared -o $@ $+ $(JNI_LDFLAGS) $(JNI_LIBS)
+
+
+build/obj/x86_x64/%.o: jni/%.c
+	mkdir -p $(dir $@) && $(CLANG_X86_64) $(JNI_CFLAGS) -c -o $@ $<
+
+build/obj/x86_x64/%.o: jni/%.cpp
+	mkdir -p $(dir $@) && $(CLANG_X86_64) $(JNI_CXXFLAGS) -c -o $@ $<
+
+build/apk/lib/x86_x64/lib$(JNI_NAME).so: $(JNI_OBJS_X86_64)
+	mkdir -p -p $(dir $@) && $(CLANGXX_X86_64) -shared -o $@ $+ $(JNI_LDFLAGS) $(JNI_LIBS)
+
+
+build/obj/mips/%.o: jni/%.c
+	mkdir -p $(dir $@) && $(CLANG_MIPS) $(JNI_CFLAGS) -c -o $@ $<
+
+build/obj/mips/%.o: jni/%.cpp
+	mkdir -p $(dir $@) && $(CLANG_MIPS) $(JNI_CXXFLAGS) -c -o $@ $<
+
+build/apk/lib/mips/lib$(JNI_NAME).so: $(JNI_OBJS_MIPS)
+	mkdir -p -p $(dir $@) && $(CLANGXX_MIPS) -shared -o $@ $+ $(JNI_LDFLAGS) $(JNI_LIBS)
+
+
+build/obj/mips64/%.o: jni/%.c
+	mkdir -p $(dir $@) && $(CLANG_MIPS64) $(JNI_CFLAGS) -c -o $@ $<
+
+build/obj/mips64/%.o: jni/%.cpp
+	mkdir -p $(dir $@) && $(CLANG_MIPS64) $(JNI_CXXFLAGS) -c -o $@ $<
+
+build/apk/lib/mips64/lib$(JNI_NAME).so: $(JNI_OBJS_MIPS64)
+	mkdir -p -p $(dir $@) && $(CLANGXX_MIPS64) -shared -o $@ $+ $(JNI_LDFLAGS) $(JNI_LIBS)
+
+
+libs: \
+	build/apk/lib/armeabi/lib$(JNI_NAME).so \
+	build/apk/lib/arm64-v8a/lib$(JNI_NAME).so \
+	build/apk/lib/x86/lib$(JNI_NAME).so \
+	build/apk/lib/x86_x64/lib$(JNI_NAME).so
 
 # Package to create APK using the aapt tool 
 ############################################
 
-build/$(APK_NAME).unsigned.apk: build/apk/classes.dex build/apk/lib
+build/$(APK_NAME).unsigned.apk: build/apk/classes.dex libs
 	@mkdir -p "build/apk"
 	$(AAPT) package -f -M "AndroidManifest.xml" -S res/ -I "$(PLATFORM)" -F "build/$(APK_NAME).unsigned.apk" "build/apk/"
 
@@ -157,7 +225,8 @@ list: build/$(APK_NAME).apk
 #############################
 
 test: build/$(APK_NAME).apk
+	$(ADB) logcat -b all -c
 	$(ADB) install -r $<
-
-	# The --activity-clear-top is for clean the task avoiding the warning "Warning: Activity not started, its current task has been brought to the front".
+	$(ADB) shell setprop log.redirect-stdio true
 	$(ADB) shell am start --activity-clear-top -n "$(PACKAGE_NAME)/.GLES3JNIActivity"
+	$(ADB) logcat | tee logcat.txt
