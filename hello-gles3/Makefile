@@ -2,8 +2,24 @@ APK_NAME = APKName
 PACKAGE_NAME = com.android.gles3jni
 KEYS_DIR = ../keys
 
-JNI_SRCS_C = $(shell find jni -name "*.c")
+ANDROID_API = 23
+
+# openGL Supportability
+# platform         status
+#   (0 12)           ES2/ES3 not supported
+#   [12, 18)         ES2 only; for ES3, app do dynamic load/detection
+#   [18, 24)         ES2 & ES3
+#   [24, infinite)   ES2 & ES3 & Vulkan
+
+JNI_SRCS_C =
 JNI_SRCS_CXX = $(shell find jni -name "*.cpp")
+
+JNI_DEFS = -DDEBUG
+
+ifeq ($(shell test $(ANDROID_API) -lt 18; echo $$?),0)
+  JNI_SRCS_C += jni/gl3stub.c
+  JNI_DEFS += -DDYNAMIC_ES3
+endif
 
 JNI_OBJS_ARM = $(patsubst jni/%,build/obj/armeabi/%,$(JNI_SRCS_C:.c=.o) $(JNI_SRCS_CXX:.cpp=.o))
 JNI_OBJS_AARCH64 = $(patsubst jni/%,build/obj/arm64-v8a/%,$(JNI_SRCS_C:.c=.o) $(JNI_SRCS_CXX:.cpp=.o))
@@ -12,8 +28,8 @@ JNI_OBJS_X86_64= $(patsubst jni/%,build/obj/x86_x64/%,$(JNI_SRCS_C:.c=.o) $(JNI_
 JNI_OBJS_MIPS = $(patsubst jni/%,build/obj/mips/%,$(JNI_SRCS_C:.c=.o) $(JNI_SRCS_CXX:.cpp=.o))
 JNI_OBJS_MIPS64 = $(patsubst jni/%,build/obj/mips64/%,$(JNI_SRCS_C:.c=.o) $(JNI_SRCS_CXX:.cpp=.o))
 
-JNI_CFLAGS = -std=c11 -fPIC -Wall -DDEBUG -DDYNAMIC_ES3
-JNI_CXXFLAGS = -std=c++11 -fno-rtti -fno-exceptions -fPIC -Wall -DDEBUG -DANDROID_STL=c++_shared -DDYNAMIC_ES3
+JNI_CFLAGS = -std=c11 -fPIC -Wall -DDEBUG
+JNI_CXXFLAGS = -std=c++11 -fno-rtti -fno-exceptions -fPIC -Wall -DANDROID_STL=c++_shared
 JNI_LDFLAGS = -Wl,--as-needed -Wl,--no-undefined -Wl,--no-allow-shlib-undefined
 JNI_LIBS = -llog -landroid -lEGL -lGLESv2 -lGLESv3 -lm
 JNI_NAME = gles3jni
@@ -33,7 +49,6 @@ ZIPALIGN = $(BUILD_TOOLS_DIR)/zipalign
 APKSIGNER = $(shell which -a apksigner)
 ADB = $(shell which -a adb)
 
-ANDROID_API = 23
 PLATFORM = /usr/lib/android-sdk/platforms/android-$(ANDROID_API)/android.jar
 
 CLANG_ARM = $(NDK)/toolchains/llvm/prebuilt/linux-x86_64/bin/armv7a-linux-androideabi$(ANDROID_API)-clang
@@ -121,60 +136,60 @@ build/tmp/jni.h: build/classes/$(ORG_DIRS)/MainActivity.class
 #########################################################
 
 build/obj/armeabi/%.o: jni/%.c
-	mkdir -p $(dir $@) && $(CLANG_ARM) $(JNI_CFLAGS) -c -o $@ $<
+	mkdir -p $(dir $@) && $(CLANG_ARM) $(JNI_DEFS) $(JNI_CFLAGS) -c -o $@ $<
 
 build/obj/armeabi/%.o: jni/%.cpp
-	mkdir -p $(dir $@) && $(CLANG_ARM) $(JNI_CXXFLAGS) -c -o $@ $<
+	mkdir -p $(dir $@) && $(CLANG_ARM) $(JNI_DEFS) $(JNI_CXXFLAGS) -c -o $@ $<
 
 build/apk/lib/armeabi/lib$(JNI_NAME).so: $(JNI_OBJS_ARM)
 	mkdir -p -p $(dir $@) && $(CLANGXX_ARM) -shared -o $@ $+ $(JNI_LDFLAGS) $(JNI_LIBS)
 
 
 build/obj/arm64-v8a/%.o: jni/%.c
-	mkdir -p $(dir $@) && $(CLANG_AARCH64) $(JNI_CFLAGS) -c -o $@ $<
+	mkdir -p $(dir $@) && $(CLANG_AARCH64) $(JNI_DEFS) $(JNI_CFLAGS) -c -o $@ $<
 
 build/obj/arm64-v8a/%.o: jni/%.cpp
-	mkdir -p $(dir $@) && $(CLANG_AARCH64) $(JNI_CXXFLAGS) -c -o $@ $<
+	mkdir -p $(dir $@) && $(CLANG_AARCH64) $(JNI_DEFS) $(JNI_CXXFLAGS) -c -o $@ $<
 
 build/apk/lib/arm64-v8a/lib$(JNI_NAME).so: $(JNI_OBJS_AARCH64)
 	mkdir -p -p $(dir $@) && $(CLANGXX_AARCH64) -shared -o $@ $+ $(JNI_LDFLAGS) $(JNI_LIBS)
 
 
 build/obj/x86/%.o: jni/%.c
-	mkdir -p $(dir $@) && $(CLANG_X86) $(JNI_CFLAGS) -c -o $@ $<
+	mkdir -p $(dir $@) && $(CLANG_X86) $(JNI_DEFS) $(JNI_CFLAGS) -c -o $@ $<
 
 build/obj/x86/%.o: jni/%.cpp
-	mkdir -p $(dir $@) && $(CLANG_X86) $(JNI_CXXFLAGS) -c -o $@ $<
+	mkdir -p $(dir $@) && $(CLANG_X86) $(JNI_DEFS) $(JNI_CXXFLAGS) -c -o $@ $<
 
 build/apk/lib/x86/lib$(JNI_NAME).so: $(JNI_OBJS_X86)
 	mkdir -p -p $(dir $@) && $(CLANGXX_X86) -shared -o $@ $+ $(JNI_LDFLAGS) $(JNI_LIBS)
 
 
 build/obj/x86_x64/%.o: jni/%.c
-	mkdir -p $(dir $@) && $(CLANG_X86_64) $(JNI_CFLAGS) -c -o $@ $<
+	mkdir -p $(dir $@) && $(CLANG_X86_64) $(JNI_DEFS) $(JNI_CFLAGS) -c -o $@ $<
 
 build/obj/x86_x64/%.o: jni/%.cpp
-	mkdir -p $(dir $@) && $(CLANG_X86_64) $(JNI_CXXFLAGS) -c -o $@ $<
+	mkdir -p $(dir $@) && $(CLANG_X86_64) $(JNI_DEFS) $(JNI_CXXFLAGS) -c -o $@ $<
 
 build/apk/lib/x86_x64/lib$(JNI_NAME).so: $(JNI_OBJS_X86_64)
 	mkdir -p -p $(dir $@) && $(CLANGXX_X86_64) -shared -o $@ $+ $(JNI_LDFLAGS) $(JNI_LIBS)
 
 
 build/obj/mips/%.o: jni/%.c
-	mkdir -p $(dir $@) && $(CLANG_MIPS) $(JNI_CFLAGS) -c -o $@ $<
+	mkdir -p $(dir $@) && $(CLANG_MIPS) $(JNI_DEFS) $(JNI_CFLAGS) -c -o $@ $<
 
 build/obj/mips/%.o: jni/%.cpp
-	mkdir -p $(dir $@) && $(CLANG_MIPS) $(JNI_CXXFLAGS) -c -o $@ $<
+	mkdir -p $(dir $@) && $(CLANG_MIPS) $(JNI_DEFS) $(JNI_CXXFLAGS) -c -o $@ $<
 
 build/apk/lib/mips/lib$(JNI_NAME).so: $(JNI_OBJS_MIPS)
 	mkdir -p -p $(dir $@) && $(CLANGXX_MIPS) -shared -o $@ $+ $(JNI_LDFLAGS) $(JNI_LIBS)
 
 
 build/obj/mips64/%.o: jni/%.c
-	mkdir -p $(dir $@) && $(CLANG_MIPS64) $(JNI_CFLAGS) -c -o $@ $<
+	mkdir -p $(dir $@) && $(CLANG_MIPS64) $(JNI_DEFS) $(JNI_CFLAGS) -c -o $@ $<
 
 build/obj/mips64/%.o: jni/%.cpp
-	mkdir -p $(dir $@) && $(CLANG_MIPS64) $(JNI_CXXFLAGS) -c -o $@ $<
+	mkdir -p $(dir $@) && $(CLANG_MIPS64) $(JNI_DEFS) $(JNI_CXXFLAGS) -c -o $@ $<
 
 build/apk/lib/mips64/lib$(JNI_NAME).so: $(JNI_OBJS_MIPS64)
 	mkdir -p -p $(dir $@) && $(CLANGXX_MIPS64) -shared -o $@ $+ $(JNI_LDFLAGS) $(JNI_LIBS)
@@ -243,8 +258,8 @@ list: build/$(APK_NAME).apk
 #############################
 
 test: build/$(APK_NAME).apk
-	$(ADB) logcat -b all -c
+	#~ $(ADB) logcat -b all -c
 	$(ADB) install -r $<
-	$(ADB) shell setprop log.redirect-stdio true
+	#~ $(ADB) shell setprop log.redirect-stdio true
 	$(ADB) shell am start --activity-clear-top -n "$(PACKAGE_NAME)/.GLES3JNIActivity"
-	$(ADB) logcat | tee logcat.txt
+	#~ $(ADB) logcat | tee logcat.txt
