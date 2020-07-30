@@ -12,8 +12,8 @@ JNI_OBJS_X86_64= $(patsubst jni/%,build/obj/x86_x64/%,$(JNI_SRCS_C:.c=.o) $(JNI_
 JNI_OBJS_MIPS = $(patsubst jni/%,build/obj/mips/%,$(JNI_SRCS_C:.c=.o) $(JNI_SRCS_CXX:.cpp=.o))
 JNI_OBJS_MIPS64 = $(patsubst jni/%,build/obj/mips64/%,$(JNI_SRCS_C:.c=.o) $(JNI_SRCS_CXX:.cpp=.o))
 
-JNI_CFLAGS = -std=c11 -fPIC -Wall -DDEBUG
-JNI_CXXFLAGS = -std=c++11 -fPIC -Wall -DDEBUG -DANDROID_STL=c++_shared
+JNI_CFLAGS = -std=c11 -fPIC -Wall -DDEBUG -DDYNAMIC_ES3
+JNI_CXXFLAGS = -std=c++11 -fno-rtti -fno-exceptions -fPIC -Wall -DDEBUG -DANDROID_STL=c++_shared -DDYNAMIC_ES3
 JNI_LDFLAGS = -Wl,--as-needed -Wl,--no-undefined -Wl,--no-allow-shlib-undefined
 JNI_LIBS = -llog -landroid -lEGL -lGLESv2 -lGLESv3 -lm
 JNI_NAME = gles3jni
