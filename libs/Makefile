@@ -375,8 +375,8 @@ $(INSTALLDIR)/%/lib/libsfml.a: $(BUILDDIR)/sfml $(INSTALLDIR)/%/include/stb
 		-DCMAKE_FIND_ROOT_PATH_MODE_INCLUDE=ONLY \
 		-DCMAKE_FIND_ROOT_PATH_MODE_PACKAGE=ONLY \
 		-DCMAKE_SYSROOT="$(NDK_SYSROOT)" \
-		-DCMAKE_C_FLAGS="$(CFLAGS) -I '$(NDK_SYSROOT)/usr/include/' -I '$(ROOTDIR)/$(INSTALLDIR)/$*/include/' -I '$(ROOTDIR)/$(INSTALLDIR)/$*/include/freetype2/' -I '$(ROOTDIR)/$(INSTALLDIR)/$*/include/stb/'" \
-		-DCMAKE_CXX_FLAGS="$(CXXFLAGS) -I '$(NDK_SYSROOT)/usr/include/' -I '$(ROOTDIR)/$(INSTALLDIR)/$*/include/' -I '$(ROOTDIR)/$(INSTALLDIR)/$*/include/freetype2/' -I '$(ROOTDIR)/$(INSTALLDIR)/$*/include/stb/'" \
+		-DCMAKE_C_FLAGS="$(CFLAGS) -I '$(NDK_SYSROOT)/usr/include/' -I '$(ROOTDIR)/$(INSTALLDIR)/$*/include/' -I '$(ROOTDIR)/$(INSTALLDIR)/$*/include/freetype2/' -I '$(ROOTDIR)/$(INSTALLDIR)/$*/include/stb/' -I '$(ROOTDIR)/$(INSTALLDIR)/$*/include/AL/'" \
+		-DCMAKE_CXX_FLAGS="$(CXXFLAGS) -I '$(NDK_SYSROOT)/usr/include/' -I '$(ROOTDIR)/$(INSTALLDIR)/$*/include/' -I '$(ROOTDIR)/$(INSTALLDIR)/$*/include/freetype2/' -I '$(ROOTDIR)/$(INSTALLDIR)/$*/include/stb/' -I '$(ROOTDIR)/$(INSTALLDIR)/$*/include/AL/'" \
 		-DCMAKE_MODULE_LINKER_FLAGS="$(LDFLAGS) -L'$(ROOTDIR)/$(INSTALLDIR)/$*/lib/'" \
 		-DCMAKE_SHARED_LINKER_FLAGS="$(LDFLAGS) -L'$(ROOTDIR)/$(INSTALLDIR)/$*/lib/'" \
 		-DCMAKE_EXE_LINKER_FLAGS="$(LDFLAGS) -L'$(ROOTDIR)/$(INSTALLDIR)/$*/lib/'" \
@@ -390,7 +390,7 @@ build-libs: build-libs/armv7a build-libs/aarch64 build-libs/i686 build-libs/x86_
 
 .PHONY: build-libs/%
 build-libs/%: $(INSTALLDIR)/%/lib/libogg.a $(INSTALLDIR)/%/lib/libvorbis.a $(INSTALLDIR)/%/lib/libflac.a $(INSTALLDIR)/%/lib/libfreetype.a \
-	$(INSTALLDIR)/%/lib/libpng.a $(INSTALLDIR)/%/lib/libharfbuzz.a $(INSTALLDIR)/%/include/stb
+	$(INSTALLDIR)/%/lib/libpng.a $(INSTALLDIR)/%/lib/libharfbuzz.a $(INSTALLDIR)/%/include/stb $(INSTALLDIR)/%/lib/libopenal.a
 	@#
 
 .PHONY: install-libs/%

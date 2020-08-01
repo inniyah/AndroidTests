@@ -21,6 +21,15 @@ Index: sfml/src/SFML/Audio/CMakeLists.txt
  
  # define the sfml-audio target
  sfml_add_library(sfml-audio
+@@ -82,7 +82,7 @@ sfml_add_library(sfml-audio
+ target_link_libraries(sfml-audio PRIVATE OpenAL)
+ 
+ if(SFML_OS_ANDROID)
+-    target_link_libraries(sfml-audio PRIVATE android OpenSLES)
++    target_link_libraries(sfml-audio PRIVATE android OpenSLES ogg vorbis FLAC openal)
+ endif()
+ 
+ target_link_libraries(sfml-audio
 Index: sfml/src/SFML/Graphics/CMakeLists.txt
 ===================================================================
 --- sfml.orig/src/SFML/Graphics/CMakeLists.txt
