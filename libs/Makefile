@@ -4,8 +4,8 @@ BUILDDIR := build
 INSTALLDIR := build/output
 DEPLOYDIR := libs
 
-CFLAGS = -std=c11 -fPIC -Wall -Wdate-time -D_FORTIFY_SOURCE=1
-CXXFLAGS = -std=c++11 -fPIC -Wall -Wdate-time -D_FORTIFY_SOURCE=1
+CFLAGS = -std=c11 -fPIC -Wall -Wdate-time -D_FORTIFY_SOURCE=2 -O2
+CXXFLAGS = -std=c++11 -fPIC -Wall -Wdate-time -D_FORTIFY_SOURCE=2 -O2
 LDFLAGS = -Wl,--as-needed -Wl,--no-undefined -Wl,--no-allow-shlib-undefined
 
 ANDROID_API = 23
@@ -50,6 +50,13 @@ NDK_BIN_x86_64 = $(NDK_TOOLCHAINS)/x86_64-linux-android/bin
 NDK_BIN_mipsel = $(NDK_TOOLCHAINS)/mipsel-linux-android/bin
 NDK_BIN_mips64el = $(NDK_TOOLCHAINS)/mips64el-linux-android/bin
 
+ANDROID_ABI_armv7a = armeabi-v7a
+ANDROID_ABI_aarch64 = arm64-v8a
+ANDROID_ABI_i686 = x86
+ANDROID_ABI_x86_64 = x86_64
+ANDROID_ABI_mipsel = mipsel
+ANDROID_ABI_mips64el = mips64el
+
 HOST_armv7a = arm-linux
 HOST_aarch64 = aarch64-linux
 HOST_i686 = i686-linux
@@ -83,25 +90,37 @@ check:
 
 $(CACHEDIR)/flac-1.3.3.tar.xz:
 	@mkdir -p $(CACHEDIR)
-	wget -nc -P $(CACHEDIR) http://downloads.xiph.org/releases/flac/$(notdir $@)
+	wget -nc -P $(CACHEDIR) "http://downloads.xiph.org/releases/flac/$(notdir $@)"
 
 $(CACHEDIR)/libvorbis-1.3.7.tar.xz:
 	@mkdir -p $(CACHEDIR)
-	wget -nc -P $(CACHEDIR) https://ftp.osuosl.org/pub/xiph/releases/vorbis/$(notdir $@)
+	wget -nc -P $(CACHEDIR) "https://ftp.osuosl.org/pub/xiph/releases/vorbis/$(notdir $@)"
 
 $(CACHEDIR)/libogg-1.3.4.tar.xz:
 	@mkdir -p $(CACHEDIR)
-	wget -nc -P $(CACHEDIR) https://ftp.osuosl.org/pub/xiph/releases/ogg/$(notdir $@)
+	wget -nc -P $(CACHEDIR) "https://ftp.osuosl.org/pub/xiph/releases/ogg/$(notdir $@)"
 
 $(CACHEDIR)/freetype-2.10.2.tar.xz:
 	@mkdir -p $(CACHEDIR)
-	wget -nc -P $(CACHEDIR) http://download.savannah.gnu.org/releases/freetype/$(notdir $@)
+	wget -nc -P $(CACHEDIR) "http://download.savannah.gnu.org/releases/freetype/$(notdir $@)"
 
 $(CACHEDIR)/openal-soft-1.20.1.tar.bz2:
-	wget -nc -P $(CACHEDIR) https://kcat.strangesoft.net/openal-releases/$(notdir $@)
+	wget -nc -P $(CACHEDIR) "https://kcat.strangesoft.net/openal-releases/$(notdir $@)"
 
 $(CACHEDIR)/openal-soft-android-%.tar.gz:
-	wget -nc -P $(CACHEDIR) https://github.com/kramlat/openal-soft-android/archive/v$*.tar.gz -O "$@"
+	wget -nc -P $(CACHEDIR) "https://github.com/kramlat/openal-soft-android/archive/v$*.tar.gz" -O "$@"
+
+$(CACHEDIR)/sfml-%.tar.gz:
+	wget -nc -P $(CACHEDIR) "https://github.com/SFML/SFML/archive/$*.tar.gz" -O "$@"
+
+$(CACHEDIR)/stb-master.zip:
+	wget -nc -P $(CACHEDIR) https://github.com/nothings/stb/archive/master.zip -O "$@"
+
+$(CACHEDIR)/libpng-%.tar.xz:
+	wget -nc -P $(CACHEDIR) "https://download.sourceforge.net/libpng/libpng-$*.tar.xz" -O "$@"
+
+$(CACHEDIR)/harfbuzz-%.tar.gz:
+	wget -nc -P $(CACHEDIR) "https://github.com/harfbuzz/harfbuzz/archive/$*.tar.gz" -O "$@"
 
 $(BUILDDIR)/ogg: $(CACHEDIR)/libogg-1.3.4.tar.xz
 	@mkdir -p "$@"
@@ -129,6 +148,30 @@ $(BUILDDIR)/openal: $(CACHEDIR)/openal-soft-android-1.13.tar.gz
 	tar xvfa "$<" --strip 1 --directory "$@"
 	if [ -e $(ROOTDIR)/patches/$(notdir $@)/series ]; then cd "$@" && QUILT_PATCHES=$(ROOTDIR)/patches/$(notdir $@) quilt push -a; fi
 
+$(BUILDDIR)/stb: $(CACHEDIR)/stb-master.zip
+	@mkdir -p "$@"
+	cd "$@" && ln -s . stb-master
+	unzip "$<" -d "$@"
+	rm "$@/stb-master"
+	if [ -e $(ROOTDIR)/patches/$(notdir $@)/series ]; then cd "$@" && QUILT_PATCHES=$(ROOTDIR)/patches/$(notdir $@) quilt push -a; fi
+
+$(BUILDDIR)/png: $(CACHEDIR)/libpng-1.6.37.tar.xz
+	@mkdir -p "$@"
+	tar xvfa "$<" --strip 1 --directory "$@"
+	if [ -e $(ROOTDIR)/patches/$(notdir $@)/series ]; then cd "$@" && QUILT_PATCHES=$(ROOTDIR)/patches/$(notdir $@) quilt push -a; fi
+
+$(BUILDDIR)/harfbuzz: $(CACHEDIR)/harfbuzz-2.7.0.tar.gz
+	@mkdir -p "$@"
+	tar xvfa "$<" --strip 1 --directory "$@"
+	if [ -e $(ROOTDIR)/patches/$(notdir $@)/series ]; then cd "$@" && QUILT_PATCHES=$(ROOTDIR)/patches/$(notdir $@) quilt push -a; fi
+
+$(BUILDDIR)/sfml: $(CACHEDIR)/sfml-2.5.1.tar.gz
+	@mkdir -p "$@"
+	tar xvfa "$<" --strip 1 --directory "$@"
+	rm -rf "$@/extlibs"
+	if [ -e $(ROOTDIR)/patches/$(notdir $@)/series ]; then cd "$@" && QUILT_PATCHES=$(ROOTDIR)/patches/$(notdir $@) quilt push -a; fi
+
+.PRECIOUS: $(INSTALLDIR)/%/lib/libogg.a
 $(INSTALLDIR)/%/lib/libogg.a: $(BUILDDIR)/ogg
 	mkdir -p "$<_$*"
 	cd "$<_$*" && PATH="$(NDK_TOOLCHAINS)/bin/:$$PATH" \
@@ -145,6 +188,7 @@ $(INSTALLDIR)/%/lib/libogg.a: $(BUILDDIR)/ogg
 			--prefix="/$*"
 	cd "$<_$*" && make && make install DESTDIR="$(ROOTDIR)/$(INSTALLDIR)/"
 
+.PRECIOUS: $(INSTALLDIR)/%/lib/libvorbis.a
 $(INSTALLDIR)/%/lib/libvorbis.a: $(BUILDDIR)/vorbis $(INSTALLDIR)/%/lib/libogg.a
 	mkdir -p "$<_$*"
 	cd "$<_$*" && PATH="$(NDK_TOOLCHAINS)/bin/:$$PATH" \
@@ -162,6 +206,7 @@ $(INSTALLDIR)/%/lib/libvorbis.a: $(BUILDDIR)/vorbis $(INSTALLDIR)/%/lib/libogg.a
 			--with-ogg="$(ROOTDIR)/$(INSTALLDIR)/$*/"
 	cd "$<_$*" && make && make install DESTDIR="$(ROOTDIR)/$(INSTALLDIR)/"
 
+.PRECIOUS: $(INSTALLDIR)/%/lib/libflac.a
 $(INSTALLDIR)/%/lib/libflac.a: $(BUILDDIR)/flac $(INSTALLDIR)/%/lib/libogg.a
 	mkdir -p "$<_$*"
 	cd "$<_$*" && PATH="$(NDK_TOOLCHAINS)/bin/:$$PATH" \
@@ -179,6 +224,7 @@ $(INSTALLDIR)/%/lib/libflac.a: $(BUILDDIR)/flac $(INSTALLDIR)/%/lib/libogg.a
 			--with-ogg="$(ROOTDIR)/$(INSTALLDIR)/$*/"
 	cd "$<_$*" && make && make install DESTDIR="$(ROOTDIR)/$(INSTALLDIR)/"
 
+.PRECIOUS:$(INSTALLDIR)/%/lib/libfreetype.a
 $(INSTALLDIR)/%/lib/libfreetype.a: $(BUILDDIR)/freetype
 	mkdir -p "$<_$*"
 	cd "$<_$*" && PATH="$(NDK_TOOLCHAINS)/bin/:$$PATH" \
@@ -195,10 +241,13 @@ $(INSTALLDIR)/%/lib/libfreetype.a: $(BUILDDIR)/freetype
 			--with-build-sysroot="$(NDK_SYSROOT)" \
 			--prefix="/$*"
 	cd "$<_$*" && make && make install DESTDIR="$(ROOTDIR)/$(INSTALLDIR)/"
+	mkdir -p "$(ROOTDIR)/$(INSTALLDIR)/$*/lib/"
+	install -m 644 "$<_$*/.libs"/lib*.a "$(ROOTDIR)/$(INSTALLDIR)/$*/lib/"
 
 # https://kcat.strangesoft.net/openal.html
 # http://github.com/kcat/openal-soft
 # http://repo.or.cz/w/openal-soft.git
+#~ .PRECIOUS: $(INSTALLDIR)/%/lib/libopenal.a
 #~ $(INSTALLDIR)/%/lib/libopenal.a: $(BUILDDIR)/openal
 #~ 	mkdir -p "$<_$*"
 #~ 	cd "$<_$*" && PATH="$(NDK_TOOLCHAINS)/bin/:$$PATH" PKG_CONFIG_LIBDIR="$(INSTALLDIR)/$*/lib/pkgconfig" PKG_CONFIG_PATH="" cmake \
@@ -231,17 +280,17 @@ $(INSTALLDIR)/%/lib/libfreetype.a: $(BUILDDIR)/freetype
 # https://github.com/kramlat/openal-soft-android
 # https://github.com/AerialX/openal-soft-android
 # https://repo.or.cz/w/openal-soft/android.git
+.PRECIOUS: $(INSTALLDIR)/%/lib/libopenal.a
 $(INSTALLDIR)/%/lib/libopenal.a: $(BUILDDIR)/openal
 	mkdir -p "$<_$*"
-	cd "$<_$*" && PATH="$(NDK_TOOLCHAINS)/bin/:$$PATH" PKG_CONFIG_LIBDIR="$(INSTALLDIR)/$*/lib/pkgconfig" PKG_CONFIG_PATH="" cmake \
-		-DCMAKE_C_COMPILER="$(CC_$*)" -DCMAKE_CXX_COMPILER="$(CXX_$*)" CMAKE_AR="$(NDK_BIN_$*)/ar" \
+	cd "$<_$*" && cmake \
+		-DCMAKE_BUILD_TYPE=Release \
 		-DALSOFT_REQUIRE_OPENSL=ON \
-		-DANDROID_ABI=$(ANDROID_ABI) \
-		-DANDROID_NATIVE_API_LEVEL=android-9 \
+		-DANDROID_ABI=$(ANDROID_ABI_$*) \
+		-DANDROID_NATIVE_API_LEVEL=android-18 \
 		-DALSOFT_ANDROID_LOW_LATENCY:BOOL=ON \
 		-DALSOFT_UTILS=ON \
 		-DALSOFT_EXAMPLES=OFF \
-		-DALSOFT_UTILS=OFF \
 		-DCMAKE_TOOLCHAIN_FILE="$(NDK)/build/cmake/android.toolchain.cmake" \
 		-DCMAKE_FIND_ROOT_PATH="$(NDK_SYSROOT)" \
 		-DCMAKE_FIND_ROOT_PATH_MODE_PROGRAM=NEVER \
@@ -254,10 +303,82 @@ $(INSTALLDIR)/%/lib/libopenal.a: $(BUILDDIR)/openal
 		-DCMAKE_SHARED_LINKER_FLAGS="$(LDFLAGS) -L'$(ROOTDIR)/$(INSTALLDIR)/$*/lib/'" \
 		-DCMAKE_EXE_LINKER_FLAGS="$(LDFLAGS) -L'$(ROOTDIR)/$(INSTALLDIR)/$*/lib/'" \
 		-DCMAKE_INSTALL_PREFIX="/$*" \
-		-DCMAKE_BUILD_TYPE=Release \
 		-DLIBTYPE=STATIC \
 		"$(ROOTDIR)/$<"
-	sed -i 's|usr/local|$*|g' "$<_$*/CMakeCache.txt" # Hack due to https://cmake.org/pipermail/cmake/2011-February/042629.html
+	cd "$<_$*" && make && make install DESTDIR="$(ROOTDIR)/$(INSTALLDIR)/"
+
+.PRECIOUS: $(INSTALLDIR)/%/include/stb
+$(INSTALLDIR)/%/include/stb: $(BUILDDIR)/stb
+	mkdir -p "$@"
+	install -m 644 "$<"/*.h "$@"
+
+.PRECIOUS: $(INSTALLDIR)/%/lib/libpng.a
+$(INSTALLDIR)/%/lib/libpng.a: $(BUILDDIR)/png
+	mkdir -p "$<_$*"
+	cd "$<_$*" && PATH="$(NDK_TOOLCHAINS)/bin/:$$PATH" \
+		CC="$(CC_$*)" CXX="$(CXX_$*)" AR="$(NDK_BIN_$*)/ar" \
+		CFLAGS="$(CFLAGS) -I '$(ROOTDIR)/$(INSTALLDIR)/$*/include/'" \
+		CXXFLAGS="$(CXXFLAGS) -I '$(ROOTDIR)/$(INSTALLDIR)/$*/include/' -fno-rtti" \
+		LDFLAGS="$(LDFLAGS) -L'$(ROOTDIR)/$(INSTALLDIR)/$*/lib/'" \
+		"$(ROOTDIR)/$</configure" \
+			need_version=no \
+			--enable-shared=no \
+			--host=$(HOST_$*) \
+			--with-sysroot="$(NDK_SYSROOT)" \
+			--with-build-sysroot="$(NDK_SYSROOT)" \
+			--prefix="/$*"
+	cd "$<_$*" && make && make install DESTDIR="$(ROOTDIR)/$(INSTALLDIR)/"
+
+.PRECIOUS: $(INSTALLDIR)/%/lib/libharfbuzz.a
+$(INSTALLDIR)/%/lib/libharfbuzz.a: $(BUILDDIR)/harfbuzz
+	mkdir -p "$<_$*"
+	cd "$<_$*" && cmake \
+		-DCMAKE_BUILD_TYPE=Release \
+		-DANDROID_ABI=$(ANDROID_ABI_$*) \
+		-DANDROID_NATIVE_API_LEVEL=android-18 \
+		-DCMAKE_TOOLCHAIN_FILE="$(NDK)/build/cmake/android.toolchain.cmake" \
+		-DCMAKE_FIND_ROOT_PATH="$(NDK_SYSROOT)" \
+		-DCMAKE_FIND_ROOT_PATH_MODE_PROGRAM=NEVER \
+		-DCMAKE_FIND_ROOT_PATH_MODE_LIBRARY=ONLY \
+		-DCMAKE_FIND_ROOT_PATH_MODE_INCLUDE=ONLY \
+		-DCMAKE_FIND_ROOT_PATH_MODE_PACKAGE=ONLY \
+		-DCMAKE_SYSROOT="$(NDK_SYSROOT)" \
+		-DCMAKE_C_FLAGS="$(CFLAGS) -I '$(NDK_SYSROOT)/usr/include/' -I '$(ROOTDIR)/$(INSTALLDIR)/$*/include/'" \
+		-DCMAKE_CXX_FLAGS="$(CXXFLAGS) -I '$(NDK_SYSROOT)/usr/include/' -I '$(ROOTDIR)/$(INSTALLDIR)/$*/include/'" \
+		-DCMAKE_SHARED_LINKER_FLAGS="$(LDFLAGS) -L'$(ROOTDIR)/$(INSTALLDIR)/$*/lib/'" \
+		-DCMAKE_EXE_LINKER_FLAGS="$(LDFLAGS) -L'$(ROOTDIR)/$(INSTALLDIR)/$*/lib/'" \
+		-DCMAKE_INSTALL_PREFIX="/$*" \
+		"$(ROOTDIR)/$<"
+	cd "$<_$*" && make && make install DESTDIR="$(ROOTDIR)/$(INSTALLDIR)/"
+
+.PRECIOUS: $(INSTALLDIR)/%/lib/libsfml.a
+$(INSTALLDIR)/%/lib/libsfml.a: $(BUILDDIR)/sfml $(INSTALLDIR)/%/include/stb
+	mkdir -p "$<_$*"
+	cd "$<_$*" && cmake \
+		--debug-output \
+		-DCMAKE_VERBOSE_MAKEFILE=ON \
+		-DCMAKE_BUILD_TYPE=Release \
+		-DCMAKE_SYSTEM_NAME=Android \
+		-DANDROID_PLATFORM=android-$(ANDROID_API) \
+		-DCMAKE_ANDROID_NDK="$(NDK)" \
+		-DANDROID_ABI=$(ANDROID_ABI_$*) \
+		-DCMAKE_ANDROID_API=14 \
+		-DANDROID_NATIVE_API_LEVEL=18 \
+		-DANDROID_STL=c++_shared \
+		-DCMAKE_TOOLCHAIN_FILE="$(NDK)/build/cmake/android.toolchain.cmake" \
+		-DCMAKE_FIND_ROOT_PATH="$(NDK_SYSROOT)" \
+		-DCMAKE_FIND_ROOT_PATH_MODE_PROGRAM=NEVER \
+		-DCMAKE_FIND_ROOT_PATH_MODE_LIBRARY=ONLY \
+		-DCMAKE_FIND_ROOT_PATH_MODE_INCLUDE=ONLY \
+		-DCMAKE_FIND_ROOT_PATH_MODE_PACKAGE=ONLY \
+		-DCMAKE_SYSROOT="$(NDK_SYSROOT)" \
+		-DCMAKE_C_FLAGS="$(CFLAGS) -I '$(NDK_SYSROOT)/usr/include/' -I '$(ROOTDIR)/$(INSTALLDIR)/$*/include/' -I '$(ROOTDIR)/$(INSTALLDIR)/$*/include/freetype2/' -I '$(ROOTDIR)/$(INSTALLDIR)/$*/include/stb/'" \
+		-DCMAKE_CXX_FLAGS="$(CXXFLAGS) -I '$(NDK_SYSROOT)/usr/include/' -I '$(ROOTDIR)/$(INSTALLDIR)/$*/include/' -I '$(ROOTDIR)/$(INSTALLDIR)/$*/include/freetype2/' -I '$(ROOTDIR)/$(INSTALLDIR)/$*/include/stb/'" \
+		-DCMAKE_MODULE_LINKER_FLAGS="$(LDFLAGS) -L'$(ROOTDIR)/$(INSTALLDIR)/$*/lib/'" \
+		-DCMAKE_SHARED_LINKER_FLAGS="$(LDFLAGS) -L'$(ROOTDIR)/$(INSTALLDIR)/$*/lib/'" \
+		-DCMAKE_EXE_LINKER_FLAGS="$(LDFLAGS) -L'$(ROOTDIR)/$(INSTALLDIR)/$*/lib/'" \
+		-DCMAKE_INSTALL_PREFIX="/$*" \
+		"$(ROOTDIR)/$<"
 	cd "$<_$*" && make && make install DESTDIR="$(ROOTDIR)/$(INSTALLDIR)/"
 
 .PHONY: build-libs
@@ -265,7 +386,8 @@ build-libs: build-libs/armv7a build-libs/aarch64 build-libs/i686 build-libs/x86_
 	@#
 
 .PHONY: build-libs/%
-build-libs/%: $(INSTALLDIR)/%/lib/libogg.a $(INSTALLDIR)/%/lib/libvorbis.a $(INSTALLDIR)/%/lib/libflac.a $(INSTALLDIR)/%/lib/libfreetype.a
+build-libs/%: $(INSTALLDIR)/%/lib/libogg.a $(INSTALLDIR)/%/lib/libvorbis.a $(INSTALLDIR)/%/lib/libflac.a $(INSTALLDIR)/%/lib/libfreetype.a \
+	$(INSTALLDIR)/%/lib/libpng.a $(INSTALLDIR)/%/lib/libharfbuzz.a $(INSTALLDIR)/%/include/stb
 	@#
 
 .PHONY: install-libs/%

@@ -1,0 +1,100 @@
+Index: openal/CMakeLists.txt
+===================================================================
+--- openal.orig/CMakeLists.txt
++++ openal/CMakeLists.txt
+@@ -52,7 +52,7 @@ ELSE()
+ ENDIF()
+ 
+ IF(NOT LIBTYPE)
+-    SET(LIBTYPE SHARED)
++    SET(LIBTYPE STATIC)
+ ENDIF()
+ 
+ SET(LIB_MAJOR_VERSION "1")
+@@ -478,10 +478,10 @@ ENDIF()
+ 
+ # Needed for openal.pc.in
+ SET(prefix ${CMAKE_INSTALL_PREFIX})
+-SET(exec_prefix "\${prefix}")
+-SET(libdir "\${exec_prefix}/lib${LIB_SUFFIX}")
+-SET(bindir "\${exec_prefix}/bin")
+-SET(includedir "\${prefix}/include")
++SET(exec_prefix "${prefix}")
++SET(libdir "${exec_prefix}/lib${LIB_SUFFIX}")
++SET(bindir "${exec_prefix}/bin")
++SET(includedir "${prefix}/include")
+ SET(PACKAGE_VERSION "${LIB_VERSION}")
+ 
+ # End configuration
+@@ -496,9 +496,7 @@ CONFIGURE_FILE(
+ # Build a library
+ ADD_LIBRARY(${LIBNAME} ${LIBTYPE} ${OPENAL_OBJS} ${ALC_OBJS})
+ SET_TARGET_PROPERTIES(${LIBNAME} PROPERTIES DEFINE_SYMBOL AL_BUILD_LIBRARY
+-                                            COMPILE_FLAGS -DAL_ALEXT_PROTOTYPES
+-                                            VERSION ${LIB_VERSION}.0
+-                                            SOVERSION ${LIB_MAJOR_VERSION})
++                                            COMPILE_FLAGS -DAL_ALEXT_PROTOTYPES)
+ IF(WIN32 AND NOT LIBTYPE STREQUAL "STATIC")
+     SET_TARGET_PROPERTIES(${LIBNAME} PROPERTIES PREFIX "")
+ ENDIF()
+@@ -507,9 +505,9 @@ TARGET_LINK_LIBRARIES(${LIBNAME} ${EXTRA
+ 
+ # Add an install target here
+ INSTALL(TARGETS ${LIBNAME}
+-        RUNTIME DESTINATION bin
+-        LIBRARY DESTINATION "lib${LIB_SUFFIX}"
+-        ARCHIVE DESTINATION "lib${LIB_SUFFIX}"
++        RUNTIME DESTINATION "${bindir}"
++        LIBRARY DESTINATION "${libdir}"
++        ARCHIVE DESTINATION "${libdir}"
+ )
+ INSTALL(FILES include/AL/al.h
+               include/AL/alc.h
+@@ -517,10 +515,10 @@ INSTALL(FILES include/AL/al.h
+               include/AL/efx.h
+               include/AL/efx-creative.h
+               include/AL/efx-presets.h
+-        DESTINATION include/AL
++        DESTINATION "${includedir}/AL"
+ )
+ INSTALL(FILES "${OpenAL_BINARY_DIR}/openal.pc"
+-        DESTINATION "lib${LIB_SUFFIX}/pkgconfig")
++        DESTINATION "${libdir}/pkgconfig")
+ 
+ 
+ MESSAGE(STATUS "")
+@@ -539,7 +537,7 @@ ENDIF()
+ # Install alsoft.conf configuration file
+ IF(ALSOFT_CONFIG)
+     INSTALL(FILES alsoftrc.sample
+-            DESTINATION /etc/openal
++            DESTINATION "${exec_prefix}/etc/openal"
+             RENAME alsoft.conf
+     )
+     MESSAGE(STATUS "Installing sample alsoft.conf")
+@@ -550,9 +548,9 @@ IF(ALSOFT_UTILS)
+     ADD_EXECUTABLE(openal-info utils/openal-info.c)
+     TARGET_LINK_LIBRARIES(openal-info ${LIBNAME})
+     INSTALL(TARGETS openal-info
+-            RUNTIME DESTINATION bin
+-            LIBRARY DESTINATION "lib${LIB_SUFFIX}"
+-            ARCHIVE DESTINATION "lib${LIB_SUFFIX}"
++            RUNTIME DESTINATION "${bindir}"
++            LIBRARY DESTINATION "${libdir}"
++            ARCHIVE DESTINATION "${libdir}"
+     )
+     MESSAGE(STATUS "Building utility programs")
+     MESSAGE(STATUS "")
+@@ -564,9 +562,9 @@ IF(ALSOFT_EXAMPLES)
+         TARGET_LINK_LIBRARIES(alstream ${FFMPEG_LIBRARIES} ${LIBNAME})
+         SET_TARGET_PROPERTIES(alstream PROPERTIES COMPILE_FLAGS "${FFMPEG_CFLAGS}")
+         INSTALL(TARGETS alstream
+-                RUNTIME DESTINATION bin
+-                LIBRARY DESTINATION "lib${LIB_SUFFIX}"
+-                ARCHIVE DESTINATION "lib${LIB_SUFFIX}"
++                RUNTIME DESTINATION "${bindir}"
++                LIBRARY DESTINATION "${libdir}"
++                ARCHIVE DESTINATION "${libdir}"
+         )
+ 
+         MESSAGE(STATUS "Building ffmpeg example programs")
