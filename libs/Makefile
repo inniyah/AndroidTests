@@ -1,3 +1,5 @@
+all: build-sfml
+
 ROOTDIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 CACHEDIR := cache
 BUILDDIR := build
@@ -75,13 +77,13 @@ NDK_LIBS_mipsel = $(NDK_SYSROOT)/usr/lib/mipsel-linux-android
 NDK_LIBS_mips64el = $(NDK_SYSROOT)/usr/lib/mips64el-linux-android
 
 check:
-	@command -v wget  || ( >&2 echo "Package 'wget' is needed"     ; false )
-	@command -v quilt || ( >&2 echo "Package 'quilt' is needed"    ; false )
-	@command -v unzip || ( >&2 echo "Package 'unzip' is needed"    ; false )
-	@command -v tar   || ( >&2 echo "Package 'tar' is needed"      ; false )
-	@command -v gzip  || ( >&2 echo "Package 'gzip' is needed"     ; false )
-	@command -v bzip2 || ( >&2 echo "Package 'bzip2' is needed"    ; false )
-	@command -v xz    || ( >&2 echo "Package 'xz-utils' is needed" ; false )
+	@command -v wget  >/dev/null || ( >&2 echo "Package 'wget' is needed"     ; false )
+	@command -v quilt >/dev/null || ( >&2 echo "Package 'quilt' is needed"    ; false )
+	@command -v unzip >/dev/null || ( >&2 echo "Package 'unzip' is needed"    ; false )
+	@command -v tar   >/dev/null || ( >&2 echo "Package 'tar' is needed"      ; false )
+	@command -v gzip  >/dev/null || ( >&2 echo "Package 'gzip' is needed"     ; false )
+	@command -v bzip2 >/dev/null || ( >&2 echo "Package 'bzip2' is needed"    ; false )
+	@command -v xz    >/dev/null || ( >&2 echo "Package 'xz-utils' is needed" ; false )
 	@test -n "$(JDK)" -a -d "$(JDK)"                         || ( >&2 echo "Package 'openjdk-8-jdk' is needed" ; false )
 	@test -n "$(SDK)" -a -d "$(SDK)"                         || ( >&2 echo "Package 'android-sdk' is needed" ; false )
 	@test -n "$(NDK)" -a -d "$(NDK)"                         || ( >&2 echo "Package 'google-android-ndk-installer' is needed" ; false )
