@@ -34,7 +34,7 @@ Index: sfml/src/SFML/Audio/CMakeLists.txt
  target_link_libraries(sfml-audio
                        PUBLIC sfml-system
 -                      PRIVATE Vorbis FLAC)
-+                      PRIVATE FLAC vorbisfile vorbis ogg)
++                      PRIVATE FLAC vorbisfile vorbisenc vorbis ogg)
 Index: sfml/src/SFML/Graphics/CMakeLists.txt
 ===================================================================
 --- sfml.orig/src/SFML/Graphics/CMakeLists.txt
@@ -50,3 +50,29 @@ Index: sfml/src/SFML/Graphics/CMakeLists.txt
  
  # add preprocessor symbols
  target_compile_definitions(sfml-graphics PRIVATE "STBI_FAILURE_USERMSG")
+Index: sfml/CMakeLists.txt
+===================================================================
+--- sfml.orig/CMakeLists.txt
++++ sfml/CMakeLists.txt
+@@ -498,14 +498,14 @@ elseif(SFML_OS_IOS)
+ 
+ elseif(SFML_OS_ANDROID)
+ 
+-    if(NOT SFML_USE_SYSTEM_DEPS)
+-        # install extlibs
+-        install(DIRECTORY extlibs/libs-android/${CMAKE_ANDROID_ARCH_ABI} DESTINATION extlibs/lib)
+-        install(FILES extlibs/Android.mk DESTINATION extlibs)
+-    endif()
++    #~ if(NOT SFML_USE_SYSTEM_DEPS)
++    #~     # install extlibs
++    #~     install(DIRECTORY extlibs/libs-android/${CMAKE_ANDROID_ARCH_ABI} DESTINATION extlibs/lib)
++    #~     install(FILES extlibs/Android.mk DESTINATION extlibs)
++    #~ endif()
+ 
+-    # install Android.mk so the NDK knows how to set up SFML
+-    install(FILES src/SFML/Android.mk DESTINATION .)
++    #~ # install Android.mk so the NDK knows how to set up SFML
++    #~ install(FILES src/SFML/Android.mk DESTINATION .)
+ 
+ endif()
+ 
