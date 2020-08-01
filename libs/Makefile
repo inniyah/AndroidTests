@@ -75,20 +75,27 @@ NDK_LIBS_mipsel = $(NDK_SYSROOT)/usr/lib/mipsel-linux-android
 NDK_LIBS_mips64el = $(NDK_SYSROOT)/usr/lib/mips64el-linux-android
 
 check:
-	@test -n "$(JDK)" -a -d "$(JDK)" || ( >&2 echo "Package 'openjdk-8-jdk' is needed" ; false )
-	@test -n "$(SDK)" -a -d "$(SDK)" || ( >&2 echo "Package 'android-sdk' is needed" ; false )
-	@test -n "$(NDK)" -a -d "$(NDK)" || ( >&2 echo "Package 'google-android-ndk-installer' is needed" ; false )
-	@test -n "$(JAVAC)" -o ! -x "$(JAVAC)" || ( >&2 echo "Package 'openjdk-8-jdk' is needed" ; false )
-	@test -n "$(JAVAH)" -o ! -x "$(JAVAH)" || ( >&2 echo "Package 'openjdk-8-jdk' is needed" ; false )
-	@test -n "$(KEYTOOL)" -o ! -x "$(KEYTOOL)" || ( >&2 echo "Package 'openjdk-8-jre' is needed" ; false )
+	@command -v wget  || ( >&2 echo "Package 'wget' is needed"     ; false )
+	@command -v quilt || ( >&2 echo "Package 'quilt' is needed"    ; false )
+	@command -v unzip || ( >&2 echo "Package 'unzip' is needed"    ; false )
+	@command -v tar   || ( >&2 echo "Package 'tar' is needed"      ; false )
+	@command -v gzip  || ( >&2 echo "Package 'gzip' is needed"     ; false )
+	@command -v bzip2 || ( >&2 echo "Package 'bzip2' is needed"    ; false )
+	@command -v xz    || ( >&2 echo "Package 'xz-utils' is needed" ; false )
+	@test -n "$(JDK)" -a -d "$(JDK)"                         || ( >&2 echo "Package 'openjdk-8-jdk' is needed" ; false )
+	@test -n "$(SDK)" -a -d "$(SDK)"                         || ( >&2 echo "Package 'android-sdk' is needed" ; false )
+	@test -n "$(NDK)" -a -d "$(NDK)"                         || ( >&2 echo "Package 'google-android-ndk-installer' is needed" ; false )
+	@test -n "$(JAVAC)" -o ! -x "$(JAVAC)"                   || ( >&2 echo "Package 'openjdk-8-jdk' is needed" ; false )
+	@test -n "$(JAVAH)" -o ! -x "$(JAVAH)"                   || ( >&2 echo "Package 'openjdk-8-jdk' is needed" ; false )
+	@test -n "$(KEYTOOL)" -o ! -x "$(KEYTOOL)"               || ( >&2 echo "Package 'openjdk-8-jre' is needed" ; false )
 	@test -n "$(BUILD_TOOLS_DIR)" -a -d "$(BUILD_TOOLS_DIR)" || ( >&2 echo "Package 'android-sdk' is needed" ; false )
-	@test -n "$(AAPT)" -o ! -x "$(AAPT)" || ( >&2 echo "Package 'aapt' is needed" ; false )
-	@test -n "$(DX)" -o ! -x "$(DX)" || ( >&2 echo "Package 'dalvik-exchange' is needed" ; false )
-	@test -n "$(ZIPALIGN)" -o ! -x "$(ZIPALIGN)" || ( >&2 echo "Package 'zipalign' is needed" ; false )
-	@test -n "$(APKSIGNER)" -o ! -x "$(APKSIGNER)" || ( >&2 echo "Package 'apksigner' is needed" ; false )
-	@test -n "$(ADB)" -o ! -x "$(ADB)" || ( >&2 echo "Package 'adb' is needed" ; false )
-	@test -n "$(PLATFORM)" -o ! -r "$(PLATFORM)" || ( >&2 echo "Package 'libandroid-$(ANDROID_API)-java' is needed" ; false )
-	@test -n "$(NDK_SYSROOT)" -a -d "$(NDK_SYSROOT)" || ( >&2 echo "Package 'google-android-ndk-installer' is needed" ; false )
+	@test -n "$(AAPT)" -o ! -x "$(AAPT)"                     || ( >&2 echo "Package 'aapt' is needed" ; false )
+	@test -n "$(DX)" -o ! -x "$(DX)"                         || ( >&2 echo "Package 'dalvik-exchange' is needed" ; false )
+	@test -n "$(ZIPALIGN)" -o ! -x "$(ZIPALIGN)"             || ( >&2 echo "Package 'zipalign' is needed" ; false )
+	@test -n "$(APKSIGNER)" -o ! -x "$(APKSIGNER)"           || ( >&2 echo "Package 'apksigner' is needed" ; false )
+	@test -n "$(ADB)" -o ! -x "$(ADB)"                       || ( >&2 echo "Package 'adb' is needed" ; false )
+	@test -n "$(PLATFORM)" -o ! -r "$(PLATFORM)"             || ( >&2 echo "Package 'libandroid-$(ANDROID_API)-java' is needed" ; false )
+	@test -n "$(NDK_SYSROOT)" -a -d "$(NDK_SYSROOT)"         || ( >&2 echo "Package 'google-android-ndk-installer' is needed" ; false )
 
 $(CACHEDIR)/flac-1.3.3.tar.xz:
 	@mkdir -p $(CACHEDIR)
@@ -404,7 +411,7 @@ $(INSTALLDIR)/%/lib/libsfml-system.so $(INSTALLDIR)/%/lib/libsfml-window.so: $(B
 	( cd "$(TMPDIR)/usr/lib/android-ndk/sources/third_party/sfml/lib/$(ANDROID_ABI_$*)" ; tar cf - . ) | ( cd "$(INSTALLDIR)/$*/lib" ; tar xf - )
 
 .PHONY: build-libs
-build-libs: build-libs/armv7a build-libs/aarch64 build-libs/i686 build-libs/x86_64
+build-libs: check build-libs/armv7a build-libs/aarch64 build-libs/i686 build-libs/x86_64
 	@#
 
 .PHONY: build-libs/%
@@ -413,7 +420,7 @@ build-libs/%: $(INSTALLDIR)/%/lib/libogg.a $(INSTALLDIR)/%/lib/libvorbis.a $(INS
 	@#
 
 .PHONY: build-libs
-build-sfml: build-sfml/armv7a build-sfml/aarch64 build-sfml/i686 build-sfml/x86_64
+build-sfml: check build-sfml/armv7a build-sfml/aarch64 build-sfml/i686 build-sfml/x86_64
 	@#
 
 .PHONY: build-sfml/%
@@ -434,7 +441,7 @@ install-libs/%: build-libs/%
 	find "$(DEPLOYDIR)/$*/lib" -type f -name "*.so*" | while read -r FILE; do "$(NDK_BIN_$*)/strip" "$$FILE"; done
 
 .PHONY: install-libs
-install-libs: install-libs/armv7a install-libs/aarch64 install-libs/i686 install-libs/x86_64
+install-libs: check install-libs/armv7a install-libs/aarch64 install-libs/i686 install-libs/x86_64
 	@#
 
 .PHONY: clean
