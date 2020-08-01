@@ -104,6 +104,9 @@ $(CACHEDIR)/freetype-2.10.2.tar.xz:
 	@mkdir -p $(CACHEDIR)
 	wget -nc -P $(CACHEDIR) "http://download.savannah.gnu.org/releases/freetype/$(notdir $@)"
 
+$(CACHEDIR)/harfbuzz-%.tar.gz:
+	wget -nc -P $(CACHEDIR) "https://github.com/harfbuzz/harfbuzz/archive/$*.tar.gz" -O "$@"
+
 $(CACHEDIR)/openal-soft-1.20.1.tar.bz2:
 	wget -nc -P $(CACHEDIR) "https://kcat.strangesoft.net/openal-releases/$(notdir $@)"
 
@@ -118,9 +121,6 @@ $(CACHEDIR)/stb-master.zip:
 
 $(CACHEDIR)/libpng-%.tar.xz:
 	wget -nc -P $(CACHEDIR) "https://download.sourceforge.net/libpng/libpng-$*.tar.xz" -O "$@"
-
-$(CACHEDIR)/harfbuzz-%.tar.gz:
-	wget -nc -P $(CACHEDIR) "https://github.com/harfbuzz/harfbuzz/archive/$*.tar.gz" -O "$@"
 
 $(BUILDDIR)/ogg: $(CACHEDIR)/libogg-1.3.4.tar.xz
 	@mkdir -p "$@"
@@ -142,6 +142,11 @@ $(BUILDDIR)/freetype: $(CACHEDIR)/freetype-2.10.2.tar.xz
 	tar xvfa "$<" --strip 1 --directory "$@"
 	if [ -e $(ROOTDIR)/patches/$(notdir $@)/series ]; then cd "$@" && QUILT_PATCHES=$(ROOTDIR)/patches/$(notdir $@) quilt push -a; fi
 
+$(BUILDDIR)/harfbuzz: $(CACHEDIR)/harfbuzz-2.7.0.tar.gz
+	@mkdir -p "$@"
+	tar xvfa "$<" --strip 1 --directory "$@"
+	if [ -e $(ROOTDIR)/patches/$(notdir $@)/series ]; then cd "$@" && QUILT_PATCHES=$(ROOTDIR)/patches/$(notdir $@) quilt push -a; fi
+
 #~ $(BUILDDIR)/openal: $(CACHEDIR)/openal-soft-1.20.1.tar.bz2
 $(BUILDDIR)/openal: $(CACHEDIR)/openal-soft-android-1.13.tar.gz
 	@mkdir -p "$@"
@@ -156,11 +161,6 @@ $(BUILDDIR)/stb: $(CACHEDIR)/stb-master.zip
 	if [ -e $(ROOTDIR)/patches/$(notdir $@)/series ]; then cd "$@" && QUILT_PATCHES=$(ROOTDIR)/patches/$(notdir $@) quilt push -a; fi
 
 $(BUILDDIR)/png: $(CACHEDIR)/libpng-1.6.37.tar.xz
-	@mkdir -p "$@"
-	tar xvfa "$<" --strip 1 --directory "$@"
-	if [ -e $(ROOTDIR)/patches/$(notdir $@)/series ]; then cd "$@" && QUILT_PATCHES=$(ROOTDIR)/patches/$(notdir $@) quilt push -a; fi
-
-$(BUILDDIR)/harfbuzz: $(CACHEDIR)/harfbuzz-2.7.0.tar.gz
 	@mkdir -p "$@"
 	tar xvfa "$<" --strip 1 --directory "$@"
 	if [ -e $(ROOTDIR)/patches/$(notdir $@)/series ]; then cd "$@" && QUILT_PATCHES=$(ROOTDIR)/patches/$(notdir $@) quilt push -a; fi
@@ -243,6 +243,31 @@ $(INSTALLDIR)/%/lib/libfreetype.a: $(BUILDDIR)/freetype
 	cd "$<_$*" && make && make install DESTDIR="$(ROOTDIR)/$(INSTALLDIR)/"
 	mkdir -p "$(ROOTDIR)/$(INSTALLDIR)/$*/lib/"
 	install -m 644 "$<_$*/.libs"/lib*.a "$(ROOTDIR)/$(INSTALLDIR)/$*/lib/"
+
+.PRECIOUS: $(INSTALLDIR)/%/lib/libharfbuzz.a
+$(INSTALLDIR)/%/lib/libharfbuzz.a: $(BUILDDIR)/harfbuzz $(INSTALLDIR)/%/lib/libfreetype.a
+	mkdir -p "$<_$*"
+	cd "$<_$*" && cmake \
+		-DCMAKE_BUILD_TYPE=Release \
+		-DHB_HAVE_FREETYPE=ON \
+		-DFREETYPE_LIBRARY="'$(ROOTDIR)/$(INSTALLDIR)/$*/lib/" \
+		-DFREETYPE_INCLUDE_DIRS="$(ROOTDIR)/$(INSTALLDIR)/$*/include/freetype2/" \
+		-DANDROID_ABI=$(ANDROID_ABI_$*) \
+		-DANDROID_NATIVE_API_LEVEL=android-18 \
+		-DCMAKE_TOOLCHAIN_FILE="$(NDK)/build/cmake/android.toolchain.cmake" \
+		-DCMAKE_FIND_ROOT_PATH="$(NDK_SYSROOT)" \
+		-DCMAKE_FIND_ROOT_PATH_MODE_PROGRAM=NEVER \
+		-DCMAKE_FIND_ROOT_PATH_MODE_LIBRARY=ONLY \
+		-DCMAKE_FIND_ROOT_PATH_MODE_INCLUDE=ONLY \
+		-DCMAKE_FIND_ROOT_PATH_MODE_PACKAGE=ONLY \
+		-DCMAKE_SYSROOT="$(NDK_SYSROOT)" \
+		-DCMAKE_C_FLAGS="$(CFLAGS) -I '$(NDK_SYSROOT)/usr/include/' -I '$(ROOTDIR)/$(INSTALLDIR)/$*/include/'" \
+		-DCMAKE_CXX_FLAGS="$(CXXFLAGS) -I '$(NDK_SYSROOT)/usr/include/' -I '$(ROOTDIR)/$(INSTALLDIR)/$*/include/'" \
+		-DCMAKE_SHARED_LINKER_FLAGS="$(LDFLAGS) -L'$(ROOTDIR)/$(INSTALLDIR)/$*/lib/'" \
+		-DCMAKE_EXE_LINKER_FLAGS="$(LDFLAGS) -L'$(ROOTDIR)/$(INSTALLDIR)/$*/lib/'" \
+		-DCMAKE_INSTALL_PREFIX="/$*" \
+		"$(ROOTDIR)/$<"
+	cd "$<_$*" && make && make install DESTDIR="$(ROOTDIR)/$(INSTALLDIR)/"
 
 # https://kcat.strangesoft.net/openal.html
 # http://github.com/kcat/openal-soft
@@ -327,28 +352,6 @@ $(INSTALLDIR)/%/lib/libpng.a: $(BUILDDIR)/png
 			--with-sysroot="$(NDK_SYSROOT)" \
 			--with-build-sysroot="$(NDK_SYSROOT)" \
 			--prefix="/$*"
-	cd "$<_$*" && make && make install DESTDIR="$(ROOTDIR)/$(INSTALLDIR)/"
-
-.PRECIOUS: $(INSTALLDIR)/%/lib/libharfbuzz.a
-$(INSTALLDIR)/%/lib/libharfbuzz.a: $(BUILDDIR)/harfbuzz
-	mkdir -p "$<_$*"
-	cd "$<_$*" && cmake \
-		-DCMAKE_BUILD_TYPE=Release \
-		-DANDROID_ABI=$(ANDROID_ABI_$*) \
-		-DANDROID_NATIVE_API_LEVEL=android-18 \
-		-DCMAKE_TOOLCHAIN_FILE="$(NDK)/build/cmake/android.toolchain.cmake" \
-		-DCMAKE_FIND_ROOT_PATH="$(NDK_SYSROOT)" \
-		-DCMAKE_FIND_ROOT_PATH_MODE_PROGRAM=NEVER \
-		-DCMAKE_FIND_ROOT_PATH_MODE_LIBRARY=ONLY \
-		-DCMAKE_FIND_ROOT_PATH_MODE_INCLUDE=ONLY \
-		-DCMAKE_FIND_ROOT_PATH_MODE_PACKAGE=ONLY \
-		-DCMAKE_SYSROOT="$(NDK_SYSROOT)" \
-		-DCMAKE_C_FLAGS="$(CFLAGS) -I '$(NDK_SYSROOT)/usr/include/' -I '$(ROOTDIR)/$(INSTALLDIR)/$*/include/'" \
-		-DCMAKE_CXX_FLAGS="$(CXXFLAGS) -I '$(NDK_SYSROOT)/usr/include/' -I '$(ROOTDIR)/$(INSTALLDIR)/$*/include/'" \
-		-DCMAKE_SHARED_LINKER_FLAGS="$(LDFLAGS) -L'$(ROOTDIR)/$(INSTALLDIR)/$*/lib/'" \
-		-DCMAKE_EXE_LINKER_FLAGS="$(LDFLAGS) -L'$(ROOTDIR)/$(INSTALLDIR)/$*/lib/'" \
-		-DCMAKE_INSTALL_PREFIX="/$*" \
-		"$(ROOTDIR)/$<"
 	cd "$<_$*" && make && make install DESTDIR="$(ROOTDIR)/$(INSTALLDIR)/"
 
 .PRECIOUS: $(INSTALLDIR)/%/lib/libsfml.a
