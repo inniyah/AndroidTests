@@ -4,7 +4,7 @@ ROOTDIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 CACHEDIR := cache
 BUILDDIR := build
 INSTALLDIR := build/output
-DEPLOYDIR := libs
+DEPLOYDIR := .
 TMPDIR := build/tmp
 
 CFLAGS = -std=c11 -fPIC -Wall -Wdate-time -D_FORTIFY_SOURCE=2 -O2
@@ -417,8 +417,9 @@ build-libs: check build-libs/armv7a build-libs/aarch64 build-libs/i686 build-lib
 	@#
 
 .PHONY: build-libs/%
-build-libs/%: $(INSTALLDIR)/%/lib/libogg.a $(INSTALLDIR)/%/lib/libvorbis.a $(INSTALLDIR)/%/lib/libFLAC.a $(INSTALLDIR)/%/lib/libfreetype.a \
-	$(INSTALLDIR)/%/lib/libpng16.a $(INSTALLDIR)/%/lib/libharfbuzz.a $(INSTALLDIR)/%/include/stb $(INSTALLDIR)/%/lib/libopenal.a
+build-libs/%: $(INSTALLDIR)/%/lib/libogg.a $(INSTALLDIR)/%/lib/libvorbis.a $(INSTALLDIR)/%/lib/libFLAC.a \
+	$(INSTALLDIR)/%/lib/libfreetype.a $(INSTALLDIR)/%/lib/libpng16.a $(INSTALLDIR)/%/lib/libharfbuzz.a \
+	$(INSTALLDIR)/%/include/stb $(INSTALLDIR)/%/lib/libopenal.a $(INSTALLDIR)/%/lib/libsfml-main.a
 	@#
 
 .PHONY: build-libs

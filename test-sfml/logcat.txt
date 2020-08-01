@@ -1,0 +1,475 @@
+--------- beginning of main
+08-02 00:10:42.893   356   356 I         : free_cache(12319842) avail 5740048384
+08-02 00:10:44.969  2146  2146 D wpa_supplicant: wlan0: Control interface command 'SIGNAL_POLL'
+08-02 00:10:44.978  2146  2146 D wpa_supplicant: CTRL-DEBUG: global_ctrl_sock-sendto: sock=8 sndbuf=163840 outq=0 send_len=48
+08-02 00:10:45.212  4982  4982 I Finsky  : [1] aerp.a(7): Verification requested, id = 108
+08-02 00:10:45.225  4982  4982 E Finsky  : [1] VerifyPerSourceInstallationConsentInstallTask.b(2): Package name null is not an installed package
+08-02 00:10:45.251  4982  9754 I Finsky  : [4913] aeth.a(8): Single user settings service is not running, bind it now
+08-02 00:10:45.263  4982  4982 I Finsky  : [1] aetg.onServiceConnected(1): Single user settings service is connected
+08-02 00:10:45.287  4982  9754 W Settings: Setting install_non_market_apps has moved from android.provider.Settings.Global to android.provider.Settings.Secure, returning read-only value.
+08-02 00:10:46.058  4982  9754 I Finsky  : [4913] lmr.a(9): Task 7 requested foreground
+08-02 00:10:46.060  4982  9754 I Finsky  : [4913] lmr.a(20): Not entering foreground
+--------- beginning of system
+08-02 00:10:46.067   364  2046 E NetlinkEvent: NetlinkEvent::FindParam(): Parameter 'UID' not found
+08-02 00:10:46.310  4982  9759 I Finsky  : [4916] aezx.b(3): Verify: Verification package=org.sfmldev.android, id=108 response=0
+08-02 00:10:46.478  4982  9754 I Finsky  : [4913] VerifyAdvancedProtectionInstallTask.c(1): Verify AP install started
+08-02 00:10:46.478  4982  9754 I Finsky  : [4913] VerifyAdvancedProtectionInstallTask.c(2): Allowing install because there are no Advanced Protection users
+08-02 00:10:46.483  4982  4982 I Finsky  : [1] VerifyAdvancedProtectionInstallTask.ik(2): Reported verification result: ALLOW
+08-02 00:10:46.484  4982  9754 I Finsky  : [4913] VerifyPerSourceInstallationConsentInstallTask.c(3): PSIC verification started with installer uid: 2000 package name: null, originating uid: -1
+08-02 00:10:46.491  4982  4982 I Finsky  : [1] VerifyInstallTask.c(15): Verifying id=108, result=1
+08-02 00:10:46.561  1966  2005 I ActivityManager: Force stopping org.sfmldev.android appid=10109 user=-1: installPackageLI
+08-02 00:10:46.799   356   356 D installd: Found valid user 10
+08-02 00:10:46.799   356   356 D installd: Found valid user 11
+08-02 00:10:46.800  1966  2041 I PackageManager: Package org.sfmldev.android codePath changed from /data/app/org.sfmldev.android-1 to /data/app/org.sfmldev.android-2; Retaining data and using new
+08-02 00:10:46.801  1966  2041 W PackageManager: Code path for org.sfmldev.android changing from /data/app/org.sfmldev.android-1 to /data/app/org.sfmldev.android-2
+08-02 00:10:46.801  1966  2041 W PackageManager: Resource path for org.sfmldev.android changing from /data/app/org.sfmldev.android-1 to /data/app/org.sfmldev.android-2
+08-02 00:10:47.390  1966  2041 I art     : Waiting for a blocking GC Explicit
+08-02 00:10:47.498  1966  1976 I art     : Background sticky concurrent mark sweep GC freed 210021(11MB) AllocSpace objects, 28(672KB) LOS objects, 30% free, 29MB/42MB, paused 3.306ms total 118.071ms
+08-02 00:10:47.499  1966  2041 I art     : WaitForGcToComplete blocked for 108.651ms for cause Explicit
+08-02 00:10:47.499  1966  2041 I art     : Starting a blocking GC Explicit
+08-02 00:10:47.695  1966  2041 I art     : Explicit concurrent mark sweep GC freed 13602(1085KB) AllocSpace objects, 7(204KB) LOS objects, 33% free, 28MB/42MB, paused 2.410ms total 196.057ms
+08-02 00:10:47.708   356   356 E         : Couldn't opendir /data/app/vmdl1219036065.tmp: No such file or directory
+08-02 00:10:47.709  1966  2041 I ActivityManager: Force stopping org.sfmldev.android appid=10109 user=0: pkg removed
+08-02 00:10:47.724  1966  2041 W ActivityManager: Skipping broadcast of Intent { act=android.intent.action.PACKAGE_REMOVED dat=package:org.sfmldev.android flg=0x4000010 (has extras) }: user 10 is stopped
+08-02 00:10:47.741  2150  2150 D BluetoothMapAppObserver: onReceive
+08-02 00:10:47.741  2150  2150 D BluetoothMapAppObserver: The removed package is: org.sfmldev.android
+08-02 00:10:47.743  1966  2041 W ActivityManager: Skipping broadcast of Intent { act=android.intent.action.PACKAGE_REMOVED dat=package:org.sfmldev.android flg=0x4000010 (has extras) }: user 11 is stopped
+08-02 00:10:47.743  8513  8513 W ContextImpl: Calling a method in the system process without a qualified user: android.app.ContextImpl.startService:1357 android.content.ContextWrapper.startService:613 android.content.ContextWrapper.startService:613 com.android.keychain.KeyChainBroadcastReceiver.onReceive:12 android.app.ActivityThread.handleReceiver:3041 
+08-02 00:10:47.747  1966  2041 W ActivityManager: Skipping broadcast of Intent { act=android.intent.action.PACKAGE_ADDED dat=package:org.sfmldev.android flg=0x4000010 (has extras) }: user 10 is stopped
+08-02 00:10:47.750  1966  2106 I InputReader: Reconfiguring input devices.  changes=0x00000010
+08-02 00:10:47.751  2150  2150 D BluetoothMapAppObserver: onReceive
+08-02 00:10:47.751  2150  2150 D BluetoothMapAppObserver: The installed package is: org.sfmldev.android
+08-02 00:10:47.773  1966  2106 I InputReader: Reconfiguring input devices.  changes=0x00000010
+08-02 00:10:47.774  2150  2150 D BluetoothMapAppObserver: Found 0 application(s) with intent android.bluetooth.action.BLUETOOTH_MAP_PROVIDER
+08-02 00:10:47.779  2150  2150 D BluetoothMapAppObserver: Found 0 application(s) with intent android.bluetooth.action.BLUETOOTH_MAP_IM_PROVIDER
+08-02 00:10:47.791  1966  2041 W ActivityManager: Skipping broadcast of Intent { act=android.intent.action.PACKAGE_ADDED dat=package:org.sfmldev.android flg=0x4000010 (has extras) }: user 11 is stopped
+08-02 00:10:47.793  1966  1966 W ResourceType: ResTable_typeSpec entry count inconsistent: given 705, previously 711
+08-02 00:10:47.793  1966  1966 W ResourceType: ResTable_typeSpec entry count inconsistent: given 428, previously 1480
+08-02 00:10:47.793  1966  1966 W ResourceType: ResTable_typeSpec entry count inconsistent: given 245, previously 1303
+08-02 00:10:47.806  1966  1966 W ResourceType: ResTable_typeSpec entry count inconsistent: given 83, previously 87
+08-02 00:10:47.809  1966  2041 W ActivityManager: Skipping broadcast of Intent { act=android.intent.action.PACKAGE_REPLACED dat=package:org.sfmldev.android flg=0x4000010 (has extras) }: user 10 is stopped
+08-02 00:10:47.810  1966  1966 W ResourceType: ResTable_typeSpec entry count inconsistent: given 1967, previously 1961
+08-02 00:10:47.810  1966  1966 W ResourceType: ResTable_typeSpec entry count inconsistent: given 386, previously 2092
+08-02 00:10:47.813  1966  2106 I InputReader: Reconfiguring input devices.  changes=0x00000010
+08-02 00:10:47.815  1966  2041 W ActivityManager: Skipping broadcast of Intent { act=android.intent.action.PACKAGE_REPLACED dat=package:org.sfmldev.android flg=0x4000010 (has extras) }: user 11 is stopped
+08-02 00:10:47.816  1966  2041 W ActivityManager: Skipping broadcast of Intent { act=android.intent.action.MY_PACKAGE_REPLACED flg=0x4000010 pkg=org.sfmldev.android (has extras) }: user 10 is stopped
+08-02 00:10:47.816  1966  2041 W ActivityManager: Skipping broadcast of Intent { act=android.intent.action.MY_PACKAGE_REPLACED flg=0x4000010 pkg=org.sfmldev.android (has extras) }: user 11 is stopped
+08-02 00:10:47.823  7683  9766 E MusicFXCompat: No control panels found!
+08-02 00:10:47.866  1966  2004 W ResourceType: ResTable_typeSpec entry count inconsistent: given 36, previously 41
+08-02 00:10:47.866  1966  2004 W ResourceType: ResTable_typeSpec entry count inconsistent: given 2534, previously 2537
+08-02 00:10:47.867  1966  2004 W ResourceType: ResTable_typeSpec entry count inconsistent: given 2545, previously 2548
+08-02 00:10:47.867  1966  2004 W ResourceType: ResTable_typeSpec entry count inconsistent: given 303, previously 1695
+08-02 00:10:47.898  4982  4982 I Finsky  : [1] tul.a(18): PackageMonitorReceiverImpl - Received: android.intent.action.PACKAGE_REMOVED, [nqTkjupP04heqRtKPj9hMOBF6Z0b5qowZTgcf7ce2ow]
+08-02 00:10:47.898  4982  4982 I Finsky  : [1] tvm.d(9): Invalidating cached PackageState for org.sfmldev.android
+08-02 00:10:47.911  3202  3202 D RegisteredNfcFServicesCache: Service unchanged, not updating
+08-02 00:10:47.913  4982  4982 I Finsky  : [1] lvg.c(2): Frosting ID looked up on UI thread. Caller should move to a background thread.
+08-02 00:10:47.922  4982  4982 I Finsky  : [1] nnn.b(31): Installer: package org.sfmldev.android was removed. replacing: true
+08-02 00:10:47.924  4982  4982 I Finsky  : [1] nnn.a(183): Installer: Notifying status update. package=org.sfmldev.android, status=UNINSTALLED
+08-02 00:10:47.929  2469  2469 D CarrierSvcBindHelper: No carrier app for: 0
+08-02 00:10:47.930  2469  2469 D CarrierSvcBindHelper: No carrier app for: 1
+08-02 00:10:47.934  2469  2469 D CarrierSvcBindHelper: No carrier app for: 0
+08-02 00:10:47.934  2469  2469 D CarrierSvcBindHelper: No carrier app for: 1
+08-02 00:10:47.935  2469  2469 D CarrierConfigLoader: mHandler: 9 phoneId: 0
+08-02 00:10:47.937  4982  4982 I Finsky  : [1] lvg.c(2): Frosting ID looked up on UI thread. Caller should move to a background thread.
+08-02 00:10:47.939  4982  9771 I Finsky  : [4919] ecj.a(-1): Cancelled 0 ongoing asset module downloads for package org.sfmldev.android due to a concurrent app update.
+08-02 00:10:47.943  4982  9769 I Finsky  : [4917] lut.run(-1): Wrote row to frosting DB: 3177
+08-02 00:10:47.948  4982  4982 I Finsky  : [1] VerifyInstallTask.ik(6): Verification complete: id=108, package_name=org.sfmldev.android
+08-02 00:10:47.952  4982  4982 I Finsky  : [1] nnn.a(215): Installer: found apps to install. isMultiUserMode=true, apps=[]
+08-02 00:10:47.956  4982  5122 I Finsky  : [4768] oai.b(49): IQ: Notifying installation update. package=org.sfmldev.android, status=UNINSTALLED
+08-02 00:10:47.984  2146  2146 D wpa_supplicant: wlan0: Control interface command 'SIGNAL_POLL'
+08-02 00:10:47.998  2146  2146 D wpa_supplicant: CTRL-DEBUG: global_ctrl_sock-sendto: sock=8 sndbuf=163840 outq=0 send_len=48
+08-02 00:10:48.003  2426  9780 I Fitness : FitCleanupIntentOperation received Intent android.intent.action.PACKAGE_REMOVED [CONTEXT service_id=17 ]
+08-02 00:10:48.006  4982  9769 I Finsky  : [4917] lut.run(-1): Wrote row to frosting DB: 3178
+08-02 00:10:48.010  7747  7747 W ContextImpl: Calling a method in the system process without a qualified user: android.app.ContextImpl.startService:1357 android.content.ContextWrapper.startService:613 android.content.ContextWrapper.startService:613 com.android.gallery3d.app.PackagesMonitor.onReceive:40 android.app.ActivityThread.handleReceiver:3041 
+08-02 00:10:48.025  4982  5122 I Finsky  : [4768] oai.b(37): IQ: No matching installs to run for jobs: []
+08-02 00:10:48.043  7683  9788 E MusicFXCompat: No control panels found!
+08-02 00:10:48.072  4982  4982 I Finsky  : [1] tul.a(18): PackageMonitorReceiverImpl - Received: android.intent.action.PACKAGE_ADDED, [nqTkjupP04heqRtKPj9hMOBF6Z0b5qowZTgcf7ce2ow]
+08-02 00:10:48.074  4982  4982 I Finsky  : [1] tvm.d(9): Invalidating cached PackageState for org.sfmldev.android
+08-02 00:10:48.078  4982  4982 I Finsky  : [1] lvg.c(2): Frosting ID looked up on UI thread. Caller should move to a background thread.
+08-02 00:10:48.083  4982  4982 I Finsky  : [1] agmj.a(4): Do not start WearSupportService due to Wear service optimization
+08-02 00:10:48.084  4982  9770 I Finsky  : [4918] grj.a(-1): [ContentSync] finished, scheduled=false
+08-02 00:10:48.087  4982  9771 I Finsky  : [4919] ecg.a(-1): Asset module broadcast after update successful for package org.sfmldev.android. 0 sessions broadcast.
+08-02 00:10:48.089  4982  4982 I Finsky  : [1] lvg.c(2): Frosting ID looked up on UI thread. Caller should move to a background thread.
+08-02 00:10:48.090  4982  9769 I Finsky  : [4917] lut.run(-1): Wrote row to frosting DB: 3179
+08-02 00:10:48.106  4982  9769 I Finsky  : [4917] lut.run(-1): Wrote row to frosting DB: 3180
+08-02 00:10:48.128  3265  9782 I Auth    : [SupervisedAccountIntentOperation] onHandleIntent(): android.intent.action.PACKAGE_ADDED
+08-02 00:10:48.141  3265  9789 I ChromeSync: [Sync,SyncIntentOperation] Handling the intent: Intent { act=android.intent.action.PACKAGE_ADDED dat=package:org.sfmldev.android flg=0x4000010 cmp=com.google.android.gms/.chimera.GmsIntentOperationService (has extras) }.
+08-02 00:10:48.143  1966  9640 W ActivityManager: Unable to start service Intent { act=com.google.android.gms.auth.key.retrieval.service.START pkg=com.google.android.gms } U=0: not found
+08-02 00:10:48.146  1966  2383 W ActivityManager: Unbind failed: could not find connection for android.os.BinderProxy@ea97f6c
+08-02 00:10:48.146  3265  3545 E GmsClient: unable to connect to service: com.google.android.gms.auth.key.retrieval.service.START on com.google.android.gms
+08-02 00:10:48.153  2146  2146 D wpa_supplicant: wlan0: BSS: Remove id 6152 BSSID 5c:dc:96:1e:32:99 SSID 'o2-WLAN52' due to wpa_bss_flush_by_age
+08-02 00:10:48.153  2146  2146 D wpa_supplicant: CTRL-DEBUG: ctrl_sock-sendmsg: sock=8 sndbuf=163840 outq=0 send_len=45
+08-02 00:10:48.153  2146  2146 D wpa_supplicant: CTRL_IFACE monitor sent successfully to /data/misc/wifi/sockets/wpa_ctrl_1966-2\x00
+08-02 00:10:48.153  2146  2146 D wpa_supplicant: wlan0: BSS: Remove id 6150 BSSID ac:22:05:e2:dc:16 SSID 'UPC8629D2B' due to wpa_bss_flush_by_age
+08-02 00:10:48.153  2146  2146 D wpa_supplicant: CTRL-DEBUG: ctrl_sock-sendmsg: sock=8 sndbuf=163840 outq=448 send_len=45
+08-02 00:10:48.153  2146  2146 D wpa_supplicant: CTRL_IFACE monitor sent successfully to /data/misc/wifi/sockets/wpa_ctrl_1966-2\x00
+08-02 00:10:48.153  2146  2146 D wpa_supplicant: wlan0: BSS: Remove id 6155 BSSID 4c:1b:86:7e:dd:61 SSID 'Telekom_FON' due to wpa_bss_flush_by_age
+08-02 00:10:48.153  2146  2146 D wpa_supplicant: CTRL-DEBUG: ctrl_sock-sendmsg: sock=8 sndbuf=163840 outq=896 send_len=45
+08-02 00:10:48.153  2146  2146 D wpa_supplicant: CTRL_IFACE monitor sent successfully to /data/misc/wifi/sockets/wpa_ctrl_1966-2\x00
+08-02 00:10:48.163  3265  9789 I ChromeSync: [Persistence,AffiliationManager] One of affiliation or grouping data for android://CyjavTgJ2yoWpXy_pTU5UTVVZN0jax_g9QXXaD7p0ogbMD4C0HPvD-cWAAjXftS1TTMa0rZUkFA-dJiiyLNt5A==@org.sfmldev.android/ was not found. Marking affiliation data as stale...
+08-02 00:10:48.248  4982  4982 I Finsky  : [1] xgp.a(8): SCH: Jobs in database: 1-1337 12-1 26-1414141414 34-960 34-961 34-970 34-971 34-972 34-975 34-976 34-977 34-978 34-979 34-980 34-981 
+08-02 00:10:48.255  4982  4982 I Finsky  : [1] xcj.a(57): SCH: ConstraintMapping: 34-978, 12-1, 1-1337,  -> L: 14682ms, D: 61611422ms, C: false, I: false, N: 1
+08-02 00:10:48.257  4982  4982 I Finsky  : [1] xcj.a(57): SCH: ConstraintMapping: 34-975, 34-980, 34-976, 34-970, 34-960, 34-979, 34-961, 34-981, 34-977, 34-972, 34-971,  -> L: 246010042ms, D: 1542010042ms, C: false, I: true, N: 2
+08-02 00:10:48.259  4982  4982 I Finsky  : [1] xcj.a(57): SCH: ConstraintMapping: 34-975, 34-980, 34-976, 34-970, 34-960, 34-979, 34-961, 34-981, 34-977, 34-972, 34-971,  -> L: 246010042ms, D: 1542010042ms, C: true, I: true, N: 2
+08-02 00:10:48.261  4982  4982 I Finsky  : [1] xcj.a(57): SCH: ConstraintMapping: 26-1414141414,  -> L: 18013448ms, D: 18913448ms, C: false, I: false, N: 0
+08-02 00:10:48.262  4982  9770 I Finsky  : [4918] grj.a(-1): [ContentSync] finished, scheduled=true
+08-02 00:10:48.281  3265  4421 I Icing   : IndexChimeraService.getServiceInterface callingPackage=com.google.android.gms componentName=AppsCorpus serviceId=36
+08-02 00:10:48.284  4982  4982 I Finsky  : [1] xez.a(34): Cancelling existing jobscheduler jobs: 9001 9003 9005 9002 
+08-02 00:10:48.285  4982  4982 I Finsky  : [1] xez.a(27): Scheduling job Id: 9000, L: 14682, D: 61611422, C: false, I: false, N: 1
+08-02 00:10:48.292  4982  4982 I Finsky  : [1] xez.a(27): Scheduling job Id: 9004, L: 246010042, D: 1542010042, C: false, I: true, N: 2
+08-02 00:10:48.300  4982  4982 I Finsky  : [1] xez.a(27): Scheduling job Id: 9006, L: 246010042, D: 1542010042, C: true, I: true, N: 2
+08-02 00:10:48.307  4982  4982 I Finsky  : [1] xez.a(27): Scheduling job Id: 9007, L: 18013448, D: 18913448, C: false, I: false, N: 0
+08-02 00:10:48.330  3265 15218 I GmsCoreXrpcWrapper: Returning a channel provider with trafficStatsTag=12803
+08-02 00:10:48.424  7747  7747 W ContextImpl: Calling a method in the system process without a qualified user: android.app.ContextImpl.startService:1357 android.content.ContextWrapper.startService:613 android.content.ContextWrapper.startService:613 com.android.gallery3d.app.PackagesMonitor.onReceive:40 android.app.ActivityThread.handleReceiver:3041 
+08-02 00:10:48.429  3265  3969 I Icing   : IndexChimeraService.getServiceInterface callingPackage=com.google.android.gms componentName=null serviceId=30
+08-02 00:10:48.440  3265 15218 I Icing   : Usage reports ok 1, Failed Usage reports 0, indexed 0, rejected 0
+08-02 00:10:48.449  3265  3969 I Icing   : IndexChimeraService.getServiceInterface callingPackage=com.google.android.gms componentName=null serviceId=36
+08-02 00:10:48.449  3265 15218 I GmsCoreXrpcWrapper: Returning a channel provider with trafficStatsTag=12803
+08-02 00:10:48.462  7683  9799 E MusicFXCompat: No control panels found!
+08-02 00:10:48.475  3265  9789 I ChromeSync: [Persistence,AffiliationManager] Fetching affiliations from the server.
+08-02 00:10:48.480  3265 15218 I Icing   : Usage reports ok 0, Failed Usage reports 0, indexed 0, rejected 0
+08-02 00:10:48.481  3265 15218 I Icing   : Indexing com.google.android.gms-internal.3p:MobileApplication from com.google.android.gms using seqno 4482
+08-02 00:10:48.528  3265  9794 I FontLog : Package org.sfmldev.android has no metadata [CONTEXT service_id=132 ]
+08-02 00:10:48.575  3265 15218 I GmsCoreXrpcWrapper: Returning a channel provider with trafficStatsTag=12803
+08-02 00:10:48.627  3265 15218 I Icing   : Usage reports ok 0, Failed Usage reports 0, indexed 0, rejected 0
+08-02 00:10:48.641  3265 15218 I Icing   : Indexing com.google.android.gms-internal.3p:MobileApplication from com.google.android.gms using seqno 4482
+08-02 00:10:48.655  9767  9767 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+08-02 00:10:48.660  9767  9767 D AndroidRuntime: CheckJNI is OFF
+08-02 00:10:48.737  9767  9767 I libmdmdetect: ESOC framework not supported
+08-02 00:10:48.738  9767  9767 I libmdmdetect: Found internal modem: modem
+08-02 00:10:48.746  9767  9767 D ICU     : No timezone override file found: /data/misc/zoneinfo/current/icu/icu_tzdata.dat
+08-02 00:10:48.787  2426  8397 I NetworkScheduler.Stats: Task com.google.android.gms/com.google.android.gms.measurement.PackageMeasurementTaskService started execution. cause:1 exec_start_elapsed_seconds: 296004 [CONTEXT service_id=218 ]
+08-02 00:10:48.799  9767  9767 I Radio-JNI: register_android_hardware_Radio DONE
+08-02 00:10:48.821  9767  9767 D AndroidRuntime: Calling main entry com.android.commands.am.Am
+08-02 00:10:48.841  1966  5609 I ActivityManager: START u0 {flg=0x14000000 cmp=org.sfmldev.android/android.app.NativeActivity} from uid 2000 on display 0
+08-02 00:10:48.851  1966  5609 D ActivityTrigger: ActivityTrigger activityPauseTrigger 
+08-02 00:10:48.852  1966  2028 V BoostFramework: BoostFramework() : mPerf = com.qualcomm.qti.Performance@ecfb7e8
+08-02 00:10:48.852  1966  2028 V BoostFramework: BoostFramework() : mPerf = com.qualcomm.qti.Performance@dea2e01
+08-02 00:10:48.856  9767  9767 D AndroidRuntime: Shutting down VM
+08-02 00:10:48.878  1966 11570 I ActivityManager: Start proc 9815:org.sfmldev.android/u0a109 for activity org.sfmldev.android/android.app.NativeActivity
+08-02 00:10:48.878  1966 11570 V BoostFramework: BoostFramework() : mPerf = com.qualcomm.qti.Performance@c3d9c39
+08-02 00:10:48.929  9815  9815 W System  : ClassLoader referenced unknown path: 
+08-02 00:10:48.976  9815  9815 V BoostFramework: mAcquireFunc method = public int com.qualcomm.qti.Performance.perfLockAcquire(int,int[])
+08-02 00:10:48.976  9815  9815 V BoostFramework: mReleaseFunc method = public int com.qualcomm.qti.Performance.perfLockRelease()
+08-02 00:10:48.976  9815  9815 V BoostFramework: mAcquireTouchFunc method = public int com.qualcomm.qti.Performance.perfLockAcquireTouch(android.view.MotionEvent,android.util.DisplayMetrics,int,int[])
+08-02 00:10:48.976  9815  9815 V BoostFramework: mIOPStart method = public int com.qualcomm.qti.Performance.perfIOPrefetchStart(int,java.lang.String)
+08-02 00:10:48.976  9815  9815 V BoostFramework: mIOPStop method = public int com.qualcomm.qti.Performance.perfIOPrefetchStop()
+08-02 00:10:48.980  9815  9815 V BoostFramework: BoostFramework() : mPerf = com.qualcomm.qti.Performance@d3ed9ae
+08-02 00:10:48.980  9815  9815 V BoostFramework: BoostFramework() : mPerf = com.qualcomm.qti.Performance@4a9e34f
+08-02 00:10:49.009  1966 20170 D VoldConnector: SND -> {19 volume mkdirs /storage/emulated/0/Android/obb/org.sfmldev.android/}
+08-02 00:10:49.015  1966  2108 D VoldConnector: RCV <- {200 19 Command succeeded}
+08-02 00:10:49.143  1966  2383 D VoldConnector: SND -> {20 volume mkdirs /storage/1072-1524/Android/obb/org.sfmldev.android/}
+08-02 00:10:49.333  1966  2108 D VoldConnector: RCV <- {200 20 Command succeeded}
+08-02 00:10:49.345  1966 29357 D VoldConnector: SND -> {21 volume mkdirs /storage/emulated/0/Android/data/org.sfmldev.android/files/}
+08-02 00:10:49.357  1966  2108 D VoldConnector: RCV <- {200 21 Command succeeded}
+08-02 00:10:49.358  3265 32711 W FA-SVC  : Interrupted in onRunTask while uploading
+08-02 00:10:49.378  1966 19053 D VoldConnector: SND -> {22 volume mkdirs /storage/1072-1524/Android/data/org.sfmldev.android/files/}
+08-02 00:10:49.399  2426  8397 E NetworkScheduler.ATC: Called cancelTask for already completed task com.google.android.gms/.measurement.PackageMeasurementTaskService{u=0 tag="Measurement.PackageMeasurementTaskService.UPLOAD_TASK_TAG" trigger=window{start=3181s,end=6364s,earliest=-20s,latest=3162s} requirements=[NET_CONNECTED] attributes=[PERSISTED] scheduled=-3201s last_run=0s jid=N/A status=ACTIVE retries=0 client_lib=GMS_TASK_SCHEDULER-202614000} :1 [CONTEXT service_id=218 ]
+08-02 00:10:49.443  3265 32711 I Icing   : Indexing com.google.android.gms-apps from com.google.android.gms
+08-02 00:10:49.533  3265 15218 I Icing   : Indexing done com.google.android.gms-apps
+08-02 00:10:49.639  3265 15218 I Icing   : Indexing com.google.android.gms-apps from com.google.android.gms
+08-02 00:10:49.641  3265 15218 I Icing   : Indexing done com.google.android.gms-apps
+08-02 00:10:49.970  1966  2108 D VoldConnector: RCV <- {200 22 Command succeeded}
+08-02 00:10:49.971  1966 19053 E VoldConnector: NDC Command {22 volume mkdirs /storage/1072-1524/Android/data/org.sfmldev.android/files/} took too long (593ms)
+08-02 00:10:49.985  9815  9815 I sfml-activity: dlopen("/data/app/org.sfmldev.android-2/lib/arm/libopenal.so"): dlopen failed: library "/data/app/org.sfmldev.android-2/lib/arm/libopenal.so" not found
+08-02 00:10:50.140  1966  2097 I ActivityManager: Process org.sfmldev.android (pid 9815) has died
+08-02 00:10:50.141  1966  2097 D ActivityManager: cleanUpApplicationRecord -- 9815
+08-02 00:10:50.142   350   350 I Zygote  : Process 9815 exited cleanly (1)
+08-02 00:10:50.153  1966  2097 I ActivityManager: Start proc 9834:org.sfmldev.android/u0a109 for activity org.sfmldev.android/android.app.NativeActivity
+08-02 00:10:50.153  1966  2097 V BoostFramework: BoostFramework() : mPerf = com.qualcomm.qti.Performance@c86c273
+08-02 00:10:50.185  9834  9834 W System  : ClassLoader referenced unknown path: 
+08-02 00:10:50.211  9834  9834 V BoostFramework: mAcquireFunc method = public int com.qualcomm.qti.Performance.perfLockAcquire(int,int[])
+08-02 00:10:50.211  9834  9834 V BoostFramework: mReleaseFunc method = public int com.qualcomm.qti.Performance.perfLockRelease()
+08-02 00:10:50.212  9834  9834 V BoostFramework: mAcquireTouchFunc method = public int com.qualcomm.qti.Performance.perfLockAcquireTouch(android.view.MotionEvent,android.util.DisplayMetrics,int,int[])
+08-02 00:10:50.212  9834  9834 V BoostFramework: mIOPStart method = public int com.qualcomm.qti.Performance.perfIOPrefetchStart(int,java.lang.String)
+08-02 00:10:50.212  9834  9834 V BoostFramework: mIOPStop method = public int com.qualcomm.qti.Performance.perfIOPrefetchStop()
+08-02 00:10:50.216  9834  9834 V BoostFramework: BoostFramework() : mPerf = com.qualcomm.qti.Performance@d3ed9ae
+08-02 00:10:50.216  9834  9834 V BoostFramework: BoostFramework() : mPerf = com.qualcomm.qti.Performance@4a9e34f
+08-02 00:10:50.240  9834  9834 I sfml-activity: dlopen("/data/app/org.sfmldev.android-2/lib/arm/libopenal.so"): dlopen failed: library "/data/app/org.sfmldev.android-2/lib/arm/libopenal.so" not found
+08-02 00:10:50.321  1966  2097 I ActivityManager: Process org.sfmldev.android (pid 9834) has died
+08-02 00:10:50.322  1966  2097 D ActivityManager: cleanUpApplicationRecord -- 9834
+08-02 00:10:50.325   350   350 I Zygote  : Process 9834 exited cleanly (1)
+08-02 00:10:50.335  1966  2097 I ActivityManager: Start proc 9849:org.sfmldev.android/u0a109 for activity org.sfmldev.android/android.app.NativeActivity
+08-02 00:10:50.335  1966  2097 V BoostFramework: BoostFramework() : mPerf = com.qualcomm.qti.Performance@ae105a9
+08-02 00:10:50.366  9849  9849 W System  : ClassLoader referenced unknown path: 
+08-02 00:10:50.390  9849  9849 V BoostFramework: mAcquireFunc method = public int com.qualcomm.qti.Performance.perfLockAcquire(int,int[])
+08-02 00:10:50.390  9849  9849 V BoostFramework: mReleaseFunc method = public int com.qualcomm.qti.Performance.perfLockRelease()
+08-02 00:10:50.390  9849  9849 V BoostFramework: mAcquireTouchFunc method = public int com.qualcomm.qti.Performance.perfLockAcquireTouch(android.view.MotionEvent,android.util.DisplayMetrics,int,int[])
+08-02 00:10:50.390  9849  9849 V BoostFramework: mIOPStart method = public int com.qualcomm.qti.Performance.perfIOPrefetchStart(int,java.lang.String)
+08-02 00:10:50.390  9849  9849 V BoostFramework: mIOPStop method = public int com.qualcomm.qti.Performance.perfIOPrefetchStop()
+08-02 00:10:50.394  9849  9849 V BoostFramework: BoostFramework() : mPerf = com.qualcomm.qti.Performance@d3ed9ae
+08-02 00:10:50.394  9849  9849 V BoostFramework: BoostFramework() : mPerf = com.qualcomm.qti.Performance@4a9e34f
+08-02 00:10:50.418  9849  9849 I sfml-activity: dlopen("/data/app/org.sfmldev.android-2/lib/arm/libopenal.so"): dlopen failed: library "/data/app/org.sfmldev.android-2/lib/arm/libopenal.so" not found
+08-02 00:10:50.451  1966  2411 E IzatSvc_PassiveLocListener: E/Exiting with error virtual void izat_manager::IzatPassiveLocationListener::onLocationChanged(const izat_manager::IzatLocation *, const IzatLocationStatus) line 171 "1"
+08-02 00:10:50.511  1966  5609 I ActivityManager: Process org.sfmldev.android (pid 9849) has died
+08-02 00:10:50.511  1966  5609 D ActivityManager: cleanUpApplicationRecord -- 9849
+08-02 00:10:50.511   350   350 I Zygote  : Process 9849 exited cleanly (1)
+08-02 00:10:50.523  1966  5609 I ActivityManager: Start proc 9863:org.sfmldev.android/u0a109 for activity org.sfmldev.android/android.app.NativeActivity
+08-02 00:10:50.523  1966  5609 V BoostFramework: BoostFramework() : mPerf = com.qualcomm.qti.Performance@bca445c
+08-02 00:10:50.553  9863  9863 W System  : ClassLoader referenced unknown path: 
+08-02 00:10:50.577  9863  9863 V BoostFramework: mAcquireFunc method = public int com.qualcomm.qti.Performance.perfLockAcquire(int,int[])
+08-02 00:10:50.577  9863  9863 V BoostFramework: mReleaseFunc method = public int com.qualcomm.qti.Performance.perfLockRelease()
+08-02 00:10:50.577  9863  9863 V BoostFramework: mAcquireTouchFunc method = public int com.qualcomm.qti.Performance.perfLockAcquireTouch(android.view.MotionEvent,android.util.DisplayMetrics,int,int[])
+08-02 00:10:50.577  9863  9863 V BoostFramework: mIOPStart method = public int com.qualcomm.qti.Performance.perfIOPrefetchStart(int,java.lang.String)
+08-02 00:10:50.577  9863  9863 V BoostFramework: mIOPStop method = public int com.qualcomm.qti.Performance.perfIOPrefetchStop()
+08-02 00:10:50.581  9863  9863 V BoostFramework: BoostFramework() : mPerf = com.qualcomm.qti.Performance@d3ed9ae
+08-02 00:10:50.581  9863  9863 V BoostFramework: BoostFramework() : mPerf = com.qualcomm.qti.Performance@4a9e34f
+08-02 00:10:50.605  9863  9863 I sfml-activity: dlopen("/data/app/org.sfmldev.android-2/lib/arm/libopenal.so"): dlopen failed: library "/data/app/org.sfmldev.android-2/lib/arm/libopenal.so" not found
+08-02 00:10:50.807  1966 20170 I ActivityManager: Process org.sfmldev.android (pid 9863) has died
+08-02 00:10:50.808  1966 20170 D ActivityManager: cleanUpApplicationRecord -- 9863
+08-02 00:10:50.808   350   350 I Zygote  : Process 9863 exited cleanly (1)
+08-02 00:10:50.820  1966 20170 I ActivityManager: Start proc 9878:org.sfmldev.android/u0a109 for activity org.sfmldev.android/android.app.NativeActivity
+08-02 00:10:50.820  1966 20170 V BoostFramework: BoostFramework() : mPerf = com.qualcomm.qti.Performance@129783a
+08-02 00:10:50.851  9878  9878 W System  : ClassLoader referenced unknown path: 
+08-02 00:10:50.888  9878  9878 V BoostFramework: mAcquireFunc method = public int com.qualcomm.qti.Performance.perfLockAcquire(int,int[])
+08-02 00:10:50.888  9878  9878 V BoostFramework: mReleaseFunc method = public int com.qualcomm.qti.Performance.perfLockRelease()
+08-02 00:10:50.889  9878  9878 V BoostFramework: mAcquireTouchFunc method = public int com.qualcomm.qti.Performance.perfLockAcquireTouch(android.view.MotionEvent,android.util.DisplayMetrics,int,int[])
+08-02 00:10:50.889  9878  9878 V BoostFramework: mIOPStart method = public int com.qualcomm.qti.Performance.perfIOPrefetchStart(int,java.lang.String)
+08-02 00:10:50.889  9878  9878 V BoostFramework: mIOPStop method = public int com.qualcomm.qti.Performance.perfIOPrefetchStop()
+08-02 00:10:50.895  9878  9878 V BoostFramework: BoostFramework() : mPerf = com.qualcomm.qti.Performance@d3ed9ae
+08-02 00:10:50.895  9878  9878 V BoostFramework: BoostFramework() : mPerf = com.qualcomm.qti.Performance@4a9e34f
+08-02 00:10:50.933  9878  9878 I sfml-activity: dlopen("/data/app/org.sfmldev.android-2/lib/arm/libopenal.so"): dlopen failed: library "/data/app/org.sfmldev.android-2/lib/arm/libopenal.so" not found
+08-02 00:10:50.992  1966  1980 I ActivityManager: Process org.sfmldev.android (pid 9878) has died
+08-02 00:10:50.992  1966  1980 D ActivityManager: cleanUpApplicationRecord -- 9878
+08-02 00:10:50.993   350   350 I Zygote  : Process 9878 exited cleanly (1)
+08-02 00:10:51.004  2146  2146 D wpa_supplicant: wlan0: Control interface command 'SIGNAL_POLL'
+08-02 00:10:51.011  1966  1980 I ActivityManager: Start proc 9892:org.sfmldev.android/u0a109 for activity org.sfmldev.android/android.app.NativeActivity
+08-02 00:10:51.011  1966  1980 V BoostFramework: BoostFramework() : mPerf = com.qualcomm.qti.Performance@8e54a48
+08-02 00:10:51.018  2146  2146 D wpa_supplicant: CTRL-DEBUG: global_ctrl_sock-sendto: sock=8 sndbuf=163840 outq=0 send_len=48
+08-02 00:10:51.061  9892  9892 W System  : ClassLoader referenced unknown path: 
+08-02 00:10:51.080   367   367 I cnss-daemon: RTM_NEWNEIGH message received: 28
+08-02 00:10:51.080   367   367 I cnss-daemon: NDA_DST received: 172.20.10.1 ul: 17437868
+08-02 00:10:51.080   367   367 I cnss-daemon: NDA_LLADDR received
+08-02 00:10:51.102  9892  9892 V BoostFramework: mAcquireFunc method = public int com.qualcomm.qti.Performance.perfLockAcquire(int,int[])
+08-02 00:10:51.103  9892  9892 V BoostFramework: mReleaseFunc method = public int com.qualcomm.qti.Performance.perfLockRelease()
+08-02 00:10:51.103  9892  9892 V BoostFramework: mAcquireTouchFunc method = public int com.qualcomm.qti.Performance.perfLockAcquireTouch(android.view.MotionEvent,android.util.DisplayMetrics,int,int[])
+08-02 00:10:51.103  9892  9892 V BoostFramework: mIOPStart method = public int com.qualcomm.qti.Performance.perfIOPrefetchStart(int,java.lang.String)
+08-02 00:10:51.104  9892  9892 V BoostFramework: mIOPStop method = public int com.qualcomm.qti.Performance.perfIOPrefetchStop()
+08-02 00:10:51.110  9892  9892 V BoostFramework: BoostFramework() : mPerf = com.qualcomm.qti.Performance@d3ed9ae
+08-02 00:10:51.111  9892  9892 V BoostFramework: BoostFramework() : mPerf = com.qualcomm.qti.Performance@4a9e34f
+08-02 00:10:51.149  9892  9892 I sfml-activity: dlopen("/data/app/org.sfmldev.android-2/lib/arm/libopenal.so"): dlopen failed: library "/data/app/org.sfmldev.android-2/lib/arm/libopenal.so" not found
+08-02 00:10:51.232  1966  3246 I ActivityManager: Process org.sfmldev.android (pid 9892) has died
+08-02 00:10:51.232  1966  3246 D ActivityManager: cleanUpApplicationRecord -- 9892
+08-02 00:10:51.233   350   350 I Zygote  : Process 9892 exited cleanly (1)
+08-02 00:10:51.251  1966  3246 I ActivityManager: Start proc 9907:org.sfmldev.android/u0a109 for activity org.sfmldev.android/android.app.NativeActivity
+08-02 00:10:51.251  1966  3246 V BoostFramework: BoostFramework() : mPerf = com.qualcomm.qti.Performance@a26de06
+08-02 00:10:51.301  9907  9907 W System  : ClassLoader referenced unknown path: 
+08-02 00:10:51.342  9907  9907 V BoostFramework: mAcquireFunc method = public int com.qualcomm.qti.Performance.perfLockAcquire(int,int[])
+08-02 00:10:51.342  9907  9907 V BoostFramework: mReleaseFunc method = public int com.qualcomm.qti.Performance.perfLockRelease()
+08-02 00:10:51.342  9907  9907 V BoostFramework: mAcquireTouchFunc method = public int com.qualcomm.qti.Performance.perfLockAcquireTouch(android.view.MotionEvent,android.util.DisplayMetrics,int,int[])
+08-02 00:10:51.343  9907  9907 V BoostFramework: mIOPStart method = public int com.qualcomm.qti.Performance.perfIOPrefetchStart(int,java.lang.String)
+08-02 00:10:51.343  9907  9907 V BoostFramework: mIOPStop method = public int com.qualcomm.qti.Performance.perfIOPrefetchStop()
+08-02 00:10:51.350  9907  9907 V BoostFramework: BoostFramework() : mPerf = com.qualcomm.qti.Performance@d3ed9ae
+08-02 00:10:51.350  9907  9907 V BoostFramework: BoostFramework() : mPerf = com.qualcomm.qti.Performance@4a9e34f
+08-02 00:10:51.388  9907  9907 I sfml-activity: dlopen("/data/app/org.sfmldev.android-2/lib/arm/libopenal.so"): dlopen failed: library "/data/app/org.sfmldev.android-2/lib/arm/libopenal.so" not found
+08-02 00:10:51.539  4982  5011 I Finsky  : [4711] klk.run(-1): Stats for Executor: BlockingExecutor knl@712d255[Running, pool size = 2, active threads = 0, queued tasks = 0, completed tasks = 87]
+08-02 00:10:51.541  1966 29356 I ActivityManager: Process org.sfmldev.android (pid 9907) has died
+08-02 00:10:51.541  4982  5011 I Finsky  : [4711] klk.run(-1): Stats for Executor: LightweightExecutor knl@1d7a46a[Running, pool size = 4, active threads = 0, queued tasks = 0, completed tasks = 119]
+08-02 00:10:51.542  1966 29356 D ActivityManager: cleanUpApplicationRecord -- 9907
+08-02 00:10:51.543   350   350 I Zygote  : Process 9907 exited cleanly (1)
+08-02 00:10:51.560  1966 29356 I ActivityManager: Start proc 9921:org.sfmldev.android/u0a109 for activity org.sfmldev.android/android.app.NativeActivity
+08-02 00:10:51.560  1966 29356 V BoostFramework: BoostFramework() : mPerf = com.qualcomm.qti.Performance@b28c2f4
+08-02 00:10:51.608  9921  9921 W System  : ClassLoader referenced unknown path: 
+08-02 00:10:51.648  9921  9921 V BoostFramework: mAcquireFunc method = public int com.qualcomm.qti.Performance.perfLockAcquire(int,int[])
+08-02 00:10:51.648  9921  9921 V BoostFramework: mReleaseFunc method = public int com.qualcomm.qti.Performance.perfLockRelease()
+08-02 00:10:51.649  9921  9921 V BoostFramework: mAcquireTouchFunc method = public int com.qualcomm.qti.Performance.perfLockAcquireTouch(android.view.MotionEvent,android.util.DisplayMetrics,int,int[])
+08-02 00:10:51.649  9921  9921 V BoostFramework: mIOPStart method = public int com.qualcomm.qti.Performance.perfIOPrefetchStart(int,java.lang.String)
+08-02 00:10:51.649  9921  9921 V BoostFramework: mIOPStop method = public int com.qualcomm.qti.Performance.perfIOPrefetchStop()
+08-02 00:10:51.656  9921  9921 V BoostFramework: BoostFramework() : mPerf = com.qualcomm.qti.Performance@d3ed9ae
+08-02 00:10:51.656  9921  9921 V BoostFramework: BoostFramework() : mPerf = com.qualcomm.qti.Performance@4a9e34f
+08-02 00:10:51.696  9921  9921 I sfml-activity: dlopen("/data/app/org.sfmldev.android-2/lib/arm/libopenal.so"): dlopen failed: library "/data/app/org.sfmldev.android-2/lib/arm/libopenal.so" not found
+08-02 00:10:51.726  4982  5011 I Finsky  : [4711] klk.run(-1): Stats for Executor: bgExecutor knl@e57d5b[Running, pool size = 4, active threads = 0, queued tasks = 0, completed tasks = 225]
+08-02 00:10:51.784  1966  3363 I ActivityManager: Process org.sfmldev.android (pid 9921) has died
+08-02 00:10:51.784  1966  3363 D ActivityManager: cleanUpApplicationRecord -- 9921
+08-02 00:10:51.785   350   350 I Zygote  : Process 9921 exited cleanly (1)
+08-02 00:10:51.802  1966  3363 I ActivityManager: Start proc 9936:org.sfmldev.android/u0a109 for activity org.sfmldev.android/android.app.NativeActivity
+08-02 00:10:51.802  1966  3363 V BoostFramework: BoostFramework() : mPerf = com.qualcomm.qti.Performance@342d492
+08-02 00:10:51.851  9936  9936 W System  : ClassLoader referenced unknown path: 
+08-02 00:10:51.893  9936  9936 V BoostFramework: mAcquireFunc method = public int com.qualcomm.qti.Performance.perfLockAcquire(int,int[])
+08-02 00:10:51.893  9936  9936 V BoostFramework: mReleaseFunc method = public int com.qualcomm.qti.Performance.perfLockRelease()
+08-02 00:10:51.893  9936  9936 V BoostFramework: mAcquireTouchFunc method = public int com.qualcomm.qti.Performance.perfLockAcquireTouch(android.view.MotionEvent,android.util.DisplayMetrics,int,int[])
+08-02 00:10:51.894  9936  9936 V BoostFramework: mIOPStart method = public int com.qualcomm.qti.Performance.perfIOPrefetchStart(int,java.lang.String)
+08-02 00:10:51.894  9936  9936 V BoostFramework: mIOPStop method = public int com.qualcomm.qti.Performance.perfIOPrefetchStop()
+08-02 00:10:51.901  9936  9936 V BoostFramework: BoostFramework() : mPerf = com.qualcomm.qti.Performance@d3ed9ae
+08-02 00:10:51.901  9936  9936 V BoostFramework: BoostFramework() : mPerf = com.qualcomm.qti.Performance@4a9e34f
+08-02 00:10:51.941  9936  9936 I sfml-activity: dlopen("/data/app/org.sfmldev.android-2/lib/arm/libopenal.so"): dlopen failed: library "/data/app/org.sfmldev.android-2/lib/arm/libopenal.so" not found
+08-02 00:10:52.101  1966  3373 I ActivityManager: Process org.sfmldev.android (pid 9936) has died
+08-02 00:10:52.101  1966  3373 D ActivityManager: cleanUpApplicationRecord -- 9936
+08-02 00:10:52.102   350   350 I Zygote  : Process 9936 exited cleanly (1)
+08-02 00:10:52.119  1966  3373 I ActivityManager: Start proc 9950:org.sfmldev.android/u0a109 for activity org.sfmldev.android/android.app.NativeActivity
+08-02 00:10:52.119  1966  3373 V BoostFramework: BoostFramework() : mPerf = com.qualcomm.qti.Performance@6891a60
+08-02 00:10:52.170  9950  9950 W System  : ClassLoader referenced unknown path: 
+08-02 00:10:52.211  9950  9950 V BoostFramework: mAcquireFunc method = public int com.qualcomm.qti.Performance.perfLockAcquire(int,int[])
+08-02 00:10:52.211  9950  9950 V BoostFramework: mReleaseFunc method = public int com.qualcomm.qti.Performance.perfLockRelease()
+08-02 00:10:52.211  9950  9950 V BoostFramework: mAcquireTouchFunc method = public int com.qualcomm.qti.Performance.perfLockAcquireTouch(android.view.MotionEvent,android.util.DisplayMetrics,int,int[])
+08-02 00:10:52.212  9950  9950 V BoostFramework: mIOPStart method = public int com.qualcomm.qti.Performance.perfIOPrefetchStart(int,java.lang.String)
+08-02 00:10:52.212  9950  9950 V BoostFramework: mIOPStop method = public int com.qualcomm.qti.Performance.perfIOPrefetchStop()
+08-02 00:10:52.218  9950  9950 V BoostFramework: BoostFramework() : mPerf = com.qualcomm.qti.Performance@d3ed9ae
+08-02 00:10:52.218  9950  9950 V BoostFramework: BoostFramework() : mPerf = com.qualcomm.qti.Performance@4a9e34f
+08-02 00:10:52.259  9950  9950 I sfml-activity: dlopen("/data/app/org.sfmldev.android-2/lib/arm/libopenal.so"): dlopen failed: library "/data/app/org.sfmldev.android-2/lib/arm/libopenal.so" not found
+08-02 00:10:52.351  1966  3246 I ActivityManager: Process org.sfmldev.android (pid 9950) has died
+08-02 00:10:52.352  1966  3246 D ActivityManager: cleanUpApplicationRecord -- 9950
+08-02 00:10:52.352   350   350 I Zygote  : Process 9950 exited cleanly (1)
+08-02 00:10:52.369  1966  3246 I ActivityManager: Start proc 9965:org.sfmldev.android/u0a109 for activity org.sfmldev.android/android.app.NativeActivity
+08-02 00:10:52.369  1966  3246 V BoostFramework: BoostFramework() : mPerf = com.qualcomm.qti.Performance@cb5a7de
+08-02 00:10:52.424  9965  9965 W System  : ClassLoader referenced unknown path: 
+08-02 00:10:52.465  9965  9965 V BoostFramework: mAcquireFunc method = public int com.qualcomm.qti.Performance.perfLockAcquire(int,int[])
+08-02 00:10:52.466  9965  9965 V BoostFramework: mReleaseFunc method = public int com.qualcomm.qti.Performance.perfLockRelease()
+08-02 00:10:52.466  9965  9965 V BoostFramework: mAcquireTouchFunc method = public int com.qualcomm.qti.Performance.perfLockAcquireTouch(android.view.MotionEvent,android.util.DisplayMetrics,int,int[])
+08-02 00:10:52.466  9965  9965 V BoostFramework: mIOPStart method = public int com.qualcomm.qti.Performance.perfIOPrefetchStart(int,java.lang.String)
+08-02 00:10:52.466  9965  9965 V BoostFramework: mIOPStop method = public int com.qualcomm.qti.Performance.perfIOPrefetchStop()
+08-02 00:10:52.473  9965  9965 V BoostFramework: BoostFramework() : mPerf = com.qualcomm.qti.Performance@d3ed9ae
+08-02 00:10:52.473  9965  9965 V BoostFramework: BoostFramework() : mPerf = com.qualcomm.qti.Performance@4a9e34f
+08-02 00:10:52.512  9965  9965 I sfml-activity: dlopen("/data/app/org.sfmldev.android-2/lib/arm/libopenal.so"): dlopen failed: library "/data/app/org.sfmldev.android-2/lib/arm/libopenal.so" not found
+08-02 00:10:52.641  1966 20173 I ActivityManager: Process org.sfmldev.android (pid 9965) has died
+08-02 00:10:52.641  1966 20173 D ActivityManager: cleanUpApplicationRecord -- 9965
+08-02 00:10:52.642   350   350 I Zygote  : Process 9965 exited cleanly (1)
+08-02 00:10:52.659  1966 20173 I ActivityManager: Start proc 9979:org.sfmldev.android/u0a109 for activity org.sfmldev.android/android.app.NativeActivity
+08-02 00:10:52.659  1966 20173 V BoostFramework: BoostFramework() : mPerf = com.qualcomm.qti.Performance@7d57c8c
+08-02 00:10:52.696  2150  2150 D HeadsetPhoneState: Enter onSignalStrengthsChanged
+08-02 00:10:52.696  2150  2150 D HeadsetPhoneState: Exit onSignalStrengthsChanged
+08-02 00:10:52.704  9979  9979 W System  : ClassLoader referenced unknown path: 
+08-02 00:10:52.714   390   390 I MSM-irqbalance: Decided to move IRQ65 from CPU5 to CPU7
+08-02 00:10:52.739  9979  9979 V BoostFramework: mAcquireFunc method = public int com.qualcomm.qti.Performance.perfLockAcquire(int,int[])
+08-02 00:10:52.739  9979  9979 V BoostFramework: mReleaseFunc method = public int com.qualcomm.qti.Performance.perfLockRelease()
+08-02 00:10:52.739  9979  9979 V BoostFramework: mAcquireTouchFunc method = public int com.qualcomm.qti.Performance.perfLockAcquireTouch(android.view.MotionEvent,android.util.DisplayMetrics,int,int[])
+08-02 00:10:52.740  9979  9979 V BoostFramework: mIOPStart method = public int com.qualcomm.qti.Performance.perfIOPrefetchStart(int,java.lang.String)
+08-02 00:10:52.740  9979  9979 V BoostFramework: mIOPStop method = public int com.qualcomm.qti.Performance.perfIOPrefetchStop()
+08-02 00:10:52.745  9979  9979 V BoostFramework: BoostFramework() : mPerf = com.qualcomm.qti.Performance@d3ed9ae
+08-02 00:10:52.745  9979  9979 V BoostFramework: BoostFramework() : mPerf = com.qualcomm.qti.Performance@4a9e34f
+08-02 00:10:52.786  9979  9979 I sfml-activity: dlopen("/data/app/org.sfmldev.android-2/lib/arm/libopenal.so"): dlopen failed: library "/data/app/org.sfmldev.android-2/lib/arm/libopenal.so" not found
+08-02 00:10:52.881  1966  5440 I ActivityManager: Process org.sfmldev.android (pid 9979) has died
+08-02 00:10:52.882  1966  5440 D ActivityManager: cleanUpApplicationRecord -- 9979
+08-02 00:10:52.882   350   350 I Zygote  : Process 9979 exited cleanly (1)
+08-02 00:10:52.901  1966  5440 I ActivityManager: Start proc 9995:org.sfmldev.android/u0a109 for activity org.sfmldev.android/android.app.NativeActivity
+08-02 00:10:52.901  1966  5440 V BoostFramework: BoostFramework() : mPerf = com.qualcomm.qti.Performance@ff063ea
+08-02 00:10:52.951  9995  9995 W System  : ClassLoader referenced unknown path: 
+08-02 00:10:52.992  9995  9995 V BoostFramework: mAcquireFunc method = public int com.qualcomm.qti.Performance.perfLockAcquire(int,int[])
+08-02 00:10:52.993  9995  9995 V BoostFramework: mReleaseFunc method = public int com.qualcomm.qti.Performance.perfLockRelease()
+08-02 00:10:52.993  9995  9995 V BoostFramework: mAcquireTouchFunc method = public int com.qualcomm.qti.Performance.perfLockAcquireTouch(android.view.MotionEvent,android.util.DisplayMetrics,int,int[])
+08-02 00:10:52.993  9995  9995 V BoostFramework: mIOPStart method = public int com.qualcomm.qti.Performance.perfIOPrefetchStart(int,java.lang.String)
+08-02 00:10:52.994  9995  9995 V BoostFramework: mIOPStop method = public int com.qualcomm.qti.Performance.perfIOPrefetchStop()
+08-02 00:10:53.000  9995  9995 V BoostFramework: BoostFramework() : mPerf = com.qualcomm.qti.Performance@d3ed9ae
+08-02 00:10:53.000  9995  9995 V BoostFramework: BoostFramework() : mPerf = com.qualcomm.qti.Performance@4a9e34f
+08-02 00:10:53.047  9995  9995 I sfml-activity: dlopen("/data/app/org.sfmldev.android-2/lib/arm/libopenal.so"): dlopen failed: library "/data/app/org.sfmldev.android-2/lib/arm/libopenal.so" not found
+08-02 00:10:53.181  1966 19051 I ActivityManager: Process org.sfmldev.android (pid 9995) has died
+08-02 00:10:53.182  1966 19051 D ActivityManager: cleanUpApplicationRecord -- 9995
+08-02 00:10:53.182   350   350 I Zygote  : Process 9995 exited cleanly (1)
+08-02 00:10:53.199  1966 19051 I ActivityManager: Start proc 10019:org.sfmldev.android/u0a109 for activity org.sfmldev.android/android.app.NativeActivity
+08-02 00:10:53.200  1966 19051 V BoostFramework: BoostFramework() : mPerf = com.qualcomm.qti.Performance@7a3d578
+08-02 00:10:53.247 10019 10019 W System  : ClassLoader referenced unknown path: 
+08-02 00:10:53.290 10019 10019 V BoostFramework: mAcquireFunc method = public int com.qualcomm.qti.Performance.perfLockAcquire(int,int[])
+08-02 00:10:53.290 10019 10019 V BoostFramework: mReleaseFunc method = public int com.qualcomm.qti.Performance.perfLockRelease()
+08-02 00:10:53.291 10019 10019 V BoostFramework: mAcquireTouchFunc method = public int com.qualcomm.qti.Performance.perfLockAcquireTouch(android.view.MotionEvent,android.util.DisplayMetrics,int,int[])
+08-02 00:10:53.291 10019 10019 V BoostFramework: mIOPStart method = public int com.qualcomm.qti.Performance.perfIOPrefetchStart(int,java.lang.String)
+08-02 00:10:53.291 10019 10019 V BoostFramework: mIOPStop method = public int com.qualcomm.qti.Performance.perfIOPrefetchStop()
+08-02 00:10:53.298 10019 10019 V BoostFramework: BoostFramework() : mPerf = com.qualcomm.qti.Performance@d3ed9ae
+08-02 00:10:53.298 10019 10019 V BoostFramework: BoostFramework() : mPerf = com.qualcomm.qti.Performance@4a9e34f
+08-02 00:10:53.342 10019 10019 I sfml-activity: dlopen("/data/app/org.sfmldev.android-2/lib/arm/libopenal.so"): dlopen failed: library "/data/app/org.sfmldev.android-2/lib/arm/libopenal.so" not found
+08-02 00:10:53.461  1966 20173 I ActivityManager: Process org.sfmldev.android (pid 10019) has died
+08-02 00:10:53.461  1966 20173 D ActivityManager: cleanUpApplicationRecord -- 10019
+08-02 00:10:53.462   350   350 I Zygote  : Process 10019 exited cleanly (1)
+08-02 00:10:53.478  1966 20173 I ActivityManager: Start proc 10037:org.sfmldev.android/u0a109 for activity org.sfmldev.android/android.app.NativeActivity
+08-02 00:10:53.478  1966 20173 V BoostFramework: BoostFramework() : mPerf = com.qualcomm.qti.Performance@a68d4b6
+08-02 00:10:53.527 10037 10037 W System  : ClassLoader referenced unknown path: 
+08-02 00:10:53.568 10037 10037 V BoostFramework: mAcquireFunc method = public int com.qualcomm.qti.Performance.perfLockAcquire(int,int[])
+08-02 00:10:53.568 10037 10037 V BoostFramework: mReleaseFunc method = public int com.qualcomm.qti.Performance.perfLockRelease()
+08-02 00:10:53.569 10037 10037 V BoostFramework: mAcquireTouchFunc method = public int com.qualcomm.qti.Performance.perfLockAcquireTouch(android.view.MotionEvent,android.util.DisplayMetrics,int,int[])
+08-02 00:10:53.569 10037 10037 V BoostFramework: mIOPStart method = public int com.qualcomm.qti.Performance.perfIOPrefetchStart(int,java.lang.String)
+08-02 00:10:53.570 10037 10037 V BoostFramework: mIOPStop method = public int com.qualcomm.qti.Performance.perfIOPrefetchStop()
+08-02 00:10:53.576 10037 10037 V BoostFramework: BoostFramework() : mPerf = com.qualcomm.qti.Performance@d3ed9ae
+08-02 00:10:53.577 10037 10037 V BoostFramework: BoostFramework() : mPerf = com.qualcomm.qti.Performance@4a9e34f
+08-02 00:10:53.621 10037 10037 I sfml-activity: dlopen("/data/app/org.sfmldev.android-2/lib/arm/libopenal.so"): dlopen failed: library "/data/app/org.sfmldev.android-2/lib/arm/libopenal.so" not found
+08-02 00:10:53.821  1966  2449 I ActivityManager: Process org.sfmldev.android (pid 10037) has died
+08-02 00:10:53.821  1966  2449 D ActivityManager: cleanUpApplicationRecord -- 10037
+08-02 00:10:53.822   350   350 I Zygote  : Process 10037 exited cleanly (1)
+08-02 00:10:53.839  1966  2449 I ActivityManager: Start proc 10053:org.sfmldev.android/u0a109 for activity org.sfmldev.android/android.app.NativeActivity
+08-02 00:10:53.840  1966  2449 V BoostFramework: BoostFramework() : mPerf = com.qualcomm.qti.Performance@ffcd124
+08-02 00:10:53.891 10053 10053 W System  : ClassLoader referenced unknown path: 
+08-02 00:10:53.935 10053 10053 V BoostFramework: mAcquireFunc method = public int com.qualcomm.qti.Performance.perfLockAcquire(int,int[])
+08-02 00:10:53.935 10053 10053 V BoostFramework: mReleaseFunc method = public int com.qualcomm.qti.Performance.perfLockRelease()
+08-02 00:10:53.936 10053 10053 V BoostFramework: mAcquireTouchFunc method = public int com.qualcomm.qti.Performance.perfLockAcquireTouch(android.view.MotionEvent,android.util.DisplayMetrics,int,int[])
+08-02 00:10:53.936 10053 10053 V BoostFramework: mIOPStart method = public int com.qualcomm.qti.Performance.perfIOPrefetchStart(int,java.lang.String)
+08-02 00:10:53.936 10053 10053 V BoostFramework: mIOPStop method = public int com.qualcomm.qti.Performance.perfIOPrefetchStop()
+08-02 00:10:53.943 10053 10053 V BoostFramework: BoostFramework() : mPerf = com.qualcomm.qti.Performance@d3ed9ae
+08-02 00:10:53.943 10053 10053 V BoostFramework: BoostFramework() : mPerf = com.qualcomm.qti.Performance@4a9e34f
+08-02 00:10:53.989 10053 10053 I sfml-activity: dlopen("/data/app/org.sfmldev.android-2/lib/arm/libopenal.so"): dlopen failed: library "/data/app/org.sfmldev.android-2/lib/arm/libopenal.so" not found
+08-02 00:10:54.026  2146  2146 D wpa_supplicant: wlan0: Control interface command 'SIGNAL_POLL'
+08-02 00:10:54.039  2146  2146 D wpa_supplicant: CTRL-DEBUG: global_ctrl_sock-sendto: sock=8 sndbuf=163840 outq=0 send_len=48
+08-02 00:10:54.181  1966  2494 I ActivityManager: Process org.sfmldev.android (pid 10053) has died
+08-02 00:10:54.181  1966  2494 D ActivityManager: cleanUpApplicationRecord -- 10053
+08-02 00:10:54.182   350   350 I Zygote  : Process 10053 exited cleanly (1)
+08-02 00:10:54.209  1966  2494 I ActivityManager: Start proc 10067:org.sfmldev.android/u0a109 for activity org.sfmldev.android/android.app.NativeActivity
+08-02 00:10:54.210  1966  2494 V BoostFramework: BoostFramework() : mPerf = com.qualcomm.qti.Performance@9258642
+08-02 00:10:54.251 10067 10067 W System  : ClassLoader referenced unknown path: 
+08-02 00:10:54.288 10067 10067 V BoostFramework: mAcquireFunc method = public int com.qualcomm.qti.Performance.perfLockAcquire(int,int[])
+08-02 00:10:54.289 10067 10067 V BoostFramework: mReleaseFunc method = public int com.qualcomm.qti.Performance.perfLockRelease()
+08-02 00:10:54.289 10067 10067 V BoostFramework: mAcquireTouchFunc method = public int com.qualcomm.qti.Performance.perfLockAcquireTouch(android.view.MotionEvent,android.util.DisplayMetrics,int,int[])
+08-02 00:10:54.289 10067 10067 V BoostFramework: mIOPStart method = public int com.qualcomm.qti.Performance.perfIOPrefetchStart(int,java.lang.String)
+08-02 00:10:54.289 10067 10067 V BoostFramework: mIOPStop method = public int com.qualcomm.qti.Performance.perfIOPrefetchStop()
+08-02 00:10:54.295 10067 10067 V BoostFramework: BoostFramework() : mPerf = com.qualcomm.qti.Performance@d3ed9ae
+08-02 00:10:54.295 10067 10067 V BoostFramework: BoostFramework() : mPerf = com.qualcomm.qti.Performance@4a9e34f
+08-02 00:10:54.334 10067 10067 I sfml-activity: dlopen("/data/app/org.sfmldev.android-2/lib/arm/libopenal.so"): dlopen failed: library "/data/app/org.sfmldev.android-2/lib/arm/libopenal.so" not found
+08-02 00:10:54.501  1966 19051 I ActivityManager: Process org.sfmldev.android (pid 10067) has died
+08-02 00:10:54.501  1966 19051 D ActivityManager: cleanUpApplicationRecord -- 10067
+08-02 00:10:54.502   350   350 I Zygote  : Process 10067 exited cleanly (1)
+08-02 00:10:54.529  1966 19051 I ActivityManager: Start proc 10082:org.sfmldev.android/u0a109 for activity org.sfmldev.android/android.app.NativeActivity
+08-02 00:10:54.530  1966 19051 V BoostFramework: BoostFramework() : mPerf = com.qualcomm.qti.Performance@c7db90
+08-02 00:10:54.573 10082 10082 W System  : ClassLoader referenced unknown path: 
+08-02 00:10:54.614 10082 10082 V BoostFramework: mAcquireFunc method = public int com.qualcomm.qti.Performance.perfLockAcquire(int,int[])
+08-02 00:10:54.614 10082 10082 V BoostFramework: mReleaseFunc method = public int com.qualcomm.qti.Performance.perfLockRelease()
+08-02 00:10:54.615 10082 10082 V BoostFramework: mAcquireTouchFunc method = public int com.qualcomm.qti.Performance.perfLockAcquireTouch(android.view.MotionEvent,android.util.DisplayMetrics,int,int[])
+08-02 00:10:54.615 10082 10082 V BoostFramework: mIOPStart method = public int com.qualcomm.qti.Performance.perfIOPrefetchStart(int,java.lang.String)
+08-02 00:10:54.615 10082 10082 V BoostFramework: mIOPStop method = public int com.qualcomm.qti.Performance.perfIOPrefetchStop()
+08-02 00:10:54.621 10082 10082 V BoostFramework: BoostFramework() : mPerf = com.qualcomm.qti.Performance@d3ed9ae
+08-02 00:10:54.621 10082 10082 V BoostFramework: BoostFramework() : mPerf = com.qualcomm.qti.Performance@4a9e34f
+08-02 00:10:54.676 10082 10082 I sfml-activity: dlopen("/data/app/org.sfmldev.android-2/lib/arm/libopenal.so"): dlopen failed: library "/data/app/org.sfmldev.android-2/lib/arm/libopenal.so" not found
+08-02 00:10:54.831  1966 11567 I ActivityManager: Process org.sfmldev.android (pid 10082) has died
+08-02 00:10:54.831  1966 11567 D ActivityManager: cleanUpApplicationRecord -- 10082
+08-02 00:10:54.832   350   350 I Zygote  : Process 10082 exited cleanly (1)
+08-02 00:10:54.858  1966 11567 I ActivityManager: Start proc 10098:org.sfmldev.android/u0a109 for activity org.sfmldev.android/android.app.NativeActivity
+08-02 00:10:54.859  1966 11567 V BoostFramework: BoostFramework() : mPerf = com.qualcomm.qti.Performance@109c48e
+08-02 00:10:54.907 10098 10098 W System  : ClassLoader referenced unknown path: 
+08-02 00:10:54.950 10098 10098 V BoostFramework: mAcquireFunc method = public int com.qualcomm.qti.Performance.perfLockAcquire(int,int[])
+08-02 00:10:54.950 10098 10098 V BoostFramework: mReleaseFunc method = public int com.qualcomm.qti.Performance.perfLockRelease()
+08-02 00:10:54.950 10098 10098 V BoostFramework: mAcquireTouchFunc method = public int com.qualcomm.qti.Performance.perfLockAcquireTouch(android.view.MotionEvent,android.util.DisplayMetrics,int,int[])
+08-02 00:10:54.951 10098 10098 V BoostFramework: mIOPStart method = public int com.qualcomm.qti.Performance.perfIOPrefetchStart(int,java.lang.String)
+08-02 00:10:54.951 10098 10098 V BoostFramework: mIOPStop method = public int com.qualcomm.qti.Performance.perfIOPrefetchStop()
+08-02 00:10:54.957 10098 10098 V BoostFramework: BoostFramework() : mPerf = com.qualcomm.qti.Performance@d3ed9ae
+08-02 00:10:54.958 10098 10098 V BoostFramework: BoostFramework() : mPerf = com.qualcomm.qti.Performance@4a9e34f
+08-02 00:10:54.998 10098 10098 I sfml-activity: dlopen("/data/app/org.sfmldev.android-2/lib/arm/libopenal.so"): dlopen failed: library "/data/app/org.sfmldev.android-2/lib/arm/libopenal.so" not found
+08-02 00:10:55.181  1966  1980 I ActivityManager: Process org.sfmldev.android (pid 10098) has died
+08-02 00:10:55.181  1966  1980 D ActivityManager: cleanUpApplicationRecord -- 10098
+08-02 00:10:55.185   350   350 I Zygote  : Process 10098 exited cleanly (1)
+08-02 00:10:55.209  1966  1980 I ActivityManager: Start proc 10112:org.sfmldev.android/u0a109 for activity org.sfmldev.android/android.app.NativeActivity
+08-02 00:10:55.209  1966  1980 V BoostFramework: BoostFramework() : mPerf = com.qualcomm.qti.Performance@ef720bc
+08-02 00:10:55.245  2150  2150 D HeadsetPhoneState: Enter onSignalStrengthsChanged
+08-02 00:10:55.245  2150  2150 D HeadsetPhoneState: Exit onSignalStrengthsChanged
+08-02 00:10:55.258 10112 10112 W System  : ClassLoader referenced unknown path: 
+08-02 00:10:55.301 10112 10112 V BoostFramework: mAcquireFunc method = public int com.qualcomm.qti.Performance.perfLockAcquire(int,int[])
+08-02 00:10:55.301 10112 10112 V BoostFramework: mReleaseFunc method = public int com.qualcomm.qti.Performance.perfLockRelease()
+08-02 00:10:55.301 10112 10112 V BoostFramework: mAcquireTouchFunc method = public int com.qualcomm.qti.Performance.perfLockAcquireTouch(android.view.MotionEvent,android.util.DisplayMetrics,int,int[])
+08-02 00:10:55.302 10112 10112 V BoostFramework: mIOPStart method = public int com.qualcomm.qti.Performance.perfIOPrefetchStart(int,java.lang.String)
+08-02 00:10:55.302 10112 10112 V BoostFramework: mIOPStop method = public int com.qualcomm.qti.Performance.perfIOPrefetchStop()
+08-02 00:10:55.309 10112 10112 V BoostFramework: BoostFramework() : mPerf = com.qualcomm.qti.Performance@d3ed9ae
+08-02 00:10:55.310 10112 10112 V BoostFramework: BoostFramework() : mPerf = com.qualcomm.qti.Performance@4a9e34f
+08-02 00:10:55.369 10112 10112 I sfml-activity: dlopen("/data/app/org.sfmldev.android-2/lib/arm/libopenal.so"): dlopen failed: library "/data/app/org.sfmldev.android-2/lib/arm/libopenal.so" not found
+08-02 00:10:55.491  1966 29356 I ActivityManager: Process org.sfmldev.android (pid 10112) has died
+08-02 00:10:55.492  1966 29356 D ActivityManager: cleanUpApplicationRecord -- 10112
+08-02 00:10:55.492   350   350 I Zygote  : Process 10112 exited cleanly (1)
+08-02 00:10:55.510  1966 29356 I ActivityManager: Start proc 10129:org.sfmldev.android/u0a109 for activity org.sfmldev.android/android.app.NativeActivity
+08-02 00:10:55.511  1966 29356 V BoostFramework: BoostFramework() : mPerf = com.qualcomm.qti.Performance@fe19b9a
+08-02 00:10:55.553 10129 10129 W System  : ClassLoader referenced unknown path: 
+08-02 00:10:55.587 10129 10129 V BoostFramework: mAcquireFunc method = public int com.qualcomm.qti.Performance.perfLockAcquire(int,int[])
+08-02 00:10:55.588 10129 10129 V BoostFramework: mReleaseFunc method = public int com.qualcomm.qti.Performance.perfLockRelease()
+08-02 00:10:55.588 10129 10129 V BoostFramework: mAcquireTouchFunc method = public int com.qualcomm.qti.Performance.perfLockAcquireTouch(android.view.MotionEvent,android.util.DisplayMetrics,int,int[])
+08-02 00:10:55.588 10129 10129 V BoostFramework: mIOPStart method = public int com.qualcomm.qti.Performance.perfIOPrefetchStart(int,java.lang.String)
+08-02 00:10:55.588 10129 10129 V BoostFramework: mIOPStop method = public int com.qualcomm.qti.Performance.perfIOPrefetchStop()
+08-02 00:10:55.594 10129 10129 V BoostFramework: BoostFramework() : mPerf = com.qualcomm.qti.Performance@d3ed9ae
+08-02 00:10:55.595 10129 10129 V BoostFramework: BoostFramework() : mPerf = com.qualcomm.qti.Performance@4a9e34f
+08-02 00:10:55.654 10129 10129 I sfml-activity: dlopen("/data/app/org.sfmldev.android-2/lib/arm/libopenal.so"): dlopen failed: library "/data/app/org.sfmldev.android-2/lib/arm/libopenal.so" not found
+08-02 00:10:55.792  1966  2383 I ActivityManager: Process org.sfmldev.android (pid 10129) has died
+08-02 00:10:55.792  1966  2383 D ActivityManager: cleanUpApplicationRecord -- 10129
+08-02 00:10:55.792   350   350 I Zygote  : Process 10129 exited cleanly (1)
+08-02 00:10:55.809  1966  2383 I ActivityManager: Start proc 10143:org.sfmldev.android/u0a109 for activity org.sfmldev.android/android.app.NativeActivity
+08-02 00:10:55.809  1966  2383 V BoostFramework: BoostFramework() : mPerf = com.qualcomm.qti.Performance@a738ca8
