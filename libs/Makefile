@@ -10,6 +10,7 @@ CXXFLAGS = -std=c++11 -fPIC -Wall -Wdate-time -D_FORTIFY_SOURCE=2 -O2
 LDFLAGS = -Wl,--as-needed -Wl,--no-undefined -Wl,--no-allow-shlib-undefined
 
 ANDROID_API = 23
+ANDROID_NATIVE_API = 18
 
 JDK = /usr/lib/jvm/java-8-openjdk-amd64
 SDK = /usr/lib/android-sdk
@@ -189,7 +190,9 @@ $(INSTALLDIR)/%/lib/libogg.a: $(BUILDDIR)/ogg
 			--prefix="/$*"
 	cd "$<_$*" && make && make install DESTDIR="$(ROOTDIR)/$(INSTALLDIR)/"
 
-.PRECIOUS: $(INSTALLDIR)/%/lib/libvorbis.a $(INSTALLDIR)/%/lib/libvorbisfile.a $(INSTALLDIR)/%/lib/libvorbisenc.a
+.PRECIOUS: $(INSTALLDIR)/%/lib/libvorbis.a
+.PRECIOUS: $(INSTALLDIR)/%/lib/libvorbisfile.a
+.PRECIOUS: $(INSTALLDIR)/%/lib/libvorbisenc.a
 $(INSTALLDIR)/%/lib/libvorbisfile.a $(INSTALLDIR)/%/lib/libvorbisenc.a \
 		$(INSTALLDIR)/%/lib/libvorbis.a: $(BUILDDIR)/vorbis $(INSTALLDIR)/%/lib/libogg.a
 	mkdir -p "$<_$*"
@@ -255,7 +258,7 @@ $(INSTALLDIR)/%/lib/libharfbuzz.a: $(BUILDDIR)/harfbuzz $(INSTALLDIR)/%/lib/libf
 		-DFREETYPE_LIBRARY="'$(ROOTDIR)/$(INSTALLDIR)/$*/lib/" \
 		-DFREETYPE_INCLUDE_DIRS="$(ROOTDIR)/$(INSTALLDIR)/$*/include/freetype2/" \
 		-DANDROID_ABI=$(ANDROID_ABI_$*) \
-		-DANDROID_NATIVE_API_LEVEL=android-18 \
+		-DANDROID_NATIVE_API_LEVEL=android-$(ANDROID_NATIVE_API) \
 		-DCMAKE_TOOLCHAIN_FILE="$(NDK)/build/cmake/android.toolchain.cmake" \
 		-DCMAKE_FIND_ROOT_PATH="$(NDK_SYSROOT)" \
 		-DCMAKE_FIND_ROOT_PATH_MODE_PROGRAM=NEVER \
@@ -314,7 +317,7 @@ $(INSTALLDIR)/%/lib/libopenal.a: $(BUILDDIR)/openal
 		-DCMAKE_BUILD_TYPE=Release \
 		-DALSOFT_REQUIRE_OPENSL=ON \
 		-DANDROID_ABI=$(ANDROID_ABI_$*) \
-		-DANDROID_NATIVE_API_LEVEL=android-18 \
+		-DANDROID_NATIVE_API_LEVEL=android-$(ANDROID_NATIVE_API) \
 		-DALSOFT_ANDROID_LOW_LATENCY:BOOL=ON \
 		-DALSOFT_UTILS=ON \
 		-DALSOFT_EXAMPLES=OFF \
@@ -364,10 +367,9 @@ $(INSTALLDIR)/%/lib/libpng16.a: $(BUILDDIR)/png
 .PRECIOUS: $(INSTALLDIR)/%/lib/libsfml-network.so
 .PRECIOUS: $(INSTALLDIR)/%/lib/libsfml-system.so
 .PRECIOUS: $(INSTALLDIR)/%/lib/libsfml-window.so
-
 $(INSTALLDIR)/%/lib/libsfml-activity.so $(INSTALLDIR)/%/lib/libsfml-audio.so $(INSTALLDIR)/%/lib/libsfml-graphics.so \
 $(INSTALLDIR)/%/lib/libsfml-main.a $(INSTALLDIR)/%/lib/libsfml-network.so \
-$(INSTALLDIR)/%/lib/libsfml-system.so $(INSTALLDIR)/%/lib/libsfml-window.so: \
+$(INSTALLDIR)/%/lib/libsfml-system.so $(INSTALLDIR)/%/lib/libsfml-window.so: $(BUILDDIR)/sfml \
 				$(INSTALLDIR)/%/lib/libogg.a $(INSTALLDIR)/%/lib/libvorbis.a $(INSTALLDIR)/%/lib/libFLAC.a \
 				$(INSTALLDIR)/%/lib/libfreetype.a $(INSTALLDIR)/%/lib/libpng16.a $(INSTALLDIR)/%/lib/libharfbuzz.a \
 				$(INSTALLDIR)/%/include/stb $(INSTALLDIR)/%/lib/libopenal.a
@@ -380,8 +382,8 @@ $(INSTALLDIR)/%/lib/libsfml-system.so $(INSTALLDIR)/%/lib/libsfml-window.so: \
 		-DANDROID_PLATFORM=android-$(ANDROID_API) \
 		-DCMAKE_ANDROID_NDK="$(NDK)" \
 		-DANDROID_ABI=$(ANDROID_ABI_$*) \
-		-DCMAKE_ANDROID_API=14 \
-		-DANDROID_NATIVE_API_LEVEL=18 \
+		-DCMAKE_ANDROID_API=$(ANDROID_API) \
+		-DANDROID_NATIVE_API_LEVEL=android-$(ANDROID_NATIVE_API) \
 		-DANDROID_STL=c++_shared \
 		-DCMAKE_TOOLCHAIN_FILE="$(NDK)/build/cmake/android.toolchain.cmake" \
 		-DCMAKE_FIND_ROOT_PATH="$(NDK_SYSROOT)" \
@@ -392,9 +394,9 @@ $(INSTALLDIR)/%/lib/libsfml-system.so $(INSTALLDIR)/%/lib/libsfml-window.so: \
 		-DCMAKE_SYSROOT="$(NDK_SYSROOT)" \
 		-DCMAKE_C_FLAGS="$(CFLAGS) -I '$(NDK_SYSROOT)/usr/include/' -I '$(ROOTDIR)/$(INSTALLDIR)/$*/include/' -I '$(ROOTDIR)/$(INSTALLDIR)/$*/include/freetype2/' -I '$(ROOTDIR)/$(INSTALLDIR)/$*/include/stb/' -I '$(ROOTDIR)/$(INSTALLDIR)/$*/include/AL/'" \
 		-DCMAKE_CXX_FLAGS="$(CXXFLAGS) -I '$(NDK_SYSROOT)/usr/include/' -I '$(ROOTDIR)/$(INSTALLDIR)/$*/include/' -I '$(ROOTDIR)/$(INSTALLDIR)/$*/include/freetype2/' -I '$(ROOTDIR)/$(INSTALLDIR)/$*/include/stb/' -I '$(ROOTDIR)/$(INSTALLDIR)/$*/include/AL/'" \
-		-DCMAKE_MODULE_LINKER_FLAGS="$(LDFLAGS) -L'$(ROOTDIR)/$(INSTALLDIR)/$*/lib/'" \
-		-DCMAKE_SHARED_LINKER_FLAGS="$(LDFLAGS) -L'$(ROOTDIR)/$(INSTALLDIR)/$*/lib/'" \
-		-DCMAKE_EXE_LINKER_FLAGS="$(LDFLAGS) -L'$(ROOTDIR)/$(INSTALLDIR)/$*/lib/'" \
+		-DCMAKE_MODULE_LINKER_FLAGS="$(LDFLAGS) -L'$(ROOTDIR)/$(INSTALLDIR)/$*/lib/' -llog" \
+		-DCMAKE_SHARED_LINKER_FLAGS="$(LDFLAGS) -L'$(ROOTDIR)/$(INSTALLDIR)/$*/lib/' -llog" \
+		-DCMAKE_EXE_LINKER_FLAGS="$(LDFLAGS)    -L'$(ROOTDIR)/$(INSTALLDIR)/$*/lib/' -llog" \
 		-DCMAKE_INSTALL_PREFIX="/$*" \
 		"$(ROOTDIR)/$<"
 	cd "$<_$*" && make && make install DESTDIR="$(ROOTDIR)/$(TMPDIR)/"
@@ -408,6 +410,14 @@ build-libs: build-libs/armv7a build-libs/aarch64 build-libs/i686 build-libs/x86_
 .PHONY: build-libs/%
 build-libs/%: $(INSTALLDIR)/%/lib/libogg.a $(INSTALLDIR)/%/lib/libvorbis.a $(INSTALLDIR)/%/lib/libFLAC.a $(INSTALLDIR)/%/lib/libfreetype.a \
 	$(INSTALLDIR)/%/lib/libpng16.a $(INSTALLDIR)/%/lib/libharfbuzz.a $(INSTALLDIR)/%/include/stb $(INSTALLDIR)/%/lib/libopenal.a
+	@#
+
+.PHONY: build-libs
+build-sfml: build-sfml/armv7a build-sfml/aarch64 build-sfml/i686 build-sfml/x86_64
+	@#
+
+.PHONY: build-sfml/%
+build-sfml/%: $(INSTALLDIR)/%/lib/libsfml-main.a
 	@#
 
 .PHONY: install-libs/%
@@ -425,6 +435,7 @@ install-libs/%: build-libs/%
 
 .PHONY: install-libs
 install-libs: install-libs/armv7a install-libs/aarch64 install-libs/i686 install-libs/x86_64
+	@#
 
 .PHONY: clean
 clean:

@@ -39,14 +39,18 @@ Index: sfml/src/SFML/Graphics/CMakeLists.txt
 ===================================================================
 --- sfml.orig/src/SFML/Graphics/CMakeLists.txt
 +++ sfml/src/SFML/Graphics/CMakeLists.txt
-@@ -134,8 +134,8 @@ if(SFML_OS_ANDROID)
-     target_link_libraries(sfml-graphics PRIVATE z EGL GLESv1_CM)
+@@ -131,11 +131,11 @@ else()
+ endif()
+ 
+ if(SFML_OS_ANDROID)
+-    target_link_libraries(sfml-graphics PRIVATE z EGL GLESv1_CM)
++    target_link_libraries(sfml-graphics PRIVATE android z EGL GLESv1_CM)
  endif()
  
 -sfml_find_package(Freetype INCLUDE "FREETYPE_INCLUDE_DIRS" LINK "FREETYPE_LIBRARY")
 -target_link_libraries(sfml-graphics PRIVATE Freetype)
 +#~ sfml_find_package(Freetype INCLUDE "FREETYPE_INCLUDE_DIRS" LINK "FREETYPE_LIBRARY")
-+target_link_libraries(sfml-graphics PRIVATE freetype png16 harfbuzz)
++target_link_libraries(sfml-graphics PRIVATE freetype z png16 harfbuzz)
  
  # add preprocessor symbols
  target_compile_definitions(sfml-graphics PRIVATE "STBI_FAILURE_USERMSG")
@@ -76,3 +80,15 @@ Index: sfml/CMakeLists.txt
  
  endif()
  
+Index: sfml/src/SFML/Network/CMakeLists.txt
+===================================================================
+--- sfml.orig/src/SFML/Network/CMakeLists.txt
++++ sfml/src/SFML/Network/CMakeLists.txt
+@@ -53,3 +53,7 @@ target_link_libraries(sfml-network PUBLI
+ if(SFML_OS_WINDOWS)
+     target_link_libraries(sfml-network PRIVATE ws2_32)
+ endif()
++
++if(SFML_OS_ANDROID)
++    target_link_libraries(sfml-network PRIVATE android)
++endif()
