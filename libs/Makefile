@@ -188,8 +188,8 @@ $(INSTALLDIR)/%/lib/libogg.a: $(BUILDDIR)/ogg
 			--prefix="/$*"
 	cd "$<_$*" && make && make install DESTDIR="$(ROOTDIR)/$(INSTALLDIR)/"
 
-.PRECIOUS: $(INSTALLDIR)/%/lib/libvorbis.a
-$(INSTALLDIR)/%/lib/libvorbis.a: $(BUILDDIR)/vorbis $(INSTALLDIR)/%/lib/libogg.a
+.PRECIOUS: $(INSTALLDIR)/%/lib/libvorbis.a $(INSTALLDIR)/%/lib/libvorbisfile.a
+$(INSTALLDIR)/%/lib/libvorbis.a $(INSTALLDIR)/%/lib/libvorbisfile.a: $(BUILDDIR)/vorbis $(INSTALLDIR)/%/lib/libogg.a
 	mkdir -p "$<_$*"
 	cd "$<_$*" && PATH="$(NDK_TOOLCHAINS)/bin/:$$PATH" \
 		CC="$(CC_$*)" CXX="$(CXX_$*)" AR="$(NDK_BIN_$*)/ar" \
@@ -206,13 +206,13 @@ $(INSTALLDIR)/%/lib/libvorbis.a: $(BUILDDIR)/vorbis $(INSTALLDIR)/%/lib/libogg.a
 			--with-ogg="$(ROOTDIR)/$(INSTALLDIR)/$*/"
 	cd "$<_$*" && make && make install DESTDIR="$(ROOTDIR)/$(INSTALLDIR)/"
 
-.PRECIOUS: $(INSTALLDIR)/%/lib/libflac.a
-$(INSTALLDIR)/%/lib/libflac.a: $(BUILDDIR)/flac $(INSTALLDIR)/%/lib/libogg.a
+.PRECIOUS: $(INSTALLDIR)/%/lib/libFLAC.a
+$(INSTALLDIR)/%/lib/libFLAC.a: $(BUILDDIR)/flac $(INSTALLDIR)/%/lib/libogg.a
 	mkdir -p "$<_$*"
 	cd "$<_$*" && PATH="$(NDK_TOOLCHAINS)/bin/:$$PATH" \
 		CC="$(CC_$*)" CXX="$(CXX_$*)" AR="$(NDK_BIN_$*)/ar" \
-		CFLAGS="$(CFLAGS) -I '$(ROOTDIR)/$(INSTALLDIR)/$*/include/'" \
-		CXXFLAGS="$(CXXFLAGS) -I '$(ROOTDIR)/$(INSTALLDIR)/$*/include/'" \
+		CFLAGS="$(CFLAGS) -I '$(ROOTDIR)/$(INSTALLDIR)/$*/include/' -DFLAC__NO_DLL" \
+		CXXFLAGS="$(CXXFLAGS) -I '$(ROOTDIR)/$(INSTALLDIR)/$*/include/' -DFLAC__NO_DLL" \
 		LDFLAGS="$(LDFLAGS) -L'$(ROOTDIR)/$(INSTALLDIR)/$*/lib/'" \
 		"$(ROOTDIR)/$</configure" \
 			need_version=no \
@@ -337,8 +337,8 @@ $(INSTALLDIR)/%/include/stb: $(BUILDDIR)/stb
 	mkdir -p "$@"
 	install -m 644 "$<"/*.h "$@"
 
-.PRECIOUS: $(INSTALLDIR)/%/lib/libpng.a
-$(INSTALLDIR)/%/lib/libpng.a: $(BUILDDIR)/png
+.PRECIOUS: $(INSTALLDIR)/%/lib/libpng16.a
+$(INSTALLDIR)/%/lib/libpng16.a: $(BUILDDIR)/png
 	mkdir -p "$<_$*"
 	cd "$<_$*" && PATH="$(NDK_TOOLCHAINS)/bin/:$$PATH" \
 		CC="$(CC_$*)" CXX="$(CXX_$*)" AR="$(NDK_BIN_$*)/ar" \
@@ -389,8 +389,8 @@ build-libs: build-libs/armv7a build-libs/aarch64 build-libs/i686 build-libs/x86_
 	@#
 
 .PHONY: build-libs/%
-build-libs/%: $(INSTALLDIR)/%/lib/libogg.a $(INSTALLDIR)/%/lib/libvorbis.a $(INSTALLDIR)/%/lib/libflac.a $(INSTALLDIR)/%/lib/libfreetype.a \
-	$(INSTALLDIR)/%/lib/libpng.a $(INSTALLDIR)/%/lib/libharfbuzz.a $(INSTALLDIR)/%/include/stb $(INSTALLDIR)/%/lib/libopenal.a
+build-libs/%: $(INSTALLDIR)/%/lib/libogg.a $(INSTALLDIR)/%/lib/libvorbis.a $(INSTALLDIR)/%/lib/libFLAC.a $(INSTALLDIR)/%/lib/libfreetype.a \
+	$(INSTALLDIR)/%/lib/libpng16.a $(INSTALLDIR)/%/lib/libharfbuzz.a $(INSTALLDIR)/%/include/stb $(INSTALLDIR)/%/lib/libopenal.a
 	@#
 
 .PHONY: install-libs/%

@@ -34,7 +34,7 @@ Index: sfml/src/SFML/Audio/CMakeLists.txt
  target_link_libraries(sfml-audio
                        PUBLIC sfml-system
 -                      PRIVATE Vorbis FLAC)
-+                      PRIVATE FLAC vorbis ogg)
++                      PRIVATE FLAC vorbisfile vorbis ogg)
 Index: sfml/src/SFML/Graphics/CMakeLists.txt
 ===================================================================
 --- sfml.orig/src/SFML/Graphics/CMakeLists.txt
