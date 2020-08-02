@@ -239,8 +239,12 @@ test: build/$(APK_NAME).apk
 	$(ADB) shell am start --activity-clear-top -n "$(PACKAGE_NAME)/android.app.NativeActivity"
 	$(ADB) logcat | tee logcat.txt
 
+# See: https://source.android.com/devices/tech/debug
+# See: https://proandroiddev.com/debugging-native-crashes-in-android-apps-2b86fd7113d8
 debug:
-	grep -E "#0.* pc" logcat.txt  2>&1 | head -n 5 | sed -e "s|.*pc[ \t]*||g" | while read -r ADDR_FILE; do \
-		echo "\n$${ADDR_FILE}:" ; \
-		"$(NDK_BIN)/arm-linux-androideabi-addr2line" -C -f -e "build/apk/lib/armeabi/lib$(JNI_NAME).so" "$$(echo $${ADDR_FILE} | awk '{print $$1}')" ; \
-		done
+	#~ grep -E "#0.* pc" logcat.txt  2>&1 | head -n 5 | sed -e "s|.*pc[ \t]*||g" | while read -r ADDR_FILE; do \
+	#~ 	echo "\n$${ADDR_FILE}:" ; \
+	#~ 	"$(NDK_BIN)/arm-linux-androideabi-addr2line" -C -f -e "build/apk/lib/armeabi/lib$(JNI_NAME).so" "$$(echo $${ADDR_FILE} | awk '{print $$1}')" ; \
+	#~ 	done
+
+	"$(NDK)/prebuilt/linux-x86_64/bin/ndk-stack" --sym "./build/apk/lib/armeabi/" --dump logcat.txt
