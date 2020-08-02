@@ -69,7 +69,7 @@ ORG_DIRS = $(subst .,/,$(PACKAGE_NAME))
 
 JNI_CFLAGS = -g -std=c11 -fPIC -Wall -DDEBUG -I "$(NDK_INCLUDE)"
 JNI_CXXFLAGS = -g -std=c++11 -fno-rtti -fno-exceptions -fPIC -Wall -DANDROID_STL=c++_shared -I "$(NDK_INCLUDE)"
-JNI_DEFS = -DDEBUG -DUSE_JNI
+JNI_DEFS = -DDEBUG
 JNI_LDFLAGS = -Wl,--as-needed -Wl,--no-undefined -Wl,--no-allow-shlib-undefined
 JNI_LIBS = \
 	-lsfml-system -lsfml-activity -lsfml-window -lsfml-graphics -lsfml-audio -lsfml-network \
@@ -242,5 +242,5 @@ test: build/$(APK_NAME).apk
 debug:
 	grep -E "#0.* pc" logcat.txt  2>&1 | head -n 5 | sed -e "s|.*pc[ \t]*||g" | while read -r ADDR_FILE; do \
 		echo "\n$${ADDR_FILE}:" ; \
-		$(NDK_BIN)/arm-linux-androideabi-addr2line -C -f -e build/apk/lib/armeabi/libapp.so $$(echo $${ADDR_FILE} | awk '{print $$1}') ; \
+		"$(NDK_BIN)/arm-linux-androideabi-addr2line" -C -f -e "build/apk/lib/armeabi/lib$(JNI_NAME).so" "$$(echo $${ADDR_FILE} | awk '{print $$1}')" ; \
 		done
