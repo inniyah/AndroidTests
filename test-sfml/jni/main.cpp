@@ -13,6 +13,13 @@
 // These headers are only needed for direct NDK/JDK interaction
 #include <jni.h>
 #include <android/native_activity.h>
+#include <android/log.h>
+
+#define LOGV(...) (__android_log_print(ANDROID_LOG_VERBOSE, "SFML_Example", __VA_ARGS__))
+#define LOGI(...) (__android_log_print(ANDROID_LOG_INFO,    "SFML_Example", __VA_ARGS__))
+#define LOGW(...) (__android_log_print(ANDROID_LOG_WARN,    "SFML_Example", __VA_ARGS__))
+#define LOGE(...) (__android_log_print(ANDROID_LOG_ERROR,   "SFML_Example", __VA_ARGS__))
+#define LOGF(...) (__android_log_print(ANDROID_LOG_FATAL,   "SFML_Example", __VA_ARGS__))
 
 // Since we want to get the native activity from SFML, we'll have to use an
 // extra header here:
@@ -21,6 +28,8 @@
 // NDK/JNI sub example - call Java code from native code
 int vibrate(sf::Time duration)
 {
+    LOGI("Trying to vibrate");
+
     // First we'll need the native activity handle
     ANativeActivity *activity = sf::getNativeActivity();
     
@@ -35,8 +44,10 @@ int vibrate(sf::Time duration)
     attachargs.group = NULL;
     jint res = vm->AttachCurrentThread(&env, &attachargs);
 
-    if (res == JNI_ERR)
+    if (res == JNI_ERR) {
+        //~ LOGE("Failed to attach current thread");
         return EXIT_FAILURE;
+    }
 
     // Retrieve class information
     jclass natact = env->FindClass("android/app/NativeActivity");
@@ -45,20 +56,36 @@ int vibrate(sf::Time duration)
     // Get the value of a constant
     jfieldID fid = env->GetStaticFieldID(context, "VIBRATOR_SERVICE", "Ljava/lang/String;");
     jobject svcstr = env->GetStaticObjectField(context, fid);
-    
+
+    //~ if (svcstr == 0) {
+    //~     LOGE("Failed to obtain the vibration sevice");
+    //~ }
+
     // Get the method 'getSystemService' and call it
     jmethodID getss = env->GetMethodID(natact, "getSystemService", "(Ljava/lang/String;)Ljava/lang/Object;");
     jobject vib_obj = env->CallObjectMethod(activity->clazz, getss, svcstr);
-    
+
+    //~ if (vib_obj == 0) {
+    //~     LOGE("Failed to obtain the vibration sevice object");
+    //~ }
+
     // Get the object's class and retrieve the member name
     jclass vib_cls = env->GetObjectClass(vib_obj);
     jmethodID vibrate = env->GetMethodID(vib_cls, "vibrate", "(J)V"); 
-    
+
+    //~ if (vibrate == 0) {
+    //~     LOGE("Failed to obtain the vibration method");
+    //~ }
+
     // Determine the timeframe
     jlong length = duration.asMilliseconds();
-    
+
+    //~ LOGI("Vibrate!!");
+
     // Bzzz!
     env->CallVoidMethod(vib_obj, vibrate, length);
+
+    //~ LOGI("Yay!! I did it!!");
 
     // Free references
     env->DeleteLocalRef(vib_obj);
@@ -66,9 +93,12 @@ int vibrate(sf::Time duration)
     env->DeleteLocalRef(svcstr);
     env->DeleteLocalRef(context);
     env->DeleteLocalRef(natact);
-    
+
     // Detach thread again
     vm->DetachCurrentThread();
+
+    //~ LOGI("Successfully exiting vibration function");
+    return EXIT_SUCCESS;
 }
 #endif
 

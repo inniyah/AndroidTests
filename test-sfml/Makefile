@@ -67,9 +67,9 @@ NDK_INCLUDE = = $(NDK_SYSROOT)/usr/lib/include
 
 ORG_DIRS = $(subst .,/,$(PACKAGE_NAME))
 
-JNI_CFLAGS = -g -std=c11 -fPIC -Wall -DDEBUG -I "$(NDK_INCLUDE)"
-JNI_CXXFLAGS = -g -std=c++11 -fno-rtti -fno-exceptions -fPIC -Wall -DANDROID_STL=c++_shared -I "$(NDK_INCLUDE)"
-JNI_DEFS = -DDEBUG
+JNI_CFLAGS = -ggdb -O0 -std=c11 -fPIC -Wall -DDEBUG -I "$(NDK_INCLUDE)"
+JNI_CXXFLAGS = -ggdb -O0 -std=c++11 -fPIC -Wall -DANDROID_STL=c++_shared -I "$(NDK_INCLUDE)"
+JNI_DEFS = -DDEBUG -DUSE_JNI
 JNI_LDFLAGS = -Wl,--as-needed -Wl,--no-undefined -Wl,--no-allow-shlib-undefined
 JNI_LIBS = \
 	-lsfml-system -lsfml-activity -lsfml-window -lsfml-graphics -lsfml-audio -lsfml-network \
