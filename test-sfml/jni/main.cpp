@@ -4,6 +4,22 @@
 #include <SFML/Audio.hpp>
 #include <SFML/Network.hpp>
 
+#ifdef ANDROID
+#include <android/log.h>
+#define LOGV(...) (__android_log_print(ANDROID_LOG_VERBOSE, "SFML_Example", __VA_ARGS__))
+#define LOGI(...) (__android_log_print(ANDROID_LOG_INFO,    "SFML_Example", __VA_ARGS__))
+#define LOGW(...) (__android_log_print(ANDROID_LOG_WARN,    "SFML_Example", __VA_ARGS__))
+#define LOGE(...) (__android_log_print(ANDROID_LOG_ERROR,   "SFML_Example", __VA_ARGS__))
+#define LOGF(...) (__android_log_print(ANDROID_LOG_FATAL,   "SFML_Example", __VA_ARGS__))
+#else
+#include <stdio.h>
+#define LOGV(...) { printf("[DEBUG] "); printf(__VA_ARGS__); printf("\n"); }
+#define LOGI(...) { printf("[INFO]  "); printf(__VA_ARGS__); printf("\n"); }
+#define LOGW(...) { printf("[WARN]  "); printf(__VA_ARGS__); printf("\n"); }
+#define LOGE(...) { printf("[ERROR] "); printf(__VA_ARGS__); printf("\n"); }
+#define LOGF(...) { printf("[FATAL] "); printf(__VA_ARGS__); printf("\n"); }
+#endif
+
 // Do we want to showcase direct JNI/NDK interaction?
 // Undefine this to get real cross-platform code.
 // Uncomment this to try JNI access; this seems to be broken in latest NDKs
@@ -13,13 +29,6 @@
 // These headers are only needed for direct NDK/JDK interaction
 #include <jni.h>
 #include <android/native_activity.h>
-#include <android/log.h>
-
-#define LOGV(...) (__android_log_print(ANDROID_LOG_VERBOSE, "SFML_Example", __VA_ARGS__))
-#define LOGI(...) (__android_log_print(ANDROID_LOG_INFO,    "SFML_Example", __VA_ARGS__))
-#define LOGW(...) (__android_log_print(ANDROID_LOG_WARN,    "SFML_Example", __VA_ARGS__))
-#define LOGE(...) (__android_log_print(ANDROID_LOG_ERROR,   "SFML_Example", __VA_ARGS__))
-#define LOGF(...) (__android_log_print(ANDROID_LOG_FATAL,   "SFML_Example", __VA_ARGS__))
 
 // Since we want to get the native activity from SFML, we'll have to use an
 // extra header here:
@@ -112,9 +121,14 @@ int main(int argc, char *argv[])
     sf::RenderWindow window(screen, "");
     window.setFramerateLimit(30);
 
+    std::string texture_filename = "image.png";
     sf::Texture texture;
-    if(!texture.loadFromFile("image.png"))
+    if(!texture.loadFromFile(texture_filename)) {
+        LOGE("Failed to load texture '%s' from file", texture_filename.c_str());
         return EXIT_FAILURE;
+    } else {
+        LOGV("Successfully loaded texture '%s' from file", texture_filename.c_str());
+    }
 
     sf::Sprite image(texture);
     image.setPosition(screen.width / 2, screen.height / 2);

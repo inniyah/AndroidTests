@@ -46,6 +46,7 @@ CLANGXX_X86_64 = $(NDK)/toolchains/llvm/prebuilt/linux-x86_64/bin/x86_64-linux-a
 CLANGXX_MIPS = $(NDK)/toolchains/llvm/prebuilt/linux-x86_64/bin/mipsel-linux-android$(ANDROID_API)-clang++
 CLANGXX_MIPS64 = $(NDK)/toolchains/llvm/prebuilt/linux-x86_64/bin/mips64el-linux-android$(ANDROID_API)-clang++
 
+NDK_TOOLCHAINS = $(NDK)/toolchains/llvm/prebuilt/linux-x86_64
 NDK_SYSROOT = $(NDK)/toolchains/llvm/prebuilt/linux-x86_64/sysroot
 NDK_BIN = $(NDK)/toolchains/llvm/prebuilt/linux-x86_64/bin/
 
@@ -69,7 +70,7 @@ ORG_DIRS = $(subst .,/,$(PACKAGE_NAME))
 
 JNI_CFLAGS = -ggdb -O0 -std=c11 -fPIC -Wall -DDEBUG -I "$(NDK_INCLUDE)"
 JNI_CXXFLAGS = -ggdb -O0 -std=c++11 -fPIC -Wall -DANDROID_STL=c++_shared -I "$(NDK_INCLUDE)"
-JNI_DEFS = -DDEBUG -DUSE_JNI
+JNI_DEFS = -DANDROID -DDEBUG -DUSE_JNI
 JNI_LDFLAGS = -Wl,--as-needed -Wl,--no-undefined -Wl,--no-allow-shlib-undefined
 JNI_LIBS = \
 	-lsfml-system -lsfml-activity -lsfml-window -lsfml-graphics -lsfml-audio -lsfml-network \
@@ -183,18 +184,22 @@ deps:
 	install -m 755 $(NDK_LIBS_ARM)/libc++_shared.so build/apk/lib/armeabi/
 	install -m 755 ../libs/armv7a/lib/libsfml-*.so build/apk/lib/armeabi/
 	install -m 755 ../libs/armv7a/lib/libopenal.so build/apk/lib/armeabi/
+	find "build/apk/lib/armeabi/" -type f -name "*.so*" | while read -r FILE; do "$(NDK_BIN_armv7a)/strip" "$$FILE"; done
 	mkdir -p build/apk/lib/arm64-v8a/
 	install -m 755 $(NDK_LIBS_AARCH64)/libc++_shared.so build/apk/lib/arm64-v8a/
 	install -m 755 ../libs/aarch64/lib/libsfml-*.so build/apk/lib/arm64-v8a/
 	install -m 755 ../libs/aarch64/lib/libopenal.so build/apk/lib/arm64-v8a/
+	find "build/apk/lib/arm64-v8a/" -type f -name "*.so*" | while read -r FILE; do "$(NDK_BIN_aarch64)/strip" "$$FILE"; done
 	mkdir -p build/apk/lib/x86/
 	install -m 755 $(NDK_LIBS_X86)/libc++_shared.so build/apk/lib/x86/
 	install -m 755 ../libs/i686/lib/libsfml-*.so build/apk/lib/x86/
 	install -m 755 ../libs/i686/lib/libopenal.so build/apk/lib/x86/
+	find "build/apk/lib/x86/" -type f -name "*.so*" | while read -r FILE; do "$(NDK_BIN_i686)/strip" "$$FILE"; done
 	mkdir -p build/apk/lib/x86_x64/
 	install -m 755 $(NDK_LIBS_X86_64)/libc++_shared.so build/apk/lib/x86_x64/
 	install -m 755 ../libs/x86_64/lib/libsfml-*.so build/apk/lib/x86_x64/
 	install -m 755 ../libs/x86_64/lib/libopenal.so build/apk/lib/x86_x64/
+	find "build/apk/lib/x86_x64/" -type f -name "*.so*" | while read -r FILE; do "$(NDK_BIN_x86_64)/strip" "$$FILE"; done
 
 libs: \
 	build/apk/lib/armeabi/lib$(JNI_NAME).so \
