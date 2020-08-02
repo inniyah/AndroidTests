@@ -69,12 +69,20 @@ HOST_mipsel = mips-linux
 HOST_mips64el = mips64-linux
 
 NDK_SYSROOT = $(NDK_TOOLCHAINS)/sysroot
+
 NDK_LIBS_armv7a = $(NDK_SYSROOT)/usr/lib/arm-linux-androideabi
 NDK_LIBS_aarch64 = $(NDK_SYSROOT)/usr/lib/aarch64-linux-android
 NDK_LIBS_i686 = $(NDK_SYSROOT)/usr/lib/i686-linux-android
 NDK_LIBS_x86_64 = $(NDK_SYSROOT)/usr/lib/x86_64-linux-android
 NDK_LIBS_mipsel = $(NDK_SYSROOT)/usr/lib/mipsel-linux-android
 NDK_LIBS_mips64el = $(NDK_SYSROOT)/usr/lib/mips64el-linux-android
+
+NDK_INCS_armv7a = $(NDK_SYSROOT)/usr/include/arm-linux-androideabi
+NDK_INCS_aarch64 = $(NDK_SYSROOT)/usr/include/aarch64-linux-android
+NDK_INCS_i686 = $(NDK_SYSROOT)/usr/include/i686-linux-android
+NDK_INCS_x86_64 = $(NDK_SYSROOT)/usr/include/x86_64-linux-android
+NDK_INCS_mipsel = $(NDK_SYSROOT)/usr/include/mipsel-linux-android
+NDK_INCS_mips64el = $(NDK_SYSROOT)/usr/include/mips64el-linux-android
 
 check:
 	@command -v wget  >/dev/null || ( >&2 echo "Package 'wget' is needed"     ; false )
@@ -133,6 +141,9 @@ $(CACHEDIR)/stb-master.zip:
 $(CACHEDIR)/libpng-%.tar.xz:
 	wget -nc -P $(CACHEDIR) "https://download.sourceforge.net/libpng/libpng-$*.tar.xz" -O "$@"
 
+$(CACHEDIR)/raylib-%.tar.gz:
+	wget -nc -P $(CACHEDIR) "https://github.com/raysan5/raylib/archive/$*.tar.gz" -O "$@"
+
 $(BUILDDIR)/ogg: $(CACHEDIR)/libogg-1.3.4.tar.xz
 	@mkdir -p "$@"
 	tar xvfa "$<" --strip 1 --directory "$@"
@@ -180,6 +191,11 @@ $(BUILDDIR)/sfml: $(CACHEDIR)/sfml-2.5.1.tar.gz
 	@mkdir -p "$@"
 	tar xvfa "$<" --strip 1 --directory "$@"
 	rm -rf "$@/extlibs"
+	if [ -e $(ROOTDIR)/patches/$(notdir $@)/series ]; then cd "$@" && QUILT_PATCHES=$(ROOTDIR)/patches/$(notdir $@) quilt push -a; fi
+
+$(BUILDDIR)/raylib: $(CACHEDIR)/raylib-3.0.0.tar.gz
+	@mkdir -p "$@"
+	tar xvfa "$<" --strip 1 --directory "$@"
 	if [ -e $(ROOTDIR)/patches/$(notdir $@)/series ]; then cd "$@" && QUILT_PATCHES=$(ROOTDIR)/patches/$(notdir $@) quilt push -a; fi
 
 .PRECIOUS: $(INSTALLDIR)/%/lib/libogg.a
@@ -414,17 +430,35 @@ $(INSTALLDIR)/%/lib/libsfml-system.so $(INSTALLDIR)/%/lib/libsfml-window.so: $(B
 	( cd "$(TMPDIR)/usr/lib/android-ndk/sources/third_party/sfml/include" ; tar cf - . ) | ( cd "$(INSTALLDIR)/$*/include" ; tar xf - )
 	( cd "$(TMPDIR)/usr/lib/android-ndk/sources/third_party/sfml/lib/$(ANDROID_ABI_$*)" ; tar cf - . ) | ( cd "$(INSTALLDIR)/$*/lib" ; tar xf - )
 
+RAYLIB_ARCH_NAME_armv7a = ARM
+RAYLIB_ARCH_NAME_aarch64 = ARM64
+RAYLIB_ARCH_NAME_i686 = x86
+RAYLIB_ARCH_NAME_x86_64 = x86_64
+
+.PRECIOUS: $(INSTALLDIR)/%/lib/libraylib.a
+$(INSTALLDIR)/%/lib/libraylib.a: $(BUILDDIR)/raylib
+	mkdir -p "$<_$*/src"
+	mkdir -p "$(INSTALLDIR)/$*/lib"
+	( cd "$</src" ; tar cf - . ) | ( cd "$<_$*/src" ; tar xf - )
+	cd "$<_$*/src" && PATH="$(NDK_TOOLCHAINS)/bin/:$$PATH" \
+		CC="$(CC_$*)" CXX="$(CXX_$*)" AR="$(NDK_BIN_$*)/ar" \
+		CFLAGS="$(CFLAGS) -I '$(ROOTDIR)/$(INSTALLDIR)/$*/include/' -I '$(NDK_INCS_$*)' -I '$(NDK_SYSROOT)/usr/include' -I '$(NDK)/sources/android/native_app_glue/'" \
+		CXXFLAGS="$(CXXFLAGS) -I '$(ROOTDIR)/$(INSTALLDIR)/$*/include/' -I '$(NDK_INCS_$*)' -I '$(NDK_SYSROOT)/usr/include' -I '$(NDK)/sources/android/native_app_glue/' -fno-rtti" \
+		LDFLAGS="$(LDFLAGS) -L'$(ROOTDIR)/$(INSTALLDIR)/$*/lib/'" \
+		make RAYLIB_SRC_PATH="$(ROOTDIR)/$<_$*/src" RAYLIB_RELEASE_PATH="$(ROOTDIR)/$(INSTALLDIR)/$*/lib" \
+			PLATFORM=PLATFORM_ANDROID ANDROID_NDK="$(NDK)" ANDROID_TOOLCHAIN="$(NDK_TOOLCHAINS)" ANDROID_ARCH="$(RAYLIB_ARCH_NAME_$*)" ANDROID_API_VERSION=$(ANDROID_API)
+
 
 .PHONY: build-libs
 build-libs: check build-libs/armv7a build-libs/aarch64 build-libs/i686 build-libs/x86_64
 	@#
 
-.PHONY: build-sfml
-build-sfml: check build-sfml/armv7a build-sfml/aarch64 build-sfml/i686 build-sfml/x86_64
-	@#
-
 .PHONY: install-libs
 install-libs: check install-libs/armv7a install-libs/aarch64 install-libs/i686 install-libs/x86_64
+	@#
+
+.PHONY: build-%
+build-%: check build-%/armv7a build-%/aarch64 build-%/i686 build-%/x86_64
 	@#
 
 .PHONY: clean cleanall
@@ -445,6 +479,10 @@ build-libs/%: $(INSTALLDIR)/%/lib/libogg.a $(INSTALLDIR)/%/lib/libvorbis.a $(INS
 
 .PHONY: build-sfml/%
 build-sfml/%: $(INSTALLDIR)/%/lib/libsfml-main.a
+	@#
+
+.PHONY: build-raylib/%
+build-raylib/%: $(INSTALLDIR)/%/lib/libraylib.a
 	@#
 
 .PHONY: install-libs/%
