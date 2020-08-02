@@ -1,0 +1,434 @@
+--------- beginning of main
+08-02 13:12:31.257   356   356 I         : free_cache(6142115) avail 5657235456
+08-02 13:12:31.630   367   367 I cnss-daemon: RTM_NEWNEIGH message received: 28
+08-02 13:12:31.630   367   367 E cnss-daemon: Stale or unreachable neighbors, ndm state: 16
+08-02 13:12:32.136  2146  2146 D wpa_supplicant: wlan0: Control interface command 'SCAN TYPE=ONLY'
+08-02 13:12:32.136  2146  2146 D wpa_supplicant: wlan0: Setting scan request: 0.000000 sec
+08-02 13:12:32.136  2146  2146 D wpa_supplicant: CTRL-DEBUG: global_ctrl_sock-sendto: sock=8 sndbuf=163840 outq=0 send_len=3
+08-02 13:12:32.136  2146  2146 D wpa_supplicant: wlan0: Starting AP scan for wildcard SSID
+08-02 13:12:32.136  2146  2146 D wpa_supplicant: wlan0: Add radio work 'scan'@0xb0d961e0
+08-02 13:12:32.137  2146  2146 D wpa_supplicant: wlan0: First radio work item in the queue - schedule start immediately
+08-02 13:12:32.137  2146  2146 D wpa_supplicant: wlan0: Starting radio work 'scan'@0xb0d961e0 after 0.000120 second wait
+08-02 13:12:32.137  2146  2146 D wpa_supplicant: wlan0: nl80211: scan request
+08-02 13:12:32.137  2146  2146 D wpa_supplicant: nl80211: Scan SSID - hexdump(len=0): [NULL]
+08-02 13:12:32.137  2146  2146 D wpa_supplicant: nl80211: Scan extra IEs - hexdump(len=7): 7f 05 00 00 0a 02 01
+08-02 13:12:32.138  2146  2146 D wpa_supplicant: Scan requested (ret=0) - scan timeout 30 seconds
+08-02 13:12:32.138  2146  2146 D wpa_supplicant: nl80211: Event message available
+08-02 13:12:32.138  2146  2146 D wpa_supplicant: nl80211: Drv Event 33 (NL80211_CMD_TRIGGER_SCAN) received for wlan0
+08-02 13:12:32.138  2146  2146 D wpa_supplicant: wlan0: nl80211: Scan trigger
+08-02 13:12:32.138  2146  2146 D wpa_supplicant: wlan0: Event SCAN_STARTED (47) received
+08-02 13:12:32.138  2146  2146 D wpa_supplicant: wlan0: Own scan request started a scan in 0.000296 seconds
+08-02 13:12:32.138  2146  2146 D wpa_supplicant: CTRL-DEBUG: ctrl_sock-sendmsg: sock=8 sndbuf=163840 outq=448 send_len=24
+08-02 13:12:32.138  2146  2146 D wpa_supplicant: CTRL_IFACE monitor sent successfully to /data/misc/wifi/sockets/wpa_ctrl_1966-2\x00
+08-02 13:12:32.388 23971 23971 I Finsky  : [1] aerp.a(7): Verification requested, id = 147
+08-02 13:12:32.399 23971 23971 E Finsky  : [1] VerifyPerSourceInstallationConsentInstallTask.b(2): Package name null is not an installed package
+08-02 13:12:32.414 23971   320 I Finsky  : [140923] aeth.a(8): Single user settings service is not running, bind it now
+08-02 13:12:32.424 23971 23971 I Finsky  : [1] aetg.onServiceConnected(1): Single user settings service is connected
+08-02 13:12:32.444 23971   320 W Settings: Setting install_non_market_apps has moved from android.provider.Settings.Global to android.provider.Settings.Secure, returning read-only value.
+08-02 13:12:32.581  2146  2146 D wpa_supplicant: nl80211: Event message available
+08-02 13:12:32.581  2146  2146 D wpa_supplicant: nl80211: Drv Event 34 (NL80211_CMD_NEW_SCAN_RESULTS) received for wlan0
+08-02 13:12:32.582  2146  2146 D wpa_supplicant: wlan0: nl80211: New scan results available
+08-02 13:12:32.582  2146  2146 D wpa_supplicant: nl80211: Scan included frequencies: 2412 2417 2422 2427 2432 2437 2442 2447 2452 2457 2462 2467 2472
+08-02 13:12:32.582  2146  2146 D wpa_supplicant: wlan0: Event SCAN_RESULTS (3) received
+08-02 13:12:32.584  2146  2146 D wpa_supplicant: wlan0: Scan completed in 0.445355 seconds
+08-02 13:12:32.584  2146  2146 D wpa_supplicant: nl80211: Associated on 2442 MHz
+08-02 13:12:32.588  2146  2146 D wpa_supplicant: nl80211: Associated with 5c:dc:96:1e:32:99
+08-02 13:12:32.588  2146  2146 D wpa_supplicant: nl80211: Received scan results (5 BSSes)
+08-02 13:12:32.589  2146  2146 D wpa_supplicant: nl80211: Scan results indicate BSS status with 5c:dc:96:1e:32:99 as associated
+08-02 13:12:32.589  2146  2146 D wpa_supplicant: wlan0: BSS: Start scan result update 3013
+08-02 13:12:32.589  2146  2146 D wpa_supplicant: BSS: last_scan_res_used=5/64
+08-02 13:12:32.589  2146  2146 D wpa_supplicant: wlan0: Scan-only results received
+08-02 13:12:32.589  2146  2146 D wpa_supplicant: CTRL-DEBUG: ctrl_sock-sendmsg: sock=8 sndbuf=163840 outq=0 send_len=24
+08-02 13:12:32.589  2146  2146 D wpa_supplicant: CTRL_IFACE monitor sent successfully to /data/misc/wifi/sockets/wpa_ctrl_1966-2\x00
+08-02 13:12:32.589  2146  2146 D wpa_supplicant: wlan0: Radio work 'scan'@0xb0d961e0 done in 0.452447 seconds
+08-02 13:12:32.589  2146  2146 D wpa_supplicant: wlan0: radio_work_free('scan'@0xb0d961e0: num_active_works --> 0
+08-02 13:12:32.594  2146  2146 D wpa_supplicant: CTRL-DEBUG: global_ctrl_sock-sendto: sock=8 sndbuf=163840 outq=0 send_len=3702
+08-02 13:12:32.599  2146  2146 D wpa_supplicant: CTRL-DEBUG: global_ctrl_sock-sendto: sock=8 sndbuf=163840 outq=0 send_len=3702
+08-02 13:12:32.602  2146  2146 D wpa_supplicant: CTRL-DEBUG: global_ctrl_sock-sendto: sock=8 sndbuf=163840 outq=0 send_len=748
+08-02 13:12:32.603  2146  2146 D wpa_supplicant: CTRL-DEBUG: global_ctrl_sock-sendto: sock=8 sndbuf=163840 outq=0 send_len=0
+08-02 13:12:32.606  2146  2146 D wpa_supplicant: CTRL-DEBUG: global_ctrl_sock-sendto: sock=8 sndbuf=163840 outq=0 send_len=748
+08-02 13:12:32.607  2146  2146 D wpa_supplicant: CTRL-DEBUG: global_ctrl_sock-sendto: sock=8 sndbuf=163840 outq=0 send_len=0
+08-02 13:12:32.617  1966  2116 D WifiQualifiedNetworkSelector:: ==========start qualified Network Selection==========
+08-02 13:12:32.617  1966  2116 D WifiQualifiedNetworkSelector:: Current network is: "o2-WLAN52" ,ID is: 1
+08-02 13:12:32.618  1966  2116 D WifiQualifiedNetworkSelector:: Current band does not match user preference. Start Qualified Network Selection Current band = 2.4GHz bandUserPreference band = 0
+08-02 13:12:32.618  1966  2116 D WifiQualifiedNetworkSelector:: Current network is not qualified
+08-02 13:12:32.647  1966  2116 D WifiQualifiedNetworkSelector:: Saved Network List
+08-02 13:12:32.647  1966  2116 D WifiQualifiedNetworkSelector::     "LACOMPETENCIA":103  User Preferred BSSID:null FQDN:null NETWORK_SELECTION_ENABLED Disable account: 0 0 0 0 0 0 0 0 0 0 Connect Choice:null set time:-1
+08-02 13:12:32.647  1966  2116 D WifiQualifiedNetworkSelector::     "WiFi-2.4-8E86":37  User Preferred BSSID:null FQDN:null NETWORK_SELECTION_ENABLED Disable account: 0 0 0 0 0 0 0 0 0 0 Connect Choice:null set time:-1
+08-02 13:12:32.647  1966  2116 D WifiQualifiedNetworkSelector::     "IKEA WiFi":71  User Preferred BSSID:null FQDN:null NETWORK_SELECTION_ENABLED Disable account: 0 0 0 0 0 0 0 0 0 0 Connect Choice:null set time:-1
+08-02 13:12:32.647  1966  2116 D WifiQualifiedNetworkSelector::     "b82e0c":97  User Preferred BSSID:null FQDN:null NETWORK_SELECTION_ENABLED Disable account: 0 0 0 0 0 0 0 0 0 0 Connect Choice:null set time:-1
+08-02 13:12:32.647  1966  2116 D WifiQualifiedNetworkSelector::     "welcome":118  User Preferred BSSID:null FQDN:null NETWORK_SELECTION_ENABLED Disable account: 0 0 0 0 0 0 0 0 0 0 Connect Choice:null set time:-1
+08-02 13:12:32.647  1966  2116 D WifiQualifiedNetworkSelector::     "BurgerKing":23  User Preferred BSSID:null FQDN:null NETWORK_SELECTION_ENABLED Disable account: 0 0 0 0 0 0 0 0 0 0 Connect Choice:null set time:-1
+08-02 13:12:32.647  1966  2116 D WifiQualifiedNetworkSelector::     "Application Sainte-Chapelle":54  User Preferred BSSID:null FQDN:null NETWORK_SELECTION_ENABLED Disable account: 0 0 0 0 0 0 0 0 0 0 Connect Choice:null set time:-1
+08-02 13:12:32.647  1966  2116 D WifiQualifiedNetworkSelector::     "Thom_D0054296":94  User Preferred BSSID:null FQDN:null NETWORK_SELECTION_ENABLED Disable account: 0 0 0 0 0 0 0 0 0 0 Connect Choice:null set time:-1
+08-02 13:12:32.647  1966  2116 D WifiQualifiedNetworkSelector::     "PRAGUECITY_2":17  User Preferred BSSID:null FQDN:null NETWORK_SELECTION_ENABLED Disable account: 0 0 0 0 0 0 0 0 0 0 Connect Choice:null set time:-1
+08-02 13:12:32.647  1966  2116 D WifiQualifiedNetworkSelector::     "Free Boryspil WiFi":55  User Preferred BSSID:null FQDN:null NETWORK_SELECTION_ENABLED Disable account: 0 0 0 0 0 0 0 0 0 0 Connect Choice:null set time:-1
+08-02 13:12:32.647  1966  2116 D WifiQualifiedNetworkSelector::     "MIWIFI_2G_bL5N":127  User Preferred BSSID:null FQDN:null NETWORK_SELECTION_ENABLED Disable account: 0 0 0 0 0 0 0 0 0 0 Connect Choice:null set time:-1
+08-02 13:12:32.647  1966  2116 D WifiQualifiedNetworkSelector::     "Motel One Guest Wi-Fi":157  User Preferred BSSID:null FQDN:null NETWORK_SELECTION_ENABLED Disable account: 0 0 0 0 0 0 0 0 0 0 Connect Choice:null set time:-1
+08-02 13:12:32.647  1966  2116 D WifiQualifiedNetworkSelector::     "dediezcopasytapas":123  User Preferred BSSID:null FQDN:null NETWORK_SELECTION_ENABLED Disable account: 0 0 0 0 0 0 0 0 0 0 Connect Choice:null set time:-1
+08-02 13:12:32.647  1966  2116 D WifiQualifiedNetworkSelector::     "Airport Kyiv Free Wi-Fi":144  User Preferred BSSID:null FQDN:null NETWORK_SELECTION_ENABLED Disable account: 0 0 0 0 0 0 0 0 0 0 Connect Choice:null set time:-1
+08-02 13:12:32.647  1966  2116 D WifiQualifiedNetworkSelector::     "Free_Wi-Fi":64  User Preferred BSSID:null FQDN:null NETWORK_SELECTION_ENABLED Disable account: 0 0 0 0 0 0 0 0 0 0 Connect Choice:null set time:-1
+08-02 13:12:32.647  1966  2116 D WifiQualifiedNetworkSelector::     "FreeWiFi@Enchilada":148  User Preferred BSSID:null FQDN:null NETWORK_SELECTION_ENABLED Disable account: 0 0 0 0 0 0 0 0 0 0 Connect Choice:null set time:-1
+08-02 13:12:32.647  1966  2116 D WifiQualifiedNetworkSelector::     "Goldenes-Rad":84  User Preferred BSSID:null FQDN:null NETWORK_SELECTION_ENABLED Disable account: 0 0 0 0 0 0 0 0 0 0 Connect Choice:null set time:-1
+08-02 13:12:32.647  1966  2116 D WifiQualifiedNetworkSelector::     "Chateau_de_Versailles":49  User Preferred BSSID:null FQDN:null NETWORK_SELECTION_ENABLED Disable account: 0 0 0 0 0 0 0 0 0 0 Connect Choice:null set time:-1
+08-02 13:12:32.647  1966  2116 D WifiQualifiedNetworkSelector::     "Free Wifi - Munich Airport":67  User Preferred BSSID:null FQDN:null NETWORK_SELECTION_ENABLED Disable account: 0 0 0 0 0 0 0 0 0 0 Connect Choice:null set time:-1
+08-02 13:12:32.647  1966  2116 D WifiQualifiedNetworkSelector::     "Airport_Free_WiFi_AENA":30  User Preferred BSSID:null FQDN:null NETWORK_SELECTION_ENABLED Disable account: 0 0 0 0 0 0 0 0 0 0 Connect Choice:null set time:-1
+08-02 13:12:32.647  1966  2116 D WifiQualifiedNetworkSelector::     "VerhovinaOpenWiFi":145  User Preferred BSSID:null FQDN:null NETWORK_SELECTION_ENABLED Disable account: 0 0 0 0 0 0 0 0 0 0 Connect Choice:null set time:-1
+08-02 13:12:32.647  1966  2116 D WifiQualifiedNetworkSelector::     "Modoo Wifi Gratis":120  User Preferred BSSID:null FQDN:null NETWORK_SELECTION_ENABLED Disable account: 0 0 0 0 0 0 0 0 0 0 Connect Choice:null set time:-1
+08-02 13:12:32.647  1966  2116 D WifiQualifiedNetworkSelector::     "Hotelissimo":3  User Preferred BSSID:null FQDN:null NETWORK_SELECTION_ENABLED Disable account: 0 0 0 0 0 0 0 0 0 0 Connect Choice:null set time:-1
+08-02 13:12:32.647  1966  2116 D WifiQualifiedNetworkSelector::     "0penWiFi":57  User Preferred BSSID:null FQDN:null NETWORK_SELECTION_ENABLED Disable account: 0 0 0 0 0 0 0 0 0 0 Connect Choice:null set time:-1
+08-02 13:12:32.647  1966  2116 D WifiQualifiedNetworkSelector::     "Sasayaki":109  User Preferred BSSID:null FQDN:null NETWORK_SELECTION_ENABLED Disable account: 0 0 0 0 0 0 0 0 0 0 Connect Choice:null set time:-1
+08-02 13:12:32.647  1966  2116 D WifiQualifiedNetworkSelector::     "Radisson_Guest":61  User Preferred BSSID:null FQDN:null NETWORK_SELECTION_ENABLE
+08-02 13:12:32.648  1966  2116 D WifiQualifiedNetworkSelector:: isCarrierNetworkEnabledByUser: false
+08-02 13:12:32.659  1966  2116 D WifiQualifiedNetworkSelector::  skipped due to low signal
+08-02 13:12:32.660  1966  2116 D WifiQualifiedNetworkSelector:: UPC8629D2B:ac:22:05:e2:dc:16 / WLAN-959042:4c:1b:86:7e:dd:5f / Telekom_FON:4c:1b:86:7e:dd:61 /  skipped due to not saved
+08-02 13:12:32.660  1966  2116 D WifiQualifiedNetworkSelector::  
+08-02 13:12:32.661  1966  2116 D WifiQualifiedNetworkSelector::  skipped due to not valid SSID
+08-02 13:12:32.661  1966  2116 D WifiQualifiedNetworkSelector::  RSSI score: 100 Same network with current associated. Bonus: 16 Same BSSID with current association. Bonus: 24 Secure network Bonus:80 Score for scanResult: SSID: o2-WLAN52, BSSID: 5c:dc:96:1e:32:99, capabilities: [WPA2-PSK-CCMP][WPS][ESS], level: -54, frequency: 2442, timestamp: 342907998156, distance: ?(cm), distanceSd: ?(cm), passpoint: no, ChannelBandwidth: 0, centerFreq0: 0, centerFreq1: 0, 80211mcResponder: is not supported and Network ID: 1 final score:220
+08-02 13:12:32.661  1966  2116 D WifiQualifiedNetworkSelector:: 
+08-02 13:12:32.661  1966  2116 D WifiQualifiedNetworkSelector::  RSSI score: 100 Secure network Bonus:80 Score for scanResult: SSID: Miriam’s iPhone, BSSID: b2:ca:68:38:d7:30, capabilities: [WPA2-PSK-CCMP][ESS], level: -54, frequency: 2462, timestamp: 342907998194, distance: ?(cm), distanceSd: ?(cm), passpoint: no, ChannelBandwidth: 0, centerFreq0: 0, centerFreq1: 0, 80211mcResponder: is not supported and Network ID: 160 final score:180
+08-02 13:12:32.661  1966  2116 D WifiQualifiedNetworkSelector:: 
+08-02 13:12:32.662  1966  2116 D WifiQualifiedNetworkSelector:: After user choice adjust, the final candidate is:"o2-WLAN52":1 : 5c:dc:96:1e:32:99
+08-02 13:12:32.663  1966  2116 D WifiQualifiedNetworkSelector:: "o2-WLAN52":1 is already the best choice!
+08-02 13:12:32.713  1966  3404 V OSNPGlue_jni: Entering  : void onJavaLocationChanged(JNIEnv *, jobject, jboolean, jlong, jboolean, jlong, jboolean, jdouble, jboolean, jdouble, jboolean, jfloat, jboolean, jdouble, jboolean, jfloat, jboolean, jfloat, jboolean, jint)
+08-02 13:12:32.714  1966  2411 E IzatSvc_ComboNetworkProvider: E/Exiting with error virtual void izat_manager::ComboNetworkProvider::handleFrameworkLocReportMsg::proc() const line 287 "1"
+08-02 13:12:32.775  2426  2426 I GeofencerStateMachine: sendNewTransitions called.
+08-02 13:12:32.778  2426  3636 I GeofencerStateMachine: Location dropped because in deep still mode.
+08-02 13:12:32.861  2426 30055 I GCoreUlr: Successfully inserted 1 locations
+08-02 13:12:32.944 23971   320 I Finsky  : [140923] lmr.a(9): Task 7 requested foreground
+08-02 13:12:32.945 23971   320 I Finsky  : [140923] lmr.a(20): Not entering foreground
+--------- beginning of system
+08-02 13:12:32.952   364  2046 E NetlinkEvent: NetlinkEvent::FindParam(): Parameter 'UID' not found
+08-02 13:12:32.996  2426  2439 I art     : Background partial concurrent mark sweep GC freed 198422(10MB) AllocSpace objects, 6(216KB) LOS objects, 40% free, 17MB/29MB, paused 1.608ms total 145.453ms
+08-02 13:12:33.046  2146  2146 D wpa_supplicant: nl80211: Event message available
+08-02 13:12:33.046  2146  2146 D wpa_supplicant: nl80211: Drv Event 103 (NL80211_CMD_VENDOR) received for wlan0
+08-02 13:12:33.046  2146  2146 D wpa_supplicant: nl80211: Vendor event: wiphy=0 vendor_id=0x1374 subcmd=10
+08-02 13:12:33.046  2146  2146 D wpa_supplicant: nl80211: Vendor data - hexdump(len=124): 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ...
+08-02 13:12:33.046  2146  2146 D wpa_supplicant: wlan0: Event AVOID_FREQUENCIES (48) received
+08-02 13:12:33.047  2146  2146 I wpa_supplicant: wlan0: CTRL-EVENT-AVOID-FREQ ranges=
+08-02 13:12:33.047  2146  2146 D wpa_supplicant: CTRL-DEBUG: ctrl_sock-sendmsg: sock=8 sndbuf=163840 outq=0 send_len=29
+08-02 13:12:33.047  2146  2146 D wpa_supplicant: CTRL_IFACE monitor sent successfully to /data/misc/wifi/sockets/wpa_ctrl_1966-2\x00
+08-02 13:12:33.047  2146  2146 D wpa_supplicant: wlan0: P2P: Update channel list based on frequency avoid event
+08-02 13:12:33.047  2146  2146 D wpa_supplicant: wlan0: Determining shared radio frequencies (max len 2)
+08-02 13:12:33.047  2146  2146 D wpa_supplicant: wlan0: Shared frequencies (len=1): completed iteration
+08-02 13:12:33.047  2146  2146 D wpa_supplicant: wlan0: freq[0]: 2442, flags=0x1
+08-02 13:12:33.047  2146  2146 D wpa_supplicant: P2P: Add operating class 81
+08-02 13:12:33.047  2146  2146 D wpa_supplicant: P2P: Channels - hexdump(len=13): 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d
+08-02 13:12:33.047  2146  2146 D wpa_supplicant: P2P: Update channel list
+08-02 13:12:33.047  2146  2146 D wpa_supplicant: P2P: channels: 81:1,2,3,4,5,6,7,8,9,10,11,12,13
+08-02 13:12:33.047  2146  2146 D wpa_supplicant: P2P: cli_channels:
+08-02 13:12:33.047  1966  2145 I WifiHAL : event received NL80211_CMD_VENDOR, vendor_id = 0x1374, subcmd = 0xa
+08-02 13:12:33.172  2146  2146 D wpa_supplicant: nl80211: Event message available
+08-02 13:12:33.172  2146  2146 D wpa_supplicant: nl80211: Drv Event 103 (NL80211_CMD_VENDOR) received for wlan0
+08-02 13:12:33.172  2146  2146 D wpa_supplicant: nl80211: Vendor event: wiphy=0 vendor_id=0x1374 subcmd=10
+08-02 13:12:33.172  2146  2146 D wpa_supplicant: nl80211: Vendor data - hexdump(len=124): 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ...
+08-02 13:12:33.173  2146  2146 D wpa_supplicant: wlan0: Event AVOID_FREQUENCIES (48) received
+08-02 13:12:33.173  2146  2146 I wpa_supplicant: wlan0: CTRL-EVENT-AVOID-FREQ ranges=
+08-02 13:12:33.173  2146  2146 D wpa_supplicant: CTRL-DEBUG: ctrl_sock-sendmsg: sock=8 sndbuf=163840 outq=0 send_len=29
+08-02 13:12:33.173  2146  2146 D wpa_supplicant: CTRL_IFACE monitor sent successfully to /data/misc/wifi/sockets/wpa_ctrl_1966-2\x00
+08-02 13:12:33.173  2146  2146 D wpa_supplicant: wlan0: P2P: Update channel list based on frequency avoid event
+08-02 13:12:33.173  2146  2146 D wpa_supplicant: wlan0: Determining shared radio frequencies (max len 2)
+08-02 13:12:33.173  2146  2146 D wpa_supplicant: wlan0: Shared frequencies (len=1): completed iteration
+08-02 13:12:33.173  2146  2146 D wpa_supplicant: wlan0: freq[0]: 2442, flags=0x1
+08-02 13:12:33.173  2146  2146 D wpa_supplicant: P2P: Add operating class 81
+08-02 13:12:33.173  2146  2146 D wpa_supplicant: P2P: Channels - hexdump(len=13): 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d
+08-02 13:12:33.173  2146  2146 D wpa_supplicant: P2P: Update channel list
+08-02 13:12:33.173  2146  2146 D wpa_supplicant: P2P: channels: 81:1,2,3,4,5,6,7,8,9,10,11,12,13
+08-02 13:12:33.173  2146  2146 D wpa_supplicant: P2P: cli_channels:
+08-02 13:12:33.174  1966  2145 I WifiHAL : event received NL80211_CMD_VENDOR, vendor_id = 0x1374, subcmd = 0xa
+08-02 13:12:33.210  2146  2146 D wpa_supplicant: wlan0: Control interface command 'SIGNAL_POLL'
+08-02 13:12:33.213  2146  2146 D wpa_supplicant: CTRL-DEBUG: global_ctrl_sock-sendto: sock=8 sndbuf=163840 outq=0 send_len=48
+08-02 13:12:33.213  1966  2116 D WifiStateMachine: updateCapabilities for config:o2-WLAN52false,false
+08-02 13:12:33.253 23971   871 I Finsky  : [140940] aezx.b(3): Verify: Verification package=com.glfm.example.android, id=147 response=0
+08-02 13:12:33.353 23971   320 I Finsky  : [140923] VerifyAdvancedProtectionInstallTask.c(1): Verify AP install started
+08-02 13:12:33.354 23971   320 I Finsky  : [140923] VerifyAdvancedProtectionInstallTask.c(2): Allowing install because there are no Advanced Protection users
+08-02 13:12:33.357 23971 23971 I Finsky  : [1] VerifyAdvancedProtectionInstallTask.ik(2): Reported verification result: ALLOW
+08-02 13:12:33.357 23971   320 I Finsky  : [140923] VerifyPerSourceInstallationConsentInstallTask.c(3): PSIC verification started with installer uid: 2000 package name: null, originating uid: -1
+08-02 13:12:33.362 23971 23971 I Finsky  : [1] VerifyInstallTask.c(15): Verifying id=147, result=1
+08-02 13:12:33.407  1966  2005 I ActivityManager: Force stopping com.glfm.example.android appid=10111 user=-1: installPackageLI
+08-02 13:12:33.538  1966  1976 I art     : Background sticky concurrent mark sweep GC freed 203404(11MB) AllocSpace objects, 29(1916KB) LOS objects, 28% free, 31MB/43MB, paused 3.349ms total 115.258ms
+08-02 13:12:33.690   356   356 D installd: Found valid user 10
+08-02 13:12:33.690   356   356 D installd: Found valid user 11
+08-02 13:12:33.691  1966  2041 I PackageManager: Package com.glfm.example.android codePath changed from /data/app/com.glfm.example.android-1 to /data/app/com.glfm.example.android-2; Retaining data and using new
+08-02 13:12:33.691  1966  2041 W PackageManager: Code path for com.glfm.example.android changing from /data/app/com.glfm.example.android-1 to /data/app/com.glfm.example.android-2
+08-02 13:12:33.692  1966  2041 W PackageManager: Resource path for com.glfm.example.android changing from /data/app/com.glfm.example.android-1 to /data/app/com.glfm.example.android-2
+08-02 13:12:33.885   390   390 I MSM-irqbalance: Decided to move IRQ61 from CPU5 to CPU6
+08-02 13:12:34.273  2150  2150 D HeadsetPhoneState: Enter onSignalStrengthsChanged
+08-02 13:12:34.273  2150  2150 D HeadsetPhoneState: Exit onSignalStrengthsChanged
+08-02 13:12:34.282  1966  2041 I art     : Starting a blocking GC Explicit
+08-02 13:12:34.486  1966  2041 I art     : Explicit concurrent mark sweep GC freed 123167(6MB) AllocSpace objects, 20(464KB) LOS objects, 33% free, 29MB/43MB, paused 2.376ms total 203.448ms
+08-02 13:12:34.493   356   356 E         : Couldn't opendir /data/app/vmdl34830437.tmp: No such file or directory
+08-02 13:12:34.494  1966  2041 I ActivityManager: Force stopping com.glfm.example.android appid=10111 user=0: pkg removed
+08-02 13:12:34.505  1966  2041 W ActivityManager: Skipping broadcast of Intent { act=android.intent.action.PACKAGE_REMOVED dat=package:com.glfm.example.android flg=0x4000010 (has extras) }: user 10 is stopped
+08-02 13:12:34.506  1966  2041 W ActivityManager: Skipping broadcast of Intent { act=android.intent.action.PACKAGE_REMOVED dat=package:com.glfm.example.android flg=0x4000010 (has extras) }: user 11 is stopped
+08-02 13:12:34.512  2150  2150 D BluetoothMapAppObserver: onReceive
+08-02 13:12:34.513  2150  2150 D BluetoothMapAppObserver: The removed package is: com.glfm.example.android
+08-02 13:12:34.516  1966  2041 W ActivityManager: Skipping broadcast of Intent { act=android.intent.action.PACKAGE_ADDED dat=package:com.glfm.example.android flg=0x4000010 (has extras) }: user 10 is stopped
+08-02 13:12:34.520  2150  2150 D BluetoothMapAppObserver: onReceive
+08-02 13:12:34.520  1966  2041 W ActivityManager: Skipping broadcast of Intent { act=android.intent.action.PACKAGE_ADDED dat=package:com.glfm.example.android flg=0x4000010 (has extras) }: user 11 is stopped
+08-02 13:12:34.521  2150  2150 D BluetoothMapAppObserver: The installed package is: com.glfm.example.android
+08-02 13:12:34.530  2150  2150 D BluetoothMapAppObserver: Found 0 application(s) with intent android.bluetooth.action.BLUETOOTH_MAP_PROVIDER
+08-02 13:12:34.530  1966  2106 I InputReader: Reconfiguring input devices.  changes=0x00000010
+08-02 13:12:34.531 24277 24277 W ContextImpl: Calling a method in the system process without a qualified user: android.app.ContextImpl.startService:1357 android.content.ContextWrapper.startService:613 android.content.ContextWrapper.startService:613 com.android.keychain.KeyChainBroadcastReceiver.onReceive:12 android.app.ActivityThread.handleReceiver:3041 
+08-02 13:12:34.542  1966  2106 I InputReader: Reconfiguring input devices.  changes=0x00000010
+08-02 13:12:34.546  2150  2150 D BluetoothMapAppObserver: Found 0 application(s) with intent android.bluetooth.action.BLUETOOTH_MAP_IM_PROVIDER
+08-02 13:12:34.552  1966  2041 W ActivityManager: Skipping broadcast of Intent { act=android.intent.action.PACKAGE_REPLACED dat=package:com.glfm.example.android flg=0x4000010 (has extras) }: user 10 is stopped
+08-02 13:12:34.554  1966  2106 I InputReader: Reconfiguring input devices.  changes=0x00000010
+08-02 13:12:34.557  1966  2041 W ActivityManager: Skipping broadcast of Intent { act=android.intent.action.PACKAGE_REPLACED dat=package:com.glfm.example.android flg=0x4000010 (has extras) }: user 11 is stopped
+08-02 13:12:34.558  1966  2041 W ActivityManager: Skipping broadcast of Intent { act=android.intent.action.MY_PACKAGE_REPLACED flg=0x4000010 pkg=com.glfm.example.android (has extras) }: user 10 is stopped
+08-02 13:12:34.558  1966  2041 W ActivityManager: Skipping broadcast of Intent { act=android.intent.action.MY_PACKAGE_REPLACED flg=0x4000010 pkg=com.glfm.example.android (has extras) }: user 11 is stopped
+08-02 13:12:34.563  1966  1966 W ResourceType: ResTable_typeSpec entry count inconsistent: given 705, previously 711
+08-02 13:12:34.563  1966  1966 W ResourceType: ResTable_typeSpec entry count inconsistent: given 428, previously 1480
+08-02 13:12:34.563  1966  1966 W ResourceType: ResTable_typeSpec entry count inconsistent: given 245, previously 1303
+08-02 13:12:34.570  1966  1966 W ResourceType: ResTable_typeSpec entry count inconsistent: given 83, previously 87
+08-02 13:12:34.571  1966  1966 W ResourceType: ResTable_typeSpec entry count inconsistent: given 1967, previously 1961
+08-02 13:12:34.571  1966  1966 W ResourceType: ResTable_typeSpec entry count inconsistent: given 386, previously 2092
+08-02 13:12:34.591 23971 23971 I Finsky  : [1] VerifyInstallTask.ik(6): Verification complete: id=147, package_name=com.glfm.example.android
+08-02 13:12:34.593 24091   878 E MusicFXCompat: No control panels found!
+08-02 13:12:34.606 23971 23971 I Finsky  : [1] tul.a(18): PackageMonitorReceiverImpl - Received: android.intent.action.PACKAGE_REMOVED, [8oLVUxNww5LhV032fp5IKqdLZAtN-eS059SNvgQX00Y]
+08-02 13:12:34.607 23971 23971 I Finsky  : [1] tvm.d(9): Invalidating cached PackageState for com.glfm.example.android
+08-02 13:12:34.647 23971 23971 I Finsky  : [1] lvg.c(2): Frosting ID looked up on UI thread. Caller should move to a background thread.
+08-02 13:12:34.654 23971 23971 I Finsky  : [1] nnn.b(31): Installer: package com.glfm.example.android was removed. replacing: true
+08-02 13:12:34.656 23971 23971 I Finsky  : [1] nnn.a(183): Installer: Notifying status update. package=com.glfm.example.android, status=UNINSTALLED
+08-02 13:12:34.666 23971 23971 I Finsky  : [1] lvg.c(2): Frosting ID looked up on UI thread. Caller should move to a background thread.
+08-02 13:12:34.673 23971   884 I Finsky  : [140943] ecj.a(-1): Cancelled 0 ongoing asset module downloads for package com.glfm.example.android due to a concurrent app update.
+08-02 13:12:34.676 23971 24077 I Finsky  : [140807] oai.b(49): IQ: Notifying installation update. package=com.glfm.example.android, status=UNINSTALLED
+08-02 13:12:34.677 23971   882 I Finsky  : [140941] lut.run(-1): Wrote row to frosting DB: 3326
+08-02 13:12:34.679 23971 23971 I Finsky  : [1] nnn.a(215): Installer: found apps to install. isMultiUserMode=true, apps=[]
+08-02 13:12:34.693  3202  3202 D RegisteredNfcFServicesCache: Service unchanged, not updating
+08-02 13:12:34.723 23971 24077 I Finsky  : [140807] oai.b(37): IQ: No matching installs to run for jobs: []
+08-02 13:12:34.724  1966  2004 W ResourceType: ResTable_typeSpec entry count inconsistent: given 36, previously 41
+08-02 13:12:34.724  1966  2004 W ResourceType: ResTable_typeSpec entry count inconsistent: given 2534, previously 2537
+08-02 13:12:34.725  1966  2004 W ResourceType: ResTable_typeSpec entry count inconsistent: given 2545, previously 2548
+08-02 13:12:34.725  1966  2004 W ResourceType: ResTable_typeSpec entry count inconsistent: given 303, previously 1695
+08-02 13:12:34.727  2469  2469 D CarrierSvcBindHelper: No carrier app for: 0
+08-02 13:12:34.728  2469  2469 D CarrierSvcBindHelper: No carrier app for: 1
+08-02 13:12:34.731  2469  2469 D CarrierSvcBindHelper: No carrier app for: 0
+08-02 13:12:34.732  2469  2469 D CarrierSvcBindHelper: No carrier app for: 1
+08-02 13:12:34.733  2469  2469 D CarrierConfigLoader: mHandler: 9 phoneId: 0
+08-02 13:12:34.733 23971   882 I Finsky  : [140941] lut.run(-1): Wrote row to frosting DB: 3327
+08-02 13:12:34.752 24132 24132 W ContextImpl: Calling a method in the system process without a qualified user: android.app.ContextImpl.startService:1357 android.content.ContextWrapper.startService:613 android.content.ContextWrapper.startService:613 com.android.gallery3d.app.PackagesMonitor.onReceive:40 android.app.ActivityThread.handleReceiver:3041 
+08-02 13:12:34.762  2426   895 I Fitness : FitCleanupIntentOperation received Intent android.intent.action.PACKAGE_REMOVED [CONTEXT service_id=17 ]
+08-02 13:12:34.805 24091   906 E MusicFXCompat: No control panels found!
+08-02 13:12:34.808 23971 23971 I Finsky  : [1] tul.a(18): PackageMonitorReceiverImpl - Received: android.intent.action.PACKAGE_ADDED, [8oLVUxNww5LhV032fp5IKqdLZAtN-eS059SNvgQX00Y]
+08-02 13:12:34.809 23971 23971 I Finsky  : [1] tvm.d(9): Invalidating cached PackageState for com.glfm.example.android
+08-02 13:12:34.817 23971 23971 I Finsky  : [1] lvg.c(2): Frosting ID looked up on UI thread. Caller should move to a background thread.
+08-02 13:12:34.823 23971 23971 I Finsky  : [1] agmj.a(4): Do not start WearSupportService due to Wear service optimization
+08-02 13:12:34.826 23971   884 I Finsky  : [140943] ecg.a(-1): Asset module broadcast after update successful for package com.glfm.example.android. 0 sessions broadcast.
+08-02 13:12:34.827 23971   883 I Finsky  : [140942] grj.a(-1): [ContentSync] finished, scheduled=false
+08-02 13:12:34.832 23971 23971 I Finsky  : [1] lvg.c(2): Frosting ID looked up on UI thread. Caller should move to a background thread.
+08-02 13:12:34.854 23971   883 I Finsky  : [140942] grj.a(-1): [ContentSync] finished, scheduled=true
+08-02 13:12:34.858 23971 23971 I Finsky  : [1] xgp.a(8): SCH: Jobs in database: 1-1337 3-1383 12-1 26-1414141414 34-960 34-961 34-970 34-971 34-975 34-976 34-977 34-980 34-981 34-982 34-983 
+08-02 13:12:34.862 23971 23971 I Finsky  : [1] xcj.a(57): SCH: ConstraintMapping: 1-1337, 34-982, 12-1,  -> L: 14808ms, D: 57904813ms, C: false, I: false, N: 1
+08-02 13:12:34.863 23971 23971 I Finsky  : [1] xcj.a(57): SCH: ConstraintMapping: 3-1383,  -> L: 0ms, D: 83485622ms, C: true, I: false, N: 2
+08-02 13:12:34.864 23971 23971 I Finsky  : [1] xcj.a(57): SCH: ConstraintMapping: 34-975, 34-980, 34-976, 34-961, 34-981, 34-960, 34-983, 34-977, 34-971, 34-970,  -> L: 0ms, D: 1292206511ms, C: false, I: true, N: 2
+08-02 13:12:34.865 23971 23971 I Finsky  : [1] xcj.a(57): SCH: ConstraintMapping: 34-975, 34-980, 34-976, 34-961, 34-981, 34-960, 34-983, 34-977, 34-971, 34-970,  -> L: 0ms, D: 1292206511ms, C: true, I: true, N: 2
+08-02 13:12:34.865 23971 23971 I Finsky  : [1] xcj.a(57): SCH: ConstraintMapping: 26-1414141414,  -> L: 14307431ms, D: 15207431ms, C: false, I: false, N: 0
+08-02 13:12:34.873  3265   901 I Auth    : [SupervisedAccountIntentOperation] onHandleIntent(): android.intent.action.PACKAGE_ADDED
+08-02 13:12:34.881  3265   905 I ChromeSync: [Sync,SyncIntentOperation] Handling the intent: Intent { act=android.intent.action.PACKAGE_ADDED dat=package:com.glfm.example.android flg=0x4000010 cmp=com.google.android.gms/.chimera.GmsIntentOperationService (has extras) }.
+08-02 13:12:34.886  1966 19051 W ActivityManager: Unable to start service Intent { act=com.google.android.gms.auth.key.retrieval.service.START pkg=com.google.android.gms } U=0: not found
+08-02 13:12:34.888  1966  2383 W ActivityManager: Unbind failed: could not find connection for android.os.BinderProxy@7aff17f
+08-02 13:12:34.888  3265  3545 E GmsClient: unable to connect to service: com.google.android.gms.auth.key.retrieval.service.START on com.google.android.gms
+08-02 13:12:34.890  3265   905 I ChromeSync: [Persistence,AffiliationManager] One of affiliation or grouping data for android://CyjavTgJ2yoWpXy_pTU5UTVVZN0jax_g9QXXaD7p0ogbMD4C0HPvD-cWAAjXftS1TTMa0rZUkFA-dJiiyLNt5A==@com.glfm.example.android/ was not found. Marking affiliation data as stale...
+08-02 13:12:34.894 23971   882 I Finsky  : [140941] lut.run(-1): Wrote row to frosting DB: 3328
+08-02 13:12:34.932 23971   882 I Finsky  : [140941] lut.run(-1): Wrote row to frosting DB: 3329
+08-02 13:12:34.943 23971 23971 I Finsky  : [1] xez.a(34): Cancelling existing jobscheduler jobs: 9000 9008 9004 9006 9007 
+08-02 13:12:34.944 23971 23971 I Finsky  : [1] xez.a(27): Scheduling job Id: 9001, L: 14808, D: 57904813, C: false, I: false, N: 1
+08-02 13:12:34.966 23971 23971 I Finsky  : [1] xez.a(27): Scheduling job Id: 9002, L: 0, D: 83485622, C: true, I: false, N: 2
+08-02 13:12:34.976 23971 23971 I Finsky  : [1] xez.a(27): Scheduling job Id: 9003, L: 0, D: 1292206511, C: false, I: true, N: 2
+08-02 13:12:34.979 23971 23971 I Finsky  : [1] xez.a(27): Scheduling job Id: 9005, L: 0, D: 1292206511, C: true, I: true, N: 2
+08-02 13:12:34.985 23971 23971 I Finsky  : [1] xez.a(27): Scheduling job Id: 9009, L: 14307431, D: 15207431, C: false, I: false, N: 0
+08-02 13:12:34.994  3265  3807 I Icing   : IndexChimeraService.getServiceInterface callingPackage=com.google.android.gms componentName=AppsCorpus serviceId=36
+08-02 13:12:35.033  3265 31048 I GmsCoreXrpcWrapper: Returning a channel provider with trafficStatsTag=12803
+08-02 13:12:35.090  3265  3969 I Icing   : IndexChimeraService.getServiceInterface callingPackage=com.google.android.gms componentName=null serviceId=30
+08-02 13:12:35.107 24132 24132 W ContextImpl: Calling a method in the system process without a qualified user: android.app.ContextImpl.startService:1357 android.content.ContextWrapper.startService:613 android.content.ContextWrapper.startService:613 com.android.gallery3d.app.PackagesMonitor.onReceive:40 android.app.ActivityThread.handleReceiver:3041 
+08-02 13:12:35.156 24091   914 E MusicFXCompat: No control panels found!
+08-02 13:12:35.156  3265 31048 I Icing   : Usage reports ok 1, Failed Usage reports 0, indexed 0, rejected 0
+08-02 13:12:35.163  3265  3969 I Icing   : IndexChimeraService.getServiceInterface callingPackage=com.google.android.gms componentName=null serviceId=36
+08-02 13:12:35.168  3265 31048 I GmsCoreXrpcWrapper: Returning a channel provider with trafficStatsTag=12803
+08-02 13:12:35.207  3265   901 I FontLog : Package com.glfm.example.android has no metadata [CONTEXT service_id=132 ]
+08-02 13:12:35.214  3265 31048 I Icing   : Usage reports ok 0, Failed Usage reports 0, indexed 0, rejected 0
+08-02 13:12:35.215  3265 31048 I Icing   : Indexing com.google.android.gms-internal.3p:MobileApplication from com.google.android.gms using seqno 4482
+08-02 13:12:35.275  3265   905 I ChromeSync: [Persistence,AffiliationManager] Fetching affiliations from the server.
+08-02 13:12:35.289  3265 31048 I GmsCoreXrpcWrapper: Returning a channel provider with trafficStatsTag=12803
+08-02 13:12:35.325  3265 31048 I Icing   : Usage reports ok 0, Failed Usage reports 0, indexed 0, rejected 0
+08-02 13:12:35.333  3265 31048 I Icing   : Indexing com.google.android.gms-internal.3p:MobileApplication from com.google.android.gms using seqno 4482
+08-02 13:12:35.425   879   879 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+08-02 13:12:35.430   879   879 D AndroidRuntime: CheckJNI is OFF
+08-02 13:12:35.499  2426 22694 I NetworkScheduler.Stats: Task com.google.android.apps.maps/ started execution. cause:1 exec_start_elapsed_seconds: 342910 [CONTEXT service_id=218 ]
+08-02 13:12:35.508   879   879 I libmdmdetect: ESOC framework not supported
+08-02 13:12:35.509   879   879 I libmdmdetect: Found internal modem: modem
+08-02 13:12:35.511  1966  2494 I GnssLocationProvider: WakeLock acquired by sendMessage(3, 0, com.android.server.location.GnssLocationProvider$GpsRequest@de86129)
+08-02 13:12:35.512  1966  2004 I GnssLocationProvider: WakeLock released by handleMessage(3, 0, com.android.server.location.GnssLocationProvider$GpsRequest@de86129)
+08-02 13:12:35.517   879   879 D ICU     : No timezone override file found: /data/misc/zoneinfo/current/icu/icu_tzdata.dat
+08-02 13:12:35.526  1966 20173 D bsthal  : batch, handle: 1598182240, flags: 0, period_ns: 10000000, timeout: 166500000, index: 2
+08-02 13:12:35.526  1966 20173 I bsthal  : <BST> cur_ns 10000000set delay of <BOSCH Gyroscope Uncalibrated Sensor> to 10ms
+08-02 13:12:35.527  1966 20173 D bsthal  : activate, handle: 1598182240, enabled: 1
+08-02 13:12:35.527  1966 20173 I bsthal  : <BST> enable sensor <BOSCH Gyroscope Uncalibrated Sensor>
+08-02 13:12:35.528  1966  1981 D bsthal  : batch, handle: 1598182234, flags: 0, period_ns: 20000000, timeout: 166500000, index: 2
+08-02 13:12:35.528  1966  1981 I bsthal  : <BST> cur_ns 20000000set delay of <BOSCH Linear Acceleration Sensor> to 20ms
+08-02 13:12:35.528  1966  1981 D bsthal  : activate, handle: 1598182234, enabled: 1
+08-02 13:12:35.528  1966  1981 I bsthal  : <BST> enable sensor <BOSCH Linear Acceleration Sensor>
+08-02 13:12:35.530  1966  3363 D bsthal  : batch, handle: 1598182233, flags: 0, period_ns: 20000000, timeout: 166500000, index: 2
+08-02 13:12:35.530  1966  3363 I bsthal  : <BST> cur_ns 20000000set delay of <BOSCH Gravity Sensor> to 20ms
+08-02 13:12:35.530  1966  3363 D bsthal  : activate, handle: 1598182233, enabled: 1
+08-02 13:12:35.530  1966  3363 I bsthal  : <BST> enable sensor <BOSCH Gravity Sensor>
+08-02 13:12:35.532  1966  5584 D bsthal  : batch, handle: 1598182241, flags: 0, period_ns: 40000000, timeout: 166500000, index: 2
+08-02 13:12:35.533  1966  5584 I bsthal  : <BST> cur_ns 40000000set delay of <BOSCH Magnetic Field Uncalibrated Sensor> to 40ms
+08-02 13:12:35.533  1966  5584 D bsthal  : activate, handle: 1598182241, enabled: 1
+08-02 13:12:35.533  1966  5584 I bsthal  : <BST> enable sensor <BOSCH Magnetic Field Uncalibrated Sensor>
+08-02 13:12:35.533  1966  2411 V OSNPGlue_jni: Entering  : void onSetRequestJNI(izat_manager::IzatRequest *)
+08-02 13:12:35.534   817  1136 W XTCC-5.1.0.19-b: [PosMgr] sending back response for POSITION (e, Service mask disabled) tx(133)
+08-02 13:12:35.534   817  1136 W XTCC-5.1.0.19-b: [PosMgr] sending back response for POSITION (c, error) tx(133)
+08-02 13:12:35.534   817  1136 E XTCC-5.1.0.19-b: [PosMgr] handlePosition failed: 12
+08-02 13:12:35.538  1966  2411 E IzatSvc_QNP: E/Exiting with error virtual void izat_manager::QNP::reportLocation(const izat_manager::LocationReport *, const izat_manager::ILocationProvider *) line 372 "1"
+08-02 13:12:35.568   879   879 I Radio-JNI: register_android_hardware_Radio DONE
+08-02 13:12:35.596   879   879 D AndroidRuntime: Calling main entry com.android.commands.am.Am
+08-02 13:12:35.600  2426  3064 W ResourceType: ResTable_typeSpec entry count inconsistent: given 15, previously 23
+08-02 13:12:35.600  2426  3064 W ResourceType: ResTable_typeSpec entry count inconsistent: given 1366, previously 2563
+08-02 13:12:35.600  2426  3064 W ResourceType: ResTable_typeSpec entry count inconsistent: given 677, previously 812
+08-02 13:12:35.627  2426  2426 I GeofencerStateMachine: sendNewLocationAvailability: availability=LocationAvailability[isLocationAvailable: true]
+08-02 13:12:35.628   349   349 W sensord : type=1400 audit(0.0:3556): avc: denied { create } for name="profile_calib_g" scontext=u:r:sensord:s0 tcontext=u:object_r:system_data_file:s0 tclass=file permissive=0
+08-02 13:12:35.633  1966  5440 I ActivityManager: START u0 {flg=0x14000000 cmp=com.glfm.example.android/android.app.NativeActivity} from uid 2000 on display 0
+08-02 13:12:35.644  1966  5440 D ActivityTrigger: ActivityTrigger activityPauseTrigger 
+08-02 13:12:35.648   879   879 D AndroidRuntime: Shutting down VM
+08-02 13:12:35.665  1966  3079 I ActivityManager: Start proc 932:com.glfm.example.android/u0a111 for activity com.glfm.example.android/android.app.NativeActivity
+08-02 13:12:35.665  1966  3079 V BoostFramework: BoostFramework() : mPerf = com.qualcomm.qti.Performance@84813e0
+08-02 13:12:35.714   932   932 W System  : ClassLoader referenced unknown path: 
+08-02 13:12:35.722  1966  3363 I GnssLocationProvider: WakeLock acquired by sendMessage(3, 0, com.android.server.location.GnssLocationProvider$GpsRequest@37b916a)
+08-02 13:12:35.723  1966  2004 I GnssLocationProvider: WakeLock released by handleMessage(3, 0, com.android.server.location.GnssLocationProvider$GpsRequest@37b916a)
+08-02 13:12:35.773  2146  2146 D wpa_supplicant: wlan0: Control interface command 'SCAN TYPE=ONLY'
+08-02 13:12:35.773  2146  2146 D wpa_supplicant: wlan0: Setting scan request: 0.000000 sec
+08-02 13:12:35.773  2146  2146 D wpa_supplicant: CTRL-DEBUG: global_ctrl_sock-sendto: sock=8 sndbuf=163840 outq=0 send_len=3
+08-02 13:12:35.773  2146  2146 D wpa_supplicant: wlan0: Starting AP scan for wildcard SSID
+08-02 13:12:35.774  2146  2146 D wpa_supplicant: wlan0: Add radio work 'scan'@0xb0d961e0
+08-02 13:12:35.774  2146  2146 D wpa_supplicant: wlan0: First radio work item in the queue - schedule start immediately
+08-02 13:12:35.774  2146  2146 D wpa_supplicant: wlan0: Starting radio work 'scan'@0xb0d961e0 after 0.000070 second wait
+08-02 13:12:35.774  2146  2146 D wpa_supplicant: wlan0: nl80211: scan request
+08-02 13:12:35.774  2146  2146 D wpa_supplicant: nl80211: Scan SSID - hexdump(len=0): [NULL]
+08-02 13:12:35.774  2146  2146 D wpa_supplicant: nl80211: Scan extra IEs - hexdump(len=7): 7f 05 00 00 0a 02 01
+08-02 13:12:35.775  2146  2146 D wpa_supplicant: Scan requested (ret=0) - scan timeout 30 seconds
+08-02 13:12:35.775  2146  2146 D wpa_supplicant: nl80211: Event message available
+08-02 13:12:35.775  2146  2146 D wpa_supplicant: nl80211: Drv Event 33 (NL80211_CMD_TRIGGER_SCAN) received for wlan0
+08-02 13:12:35.775  2146  2146 D wpa_supplicant: wlan0: nl80211: Scan trigger
+08-02 13:12:35.775  2146  2146 D wpa_supplicant: wlan0: Event SCAN_STARTED (47) received
+08-02 13:12:35.775  2146  2146 D wpa_supplicant: wlan0: Own scan request started a scan in 0.000223 seconds
+08-02 13:12:35.775  2146  2146 D wpa_supplicant: CTRL-DEBUG: ctrl_sock-sendmsg: sock=8 sndbuf=163840 outq=0 send_len=24
+08-02 13:12:35.775  2146  2146 D wpa_supplicant: CTRL_IFACE monitor sent successfully to /data/misc/wifi/sockets/wpa_ctrl_1966-2\x00
+08-02 13:12:35.777   932   932 W linker  : /data/app/com.glfm.example.android-2/lib/arm/libapp.so: is missing DT_SONAME will use basename as a replacement: "libapp.so"
+--------- beginning of crash
+08-02 13:12:35.778   932   932 F libc    : Fatal signal 11 (SIGSEGV), code 1, fault addr 0x1006c2 in tid 932 (example.android)
+08-02 13:12:35.779   251   251 W         : debuggerd: handling request: pid=932 uid=10111 gid=10111 tid=932
+08-02 13:12:35.785  2426  2426 I GeofencerStateMachine: sendNewLocationAvailability: availability=LocationAvailability[isLocationAvailable: true]
+08-02 13:12:35.853   950   950 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+08-02 13:12:35.853   950   950 F DEBUG   : Build fingerprint: 'bq/Aquaris_M5/Aquaris_M5:7.1.2/N2G47H/1519823167:user/release-keys'
+08-02 13:12:35.853   950   950 F DEBUG   : Revision: '0'
+08-02 13:12:35.853   950   950 F DEBUG   : ABI: 'arm'
+08-02 13:12:35.853   950   950 F DEBUG   : pid: 932, tid: 932, name: example.android  >>> com.glfm.example.android <<<
+08-02 13:12:35.853   950   950 F DEBUG   : signal 11 (SIGSEGV), code 1 (SEGV_MAPERR), fault addr 0x1006c2
+08-02 13:12:35.853   950   950 F DEBUG   :     r0 001006c2  r1 ae560ee9  r2 1a4879bc  r3 00000000
+08-02 13:12:35.853   950   950 F DEBUG   :     r4 a4d9c480  r5 a35368c0  r6 ae567004  r7 befd7ab8
+08-02 13:12:35.853   950   950 F DEBUG   :     r8 a4db0c80  r9 af397e60  sl aff02008  fp befd7b80
+08-02 13:12:35.854   950   950 F DEBUG   :     ip 00000000  sp befd7a90  lr afecd309  pc ae560dc0  cpsr 600b0030
+08-02 13:12:35.855   950   950 F DEBUG   : 
+08-02 13:12:35.855   950   950 F DEBUG   : backtrace:
+08-02 13:12:35.855   950   950 F DEBUG   :     #00 pc 00003dc0  /data/app/com.glfm.example.android-2/lib/arm/libapp.so (android_main+63)
+08-02 13:12:35.856   950   950 F DEBUG   :     #01 pc 0006b29b  /system/lib/libandroid_runtime.so
+08-02 13:12:35.856   950   950 F DEBUG   :     #02 pc 7371e27b  /data/dalvik-cache/arm/system@framework@boot.oat (offset 0x2839000)
+08-02 13:12:36.017  1966  2411 E IzatSvc_PassiveLocListener: E/Exiting with error virtual void izat_manager::IzatPassiveLocationListener::onLocationChanged(const izat_manager::IzatLocation *, const IzatLocationStatus) line 171 "1"
+08-02 13:12:36.070   251   251 W         : debuggerd: resuming target 932
+08-02 13:12:36.071  1966   957 W ActivityManager:   Force finishing activity com.glfm.example.android/android.app.NativeActivity
+08-02 13:12:36.072  1966  2024 I BootReceiver: Copying /data/tombstones/tombstone_05 to DropBox (SYSTEM_TOMBSTONE)
+08-02 13:12:36.081  1966   957 D ActivityTrigger: ActivityTrigger activityPauseTrigger 
+08-02 13:12:36.090  1966  2007 V BoostFramework: BoostFramework() : mPerf = com.qualcomm.qti.Performance@7b57a0e
+08-02 13:12:36.090  1966  2007 V BoostFramework: BoostFramework() : mPerf = com.qualcomm.qti.Performance@8496c2f
+08-02 13:12:36.093  1966  2007 V BoostFramework: BoostFramework() : mPerf = com.qualcomm.qti.Performance@153291a
+08-02 13:12:36.094  1966  2007 V BoostFramework: BoostFramework() : mPerf = com.qualcomm.qti.Performance@b0a9c4b
+08-02 13:12:36.096   304   304 E lowmemorykiller: Error writing /proc/932/oom_score_adj; errno=22
+08-02 13:12:36.131  1966  1981 I ActivityManager: Process com.glfm.example.android (pid 932) has died
+08-02 13:12:36.132  1966  1981 D ActivityManager: cleanUpApplicationRecord -- 932
+08-02 13:12:36.132   350   350 I Zygote  : Process 932 exited due to signal (11)
+08-02 13:12:36.143  1966 15146 I OpenGLRenderer: Initialized EGL, version 1.4
+08-02 13:12:36.143  1966 15146 D OpenGLRenderer: Swap behavior 1
+08-02 13:12:36.149  2162  2162 I AppBase : AppBase.onTrimMemory():618 onTrimMemory(): 5
+08-02 13:12:36.150  2162  2162 I GoogleInputMethodServic: GoogleInputMethodService.onTrimMemory():4331 onTrimMemory(): 5
+08-02 13:12:36.152  2455  2455 I DsService: DsService.onTrimMemory() level 5
+08-02 13:12:36.153  3227  3227 D TriggerApplication: onTrimMemory
+08-02 13:12:36.153 23971 23971 I Finsky  : [1] reo.onTrimMemory(1): Memory trim requested to level 40
+08-02 13:12:36.155 28474 28474 I TTS.GoogleTTSServiceImp: Flushing cache
+08-02 13:12:36.159  1966  3717 D WindowManager: relayoutVisibleWindow: Window{4367a1f u0 com.google.android.googlequicksearchbox/com.google.android.launcher.GEL EXITING} mAnimatingExit=true, mRemoveOnExit=false, mDestroying=false
+08-02 13:12:36.159  2146  2146 D wpa_supplicant: nl80211: Event message available
+08-02 13:12:36.160  2146  2146 D wpa_supplicant: nl80211: Drv Event 34 (NL80211_CMD_NEW_SCAN_RESULTS) received for wlan0
+08-02 13:12:36.160  2146  2146 D wpa_supplicant: wlan0: nl80211: New scan results available
+08-02 13:12:36.160  2146  2146 D wpa_supplicant: nl80211: Scan included frequencies: 2412 2417 2422 2427 2432 2437 2442 2447 2452 2457 2462 2467 2472
+08-02 13:12:36.160  2146  2146 D wpa_supplicant: wlan0: Event SCAN_RESULTS (3) received
+08-02 13:12:36.160  2146  2146 D wpa_supplicant: wlan0: Scan completed in 0.385014 seconds
+08-02 13:12:36.160  2146  2146 D wpa_supplicant: nl80211: Associated on 2442 MHz
+08-02 13:12:36.160  2146  2146 D wpa_supplicant: nl80211: Associated with 5c:dc:96:1e:32:99
+08-02 13:12:36.160  2146  2146 D wpa_supplicant: nl80211: Received scan results (8 BSSes)
+08-02 13:12:36.160  2146  2146 D wpa_supplicant: nl80211: Scan results indicate BSS status with 5c:dc:96:1e:32:99 as associated
+08-02 13:12:36.161  2146  2146 D wpa_supplicant: wlan0: BSS: Start scan result update 3014
+08-02 13:12:36.161  2146  2146 D wpa_supplicant: wlan0: BSS: Add new id 7105 BSSID 24:65:11:92:bf:a8 SSID 'FRITZ!Box Fon WLAN 7360 SL' freq 2412
+08-02 13:12:36.161  2146  2146 D wpa_supplicant: CTRL-DEBUG: ctrl_sock-sendmsg: sock=8 sndbuf=163840 outq=0 send_len=43
+08-02 13:12:36.161  2146  2146 D wpa_supplicant: CTRL_IFACE monitor sent successfully to /data/misc/wifi/sockets/wpa_ctrl_1966-2\x00
+08-02 13:12:36.161  2146  2146 D wpa_supplicant: wlan0: BSS: Add new id 7106 BSSID ac:22:05:a6:f9:a3 SSID 'UPCBB354AA' freq 2412
+08-02 13:12:36.161  2146  2146 D wpa_supplicant: CTRL-DEBUG: ctrl_sock-sendmsg: sock=8 sndbuf=163840 outq=0 send_len=43
+08-02 13:12:36.161  2146  2146 D wpa_supplicant: CTRL_IFACE monitor sent successfully to /data/misc/wifi/sockets/wpa_ctrl_1966-2\x00
+08-02 13:12:36.161  2146  2146 D wpa_supplicant: wlan0: BSS: Add new id 7107 BSSID ae:22:15:a6:f9:a3 SSID 'Vodafone Hotspot' freq 2412
+08-02 13:12:36.161  2146  2146 D wpa_supplicant: CTRL-DEBUG: ctrl_sock-sendmsg: sock=8 sndbuf=163840 outq=0 send_len=43
+08-02 13:12:36.161  2146  2146 D wpa_supplicant: CTRL_IFACE monitor sent successfully to /data/misc/wifi/sockets/wpa_ctrl_1966-2\x00
+08-02 13:12:36.161  2146  2146 D wpa_supplicant: wlan0: BSS: Remove id 7104 BSSID 90:5c:44:c8:28:2f SSID 'Martinelli' due to no match in scan
+08-02 13:12:36.161  2146  2146 D wpa_supplicant: CTRL-DEBUG: ctrl_sock-sendmsg: sock=8 sndbuf=163840 outq=448 send_len=45
+08-02 13:12:36.161  2146  2146 D wpa_supplicant: CTRL_IFACE monitor sent successfully to /data/misc/wifi/sockets/wpa_ctrl_1966-2\x00
+08-02 13:12:36.161  2146  2146 D wpa_supplicant: BSS: last_scan_res_used=8/64
+08-02 13:12:36.161  2146  2146 D wpa_supplicant: wlan0: Scan-only results received
+08-02 13:12:36.162  2146  2146 D wpa_supplicant: CTRL-DEBUG: ctrl_sock-sendmsg: sock=8 sndbuf=163840 outq=448 send_len=24
+08-02 13:12:36.162  2146  2146 D wpa_supplicant: CTRL_IFACE monitor sent successfully to /data/misc/wifi/sockets/wpa_ctrl_1966-2\x00
+08-02 13:12:36.162  3265  4166 I Icing   : Indexing com.google.android.gms-apps from com.google.android.gms
+08-02 13:12:36.162  2146  2146 D wpa_supplicant: wlan0: Radio work 'scan'@0xb0d961e0 done in 0.387935 seconds
+08-02 13:12:36.162  2146  2146 D wpa_supplicant: wlan0: radio_work_free('scan'@0xb0d961e0: num_active_works --> 0
+08-02 13:12:36.166  2146  2146 D wpa_supplicant: CTRL-DEBUG: global_ctrl_sock-sendto: sock=8 sndbuf=163840 outq=0 send_len=3702
+08-02 13:12:36.171  2146  2146 D wpa_supplicant: CTRL-DEBUG: global_ctrl_sock-sendto: sock=8 sndbuf=163840 outq=0 send_len=3702
+08-02 13:12:36.175  2146  2146 D wpa_supplicant: CTRL-DEBUG: global_ctrl_sock-sendto: sock=8 sndbuf=163840 outq=0 send_len=2400
+08-02 13:12:36.177  2146  2146 D wpa_supplicant: CTRL-DEBUG: global_ctrl_sock-sendto: sock=8 sndbuf=163840 outq=0 send_len=2400
+08-02 13:12:36.179  2146  2146 D wpa_supplicant: CTRL-DEBUG: global_ctrl_sock-sendto: sock=8 sndbuf=163840 outq=0 send_len=0
+08-02 13:12:36.183  2146  2146 D wpa_supplicant: CTRL-DEBUG: global_ctrl_sock-sendto: sock=8 sndbuf=163840 outq=0 send_len=0
+08-02 13:12:36.188  1966  2116 D WifiQualifiedNetworkSelector:: ==========start qualified Network Selection==========
+08-02 13:12:36.190  1966  2116 D WifiQualifiedNetworkSelector:: Too short to last successful Qualified Network Selection Gap is:3527 ms!
+08-02 13:12:36.193  1966  2116 D WifiQualifiedNetworkSelector:: Quit qualified Network Selection since it is not forced and current network is qualified already
+08-02 13:12:36.221  2146  2146 D wpa_supplicant: wlan0: Control interface command 'SIGNAL_POLL'
+08-02 13:12:36.233  2146  2146 D wpa_supplicant: CTRL-DEBUG: global_ctrl_sock-sendto: sock=8 sndbuf=163840 outq=0 send_len=48
+08-02 13:12:36.265  1966  2411 E IzatSvc_PassiveLocListener: E/Exiting with error virtual void izat_manager::IzatPassiveLocationListener::onLocationChanged(const izat_manager::IzatLocation *, const IzatLocationStatus) line 171 "1"
+08-02 13:12:36.293  1966  3404 V OSNPGlue_jni: Entering  : void onJavaLocationChanged(JNIEnv *, jobject, jboolean, jlong, jboolean, jlong, jboolean, jdouble, jboolean, jdouble, jboolean, jfloat, jboolean, jdouble, jboolean, jfloat, jboolean, jfloat, jboolean, jint)
+08-02 13:12:36.295  1966  2411 E LocSvc_LBSApiV02: E/virtual int lbs_core::LBSApiV02::injectCoarsePosition(const CoarsePositionInfo &):353]: Error : st = 3, ind.status = 0
+08-02 13:12:36.295  1966  2471 E QMI_FW  : QCCI qmi_cci_xport_recv: txn not found. svc_id: 16
+08-02 13:12:36.296   817  1140 W XTCC-5.1.0.19-b: [FDAL_ZPP_MGR] RequestNewZppFix: looks like GTP-LP is not supported
+08-02 13:12:36.382  1966  3246 I GnssLocationProvider: WakeLock acquired by sendMessage(3, 0, com.android.server.location.GnssLocationProvider$GpsRequest@1bcde9c)
+08-02 13:12:36.384  1966  2004 I GnssLocationProvider: WakeLock released by handleMessage(3, 0, com.android.server.location.GnssLocationProvider$GpsRequest@1bcde9c)
+08-02 13:12:36.391  1966  2383 D bsthal  : activate, handle: 1598182233, enabled: 0
+08-02 13:12:36.391  1966  2383 I bsthal  : <BST> disable sensor <BOSCH Gravity Sensor>
+08-02 13:12:36.392  1966 19052 D bsthal  : activate, handle: 1598182234, enabled: 0
+08-02 13:12:36.393  1966 19052 I bsthal  : <BST> disable sensor <BOSCH Linear Acceleration Sensor>
+08-02 13:12:36.394  1966 20170 D bsthal  : activate, handle: 1598182240, enabled: 0
+08-02 13:12:36.394  1966 20170 I bsthal  : <BST> disable sensor <BOSCH Gyroscope Uncalibrated Sensor>
+08-02 13:12:36.395  1966 19053 D bsthal  : activate, handle: 1598182241, enabled: 0
+08-02 13:12:36.395  1966 19053 I bsthal  : <BST> disable sensor <BOSCH Magnetic Field Uncalibrated Sensor>
+08-02 13:12:36.388   349   349 W sensord : type=1400 audit(0.0:3557): avc: denied { create } for name="profile_calib_a" scontext=u:r:sensord:s0 tcontext=u:object_r:system_data_file:s0 tclass=file permissive=0
+08-02 13:12:36.388   349   349 W sensord : type=1400 audit(0.0:3558): avc: denied { create } for name="profile_calib_g" scontext=u:r:sensord:s0 tcontext=u:object_r:system_data_file:s0 tclass=file permissive=0
+08-02 13:12:36.398   349   349 W sensord : type=1400 audit(0.0:3559): avc: denied { create } for name="profile_calib_a" scontext=u:r:sensord:s0 tcontext=u:object_r:system_data_file:s0 tclass=file permissive=0
+08-02 13:12:36.404  2426  4475 I GeofencerStateMachine: addGeofences called by com.google.android.apps.maps
+08-02 13:12:36.398   349   349 W sensord : type=1400 audit(0.0:3560): avc: denied { create } for name="profile_calib_g" scontext=u:r:sensord:s0 tcontext=u:object_r:system_data_file:s0 tclass=file permissive=0
+08-02 13:12:36.408  2426  3636 I GeofencerStateMachine: Use last location to update newly added Geofences.
+08-02 13:12:36.414  3265  4166 I Icing   : Indexing done com.google.android.gms-apps
+08-02 13:12:36.434  1966 20172 I GnssLocationProvider: WakeLock acquired by sendMessage(3, 0, com.android.server.location.GnssLocationProvider$GpsRequest@1e680a5)
+08-02 13:12:36.435  1966  2004 I GnssLocationProvider: WakeLock released by handleMessage(3, 0, com.android.server.location.GnssLocationProvider$GpsRequest@1e680a5)
+08-02 13:12:36.436  1966  2411 V OSNPGlue_jni: Entering  : void onStopRequestJNI()
+08-02 13:12:36.460  2426 22498 I NetworkScheduler.Stats: Task com.google.android.apps.maps/ finished executing. cause:1 result: 3 elapsed_millis: 976 uptime_millis: 976 exec_start_elapsed_seconds: 342910 [CONTEXT service_id=218 ]
+08-02 13:12:36.509  2426  2426 I GeofencerStateMachine: sendNewLocationAvailability: availability=LocationAvailability[isLocationAvailable: true]
+08-02 13:12:36.525  2426  2426 I GeofencerStateMachine: sendNewLocationAvailability: availability=LocationAvailability[isLocationAvailable: true]
+08-02 13:12:36.557  2426  2426 I GeofencerStateMachine: sendNewTransitions called.
+08-02 13:12:36.558  2426  3636 I GeofencerStateMachine: Location dropped because in deep still mode.
+08-02 13:12:36.571  2426  2426 I GeofencerStateMachine: sendNewLocationAvailability: availability=LocationAvailability[isLocationAvailable: true]
+08-02 13:12:36.736  5957  5987 W OpenGLRenderer: Incorrectly called buildLayer on View: ShortcutAndWidgetContainer, destroying layer...
+08-02 13:12:37.207  2150  2150 D HeadsetPhoneState: Enter onSignalStrengthsChanged
+08-02 13:12:37.207  2150  2150 D HeadsetPhoneState: Exit onSignalStrengthsChanged
