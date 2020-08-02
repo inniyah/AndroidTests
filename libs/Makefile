@@ -1,4 +1,4 @@
-all: build-sfml
+all: build-libs install-libs
 
 ROOTDIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 CACHEDIR := cache
@@ -287,7 +287,8 @@ $(INSTALLDIR)/%/lib/libharfbuzz.a: $(BUILDDIR)/harfbuzz $(INSTALLDIR)/%/lib/libf
 # http://github.com/kcat/openal-soft
 # http://repo.or.cz/w/openal-soft.git
 #~ .PRECIOUS: $(INSTALLDIR)/%/lib/libopenal.a
-#~ $(INSTALLDIR)/%/lib/libopenal.a: $(BUILDDIR)/openal
+#~ .PRECIOUS: $(INSTALLDIR)/%/lib/libopenal.so
+#~ $(INSTALLDIR)/%/lib/libopenal.so: $(BUILDDIR)/openal
 #~ 	mkdir -p "$<_$*"
 #~ 	cd "$<_$*" && PATH="$(NDK_TOOLCHAINS)/bin/:$$PATH" PKG_CONFIG_LIBDIR="$(INSTALLDIR)/$*/lib/pkgconfig" PKG_CONFIG_PATH="" cmake \
 #~ 		-DCMAKE_BUILD_TYPE=Release \
@@ -320,7 +321,8 @@ $(INSTALLDIR)/%/lib/libharfbuzz.a: $(BUILDDIR)/harfbuzz $(INSTALLDIR)/%/lib/libf
 # https://github.com/AerialX/openal-soft-android
 # https://repo.or.cz/w/openal-soft/android.git
 .PRECIOUS: $(INSTALLDIR)/%/lib/libopenal.a
-$(INSTALLDIR)/%/lib/libopenal.a: $(BUILDDIR)/openal
+.PRECIOUS: $(INSTALLDIR)/%/lib/libopenal.so
+$(INSTALLDIR)/%/lib/libopenal.so: $(BUILDDIR)/openal
 	mkdir -p "$<_$*"
 	cd "$<_$*" && cmake \
 		-DCMAKE_BUILD_TYPE=Release \
@@ -342,7 +344,7 @@ $(INSTALLDIR)/%/lib/libopenal.a: $(BUILDDIR)/openal
 		-DCMAKE_SHARED_LINKER_FLAGS="$(LDFLAGS) -L'$(ROOTDIR)/$(INSTALLDIR)/$*/lib/'" \
 		-DCMAKE_EXE_LINKER_FLAGS="$(LDFLAGS) -L'$(ROOTDIR)/$(INSTALLDIR)/$*/lib/'" \
 		-DCMAKE_INSTALL_PREFIX="/$*" \
-		-DLIBTYPE=STATIC \
+		-DLIBTYPE=SHARED \
 		"$(ROOTDIR)/$<"
 	cd "$<_$*" && make && make install DESTDIR="$(ROOTDIR)/$(INSTALLDIR)/"
 
@@ -381,7 +383,7 @@ $(INSTALLDIR)/%/lib/libsfml-main.a $(INSTALLDIR)/%/lib/libsfml-network.so \
 $(INSTALLDIR)/%/lib/libsfml-system.so $(INSTALLDIR)/%/lib/libsfml-window.so: $(BUILDDIR)/sfml \
 				$(INSTALLDIR)/%/lib/libogg.a $(INSTALLDIR)/%/lib/libvorbis.a $(INSTALLDIR)/%/lib/libFLAC.a \
 				$(INSTALLDIR)/%/lib/libfreetype.a $(INSTALLDIR)/%/lib/libpng16.a $(INSTALLDIR)/%/lib/libharfbuzz.a \
-				$(INSTALLDIR)/%/include/stb $(INSTALLDIR)/%/lib/libopenal.a
+				$(INSTALLDIR)/%/include/stb $(INSTALLDIR)/%/lib/libopenal.so
 	mkdir -p "$<_$*"
 	cd "$<_$*" && cmake \
 		--debug-output \
@@ -412,18 +414,33 @@ $(INSTALLDIR)/%/lib/libsfml-system.so $(INSTALLDIR)/%/lib/libsfml-window.so: $(B
 	( cd "$(TMPDIR)/usr/lib/android-ndk/sources/third_party/sfml/include" ; tar cf - . ) | ( cd "$(INSTALLDIR)/$*/include" ; tar xf - )
 	( cd "$(TMPDIR)/usr/lib/android-ndk/sources/third_party/sfml/lib/$(ANDROID_ABI_$*)" ; tar cf - . ) | ( cd "$(INSTALLDIR)/$*/lib" ; tar xf - )
 
+
 .PHONY: build-libs
 build-libs: check build-libs/armv7a build-libs/aarch64 build-libs/i686 build-libs/x86_64
 	@#
 
+.PHONY: build-sfml
+build-sfml: check build-sfml/armv7a build-sfml/aarch64 build-sfml/i686 build-sfml/x86_64
+	@#
+
+.PHONY: install-libs
+install-libs: check install-libs/armv7a install-libs/aarch64 install-libs/i686 install-libs/x86_64
+	@#
+
+.PHONY: clean cleanall
+
+clean:
+	if [ -n "$(BUILDDIR)" -a -d "$(BUILDDIR)" ];     then rm -rf "$(BUILDDIR)"; fi
+	if [ -n "$(INSTALLDIR)" -a -d "$(INSTALLDIR)" ]; then rm -rf "$(INSTALLDIR)"; fi
+
+cleanall: clean
+	rm -rf armv7a aarch64 i686 x86_64
+
+
 .PHONY: build-libs/%
 build-libs/%: $(INSTALLDIR)/%/lib/libogg.a $(INSTALLDIR)/%/lib/libvorbis.a $(INSTALLDIR)/%/lib/libFLAC.a \
 	$(INSTALLDIR)/%/lib/libfreetype.a $(INSTALLDIR)/%/lib/libpng16.a $(INSTALLDIR)/%/lib/libharfbuzz.a \
-	$(INSTALLDIR)/%/include/stb $(INSTALLDIR)/%/lib/libopenal.a $(INSTALLDIR)/%/lib/libsfml-main.a
-	@#
-
-.PHONY: build-libs
-build-sfml: check build-sfml/armv7a build-sfml/aarch64 build-sfml/i686 build-sfml/x86_64
+	$(INSTALLDIR)/%/include/stb $(INSTALLDIR)/%/lib/libopenal.so $(INSTALLDIR)/%/lib/libsfml-main.a
 	@#
 
 .PHONY: build-sfml/%
@@ -439,18 +456,11 @@ install-libs/%: build-libs/%
 	mkdir -p "$(DEPLOYDIR)/$*/lib"
 	( cd "$(INSTALLDIR)/$*/lib" ; tar cf - . ) | ( cd "$(DEPLOYDIR)/$*/lib" ; tar xf - )
 
-	find "$(DEPLOYDIR)/$*/bin" -type f -executable | while read -r FILE; do "$(NDK_BIN_$*)/strip" "$$FILE"; done
-	find "$(DEPLOYDIR)/$*/lib" -type f -name "*.a" | while read -r FILE; do "$(NDK_BIN_$*)/strip" "$$FILE"; done
-	find "$(DEPLOYDIR)/$*/lib" -type f -name "*.so*" | while read -r FILE; do "$(NDK_BIN_$*)/strip" "$$FILE"; done
+	#~ find "$(DEPLOYDIR)/$*/bin" -type f -executable | while read -r FILE; do "$(NDK_BIN_$*)/strip" "$$FILE"; done
+	#~ find "$(DEPLOYDIR)/$*/lib" -type f -name "*.a" | while read -r FILE; do "$(NDK_BIN_$*)/strip" "$$FILE"; done
+	find "$(DEPLOYDIR)/$*/lib" -type f -name "*.a" | while read -r FILE; do "$(NDK_BIN_$*)/ranlib" "$$FILE"; done
+	#~ find "$(DEPLOYDIR)/$*/lib" -type f -name "*.so*" | while read -r FILE; do "$(NDK_BIN_$*)/strip" "$$FILE"; done
 
-.PHONY: install-libs
-install-libs: check install-libs/armv7a install-libs/aarch64 install-libs/i686 install-libs/x86_64
-	@#
-
-.PHONY: clean
-clean:
-	if [ -n "$(BUILDDIR)" -a -d "$(BUILDDIR)" ]; then rm -rf "$(BUILDDIR)"; fi
-	if [ -n "$(INSTALLDIR)" -a -d "$(INSTALLDIR)" ]; then rm -rf "$(INSTALLDIR)"; fi
 
 DEFS :=
 LIBS :=
