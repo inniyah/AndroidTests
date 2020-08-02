@@ -239,6 +239,9 @@ test: build/$(APK_NAME).apk
 	$(ADB) shell am start --activity-clear-top -n "$(PACKAGE_NAME)/android.app.NativeActivity"
 	$(ADB) logcat | tee logcat.txt
 
+remove:
+	$(ADB) uninstall $(PACKAGE_NAME)
+
 # See: https://source.android.com/devices/tech/debug
 # See: https://proandroiddev.com/debugging-native-crashes-in-android-apps-2b86fd7113d8
 debug:
