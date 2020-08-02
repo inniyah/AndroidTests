@@ -144,6 +144,12 @@ $(CACHEDIR)/libpng-%.tar.xz:
 $(CACHEDIR)/raylib-%.tar.gz:
 	wget -nc -P $(CACHEDIR) "https://github.com/raysan5/raylib/archive/$*.tar.gz" -O "$@"
 
+$(CACHEDIR)/raylib-%.tar.gz:
+	wget -nc -P $(CACHEDIR) "https://github.com/raysan5/raylib/archive/$*.tar.gz" -O "$@"
+
+$(CACHEDIR)/glfm-%.tar.gz:
+	wget -nc -P $(CACHEDIR) "https://github.com/brackeen/glfm/archive/$*.tar.gz" -O "$@"
+
 $(BUILDDIR)/ogg: $(CACHEDIR)/libogg-1.3.4.tar.xz
 	@mkdir -p "$@"
 	tar xvfa "$<" --strip 1 --directory "$@"
@@ -194,6 +200,11 @@ $(BUILDDIR)/sfml: $(CACHEDIR)/sfml-2.5.1.tar.gz
 	if [ -e $(ROOTDIR)/patches/$(notdir $@)/series ]; then cd "$@" && QUILT_PATCHES=$(ROOTDIR)/patches/$(notdir $@) quilt push -a; fi
 
 $(BUILDDIR)/raylib: $(CACHEDIR)/raylib-3.0.0.tar.gz
+	@mkdir -p "$@"
+	tar xvfa "$<" --strip 1 --directory "$@"
+	if [ -e $(ROOTDIR)/patches/$(notdir $@)/series ]; then cd "$@" && QUILT_PATCHES=$(ROOTDIR)/patches/$(notdir $@) quilt push -a; fi
+
+$(BUILDDIR)/glfm: $(CACHEDIR)/glfm-0.9.0.tar.gz
 	@mkdir -p "$@"
 	tar xvfa "$<" --strip 1 --directory "$@"
 	if [ -e $(ROOTDIR)/patches/$(notdir $@)/series ]; then cd "$@" && QUILT_PATCHES=$(ROOTDIR)/patches/$(notdir $@) quilt push -a; fi
@@ -451,6 +462,33 @@ $(INSTALLDIR)/%/lib/libraylib.a: $(BUILDDIR)/raylib
 			PLATFORM=PLATFORM_ANDROID ANDROID_NDK="$(NDK)" ANDROID_TOOLCHAIN="$(NDK_TOOLCHAINS)" ANDROID_ARCH="$(RAYLIB_ARCH_NAME_$*)" ANDROID_API_VERSION=$(ANDROID_API)
 	install -m 644 "$<_$*/src/raylib.h" "$(INSTALLDIR)/$*/include"
 
+.PRECIOUS: $(INSTALLDIR)/%/lib/libglfm.a
+$(INSTALLDIR)/%/lib/libglfm.a: $(BUILDDIR)/glfm
+	mkdir -p "$<_$*"
+	cd "$<_$*" && cmake \
+		-DCMAKE_BUILD_TYPE=Release \
+		-DANDROID_ABI=$(ANDROID_ABI_$*) \
+		-DANDROID_NATIVE_API_LEVEL=android-$(ANDROID_NATIVE_API) \
+		-DCMAKE_TOOLCHAIN_FILE="$(NDK)/build/cmake/android.toolchain.cmake" \
+		-DCMAKE_FIND_ROOT_PATH="$(NDK_SYSROOT)" \
+		-DCMAKE_FIND_ROOT_PATH_MODE_PROGRAM=NEVER \
+		-DCMAKE_FIND_ROOT_PATH_MODE_LIBRARY=ONLY \
+		-DCMAKE_FIND_ROOT_PATH_MODE_INCLUDE=ONLY \
+		-DCMAKE_FIND_ROOT_PATH_MODE_PACKAGE=ONLY \
+		-DCMAKE_SYSROOT="$(NDK_SYSROOT)" \
+		-DCMAKE_C_FLAGS="$(CFLAGS) -I '$(NDK_SYSROOT)/usr/include/' -I '$(ROOTDIR)/$(INSTALLDIR)/$*/include/'" \
+		-DCMAKE_CXX_FLAGS="$(CXXFLAGS) -I '$(NDK_SYSROOT)/usr/include/' -I '$(ROOTDIR)/$(INSTALLDIR)/$*/include/'" \
+		-DCMAKE_SHARED_LINKER_FLAGS="$(LDFLAGS) -L'$(ROOTDIR)/$(INSTALLDIR)/$*/lib/'" \
+		-DCMAKE_EXE_LINKER_FLAGS="$(LDFLAGS) -L'$(ROOTDIR)/$(INSTALLDIR)/$*/lib/'" \
+		-DCMAKE_INSTALL_PREFIX="/$*" \
+		"$(ROOTDIR)/$<"
+	cd "$<_$*" && make 
+	mkdir -p "$(INSTALLDIR)/$*/bin"
+	mkdir -p "$(INSTALLDIR)/$*/lib"
+	mkdir -p "$(INSTALLDIR)/$*/include"
+	install -m 644 "$<_$*"/*.a "$(INSTALLDIR)/$*/lib"
+	install -m 644 "$</include"/*.h "$(INSTALLDIR)/$*/include"
+
 
 .PHONY: build-libs
 build-libs: check build-libs/armv7a build-libs/aarch64 build-libs/i686 build-libs/x86_64
@@ -486,6 +524,10 @@ build-sfml/%: $(INSTALLDIR)/%/lib/libsfml-main.a
 
 .PHONY: build-raylib/%
 build-raylib/%: $(INSTALLDIR)/%/lib/libraylib.a
+	@#
+
+.PHONY: build-glfm/%
+build-glfm/%: $(INSTALLDIR)/%/lib/libglfm.a
 	@#
 
 .PHONY: install-libs/%
