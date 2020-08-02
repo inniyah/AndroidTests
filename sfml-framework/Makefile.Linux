@@ -1,0 +1,45 @@
+PROGRAM=SFMLFrameworkTest
+
+all: $(PROGRAM)
+
+SRCS_C = $(shell find src -name "*.c")
+SRCS_CXX = $(shell find src -name "*.cpp")
+OBJS = $(SRCS_C:.c=.o) $(SRCS_CXX:.cpp=.o)
+
+PKG_CONFIG=sfml-all
+
+ifndef PKG_CONFIG
+PKG_CONFIG_CFLAGS=
+PKG_CONFIG_LDFLAGS=
+PKG_CONFIG_LIBS=
+else
+PKG_CONFIG_CFLAGS=`pkg-config --cflags $(PKG_CONFIG)`
+PKG_CONFIG_LDFLAGS=`pkg-config --libs-only-L $(PKG_CONFIG)`
+PKG_CONFIG_LIBS=`pkg-config --libs-only-l $(PKG_CONFIG)`
+endif
+
+OPTFLAGS= -O2 -g
+CFLAGS= -Wall -pedantic
+LDFLAGS= -Wl,--as-needed -Wl,--no-undefined -Wl,--no-allow-shlib-undefined
+INCS=
+LIBS=
+DEFS=-DASSETS_PREFIX=\"assets/\"
+CSTD=-std=c17
+CPPSTD=-std=c++17
+
+$(PROGRAM): $(OBJS)
+	g++ $(CPPSTD) $(CSTD) $(LDFLAGS) $(PKG_CONFIG_LDFLAGS) $+ -o $@ $(LIBS) $(PKG_CONFIG_LIBS)
+
+%.o: %.cpp
+	g++ -o $@ -c $+ $(CPPSTD) $(DEFS) $(INCS) $(OPTFLAGS) $(CFLAGS) $(PKG_CONFIG_CFLAGS)
+
+%.o: %.c
+	gcc -o $@ -c $+ $(CSTD) $(DEFS) $(INCS) $(OPTFLAGS) $(CFLAGS) $(PKG_CONFIG_CFLAGS)
+
+clean:
+	rm -fv $$(find src -type f -name "*.o")
+	rm -fv $$(find src -type f -name "*.a")
+	rm -fv $$(find src -type f -name "*~")
+	rm -fv $(PROGRAM)
+
+cleanall: clean
