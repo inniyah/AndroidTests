@@ -1,0 +1,15 @@
+*.a
+*.o
+*.so
+*.so*
+*~
+build
+cache
+logcat.txt
+libs/armv7a
+libs/aarch64
+libs/i686
+libs/x86_64
+tmp
+*.old
+*.bak
