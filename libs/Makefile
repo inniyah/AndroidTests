@@ -147,8 +147,11 @@ $(CACHEDIR)/raylib-%.tar.gz:
 $(CACHEDIR)/raylib-%.tar.gz:
 	wget -nc -P $(CACHEDIR) "https://github.com/raysan5/raylib/archive/$*.tar.gz" -O "$@"
 
-$(CACHEDIR)/glfm-%.tar.gz:
-	wget -nc -P $(CACHEDIR) "https://github.com/brackeen/glfm/archive/$*.tar.gz" -O "$@"
+#~ $(CACHEDIR)/glfm-%.tar.gz:
+#~ 	wget -nc -P $(CACHEDIR) "https://github.com/brackeen/glfm/archive/$*.tar.gz" -O "$@"
+
+$(CACHEDIR)/glfm-master.zip:
+	wget -nc -P $(CACHEDIR) https://github.com/brackeen/glfm/archive/master.zip -O "$@"
 
 $(BUILDDIR)/ogg: $(CACHEDIR)/libogg-1.3.4.tar.xz
 	@mkdir -p "$@"
@@ -183,9 +186,9 @@ $(BUILDDIR)/openal: $(CACHEDIR)/openal-soft-android-1.13.tar.gz
 
 $(BUILDDIR)/stb: $(CACHEDIR)/stb-master.zip
 	@mkdir -p "$@"
-	cd "$@" && ln -s . stb-master
+	cd "$@" && ln -s . $(notdir $@)-master
 	unzip "$<" -d "$@"
-	rm "$@/stb-master"
+	rm "$@/$(notdir $@)-master"
 	if [ -e $(ROOTDIR)/patches/$(notdir $@)/series ]; then cd "$@" && QUILT_PATCHES=$(ROOTDIR)/patches/$(notdir $@) quilt push -a; fi
 
 $(BUILDDIR)/png: $(CACHEDIR)/libpng-1.6.37.tar.xz
@@ -204,9 +207,16 @@ $(BUILDDIR)/raylib: $(CACHEDIR)/raylib-3.0.0.tar.gz
 	tar xvfa "$<" --strip 1 --directory "$@"
 	if [ -e $(ROOTDIR)/patches/$(notdir $@)/series ]; then cd "$@" && QUILT_PATCHES=$(ROOTDIR)/patches/$(notdir $@) quilt push -a; fi
 
-$(BUILDDIR)/glfm: $(CACHEDIR)/glfm-0.9.0.tar.gz
+#~ $(BUILDDIR)/glfm: $(CACHEDIR)/glfm-0.9.0.tar.gz
+#~ 	@mkdir -p "$@"
+#~ 	tar xvfa "$<" --strip 1 --directory "$@"
+#~ 	if [ -e $(ROOTDIR)/patches/$(notdir $@)/series ]; then cd "$@" && QUILT_PATCHES=$(ROOTDIR)/patches/$(notdir $@) quilt push -a; fi
+
+$(BUILDDIR)/glfm: $(CACHEDIR)/glfm-master.zip
 	@mkdir -p "$@"
-	tar xvfa "$<" --strip 1 --directory "$@"
+	cd "$@" && ln -s . $(notdir $@)-master
+	unzip "$<" -d "$@"
+	rm "$@/$(notdir $@)-master"
 	if [ -e $(ROOTDIR)/patches/$(notdir $@)/series ]; then cd "$@" && QUILT_PATCHES=$(ROOTDIR)/patches/$(notdir $@) quilt push -a; fi
 
 .PRECIOUS: $(INSTALLDIR)/%/lib/libogg.a
@@ -532,6 +542,7 @@ build-glfm/%: $(INSTALLDIR)/%/lib/libglfm.a
 
 .PHONY: install-libs/%
 install-libs/%: build-libs/%
+#~ install-libs/%:
 	mkdir -p "$(DEPLOYDIR)/$*/include"
 	( cd "$(INSTALLDIR)/$*/include" ; tar cf - . ) | ( cd "$(DEPLOYDIR)/$*/include" ; tar xf - )
 	mkdir -p "$(DEPLOYDIR)/$*/bin"
