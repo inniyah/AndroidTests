@@ -173,4 +173,5 @@ int main(int argc, char *argv[])
             sf::sleep(sf::milliseconds(100));
         }
     }
+    return EXIT_SUCCESS;
 }
