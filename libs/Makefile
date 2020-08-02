@@ -447,6 +447,8 @@ $(INSTALLDIR)/%/lib/libraylib.a: $(BUILDDIR)/raylib
 		LDFLAGS="$(LDFLAGS) -L'$(ROOTDIR)/$(INSTALLDIR)/$*/lib/'" \
 		make RAYLIB_SRC_PATH="$(ROOTDIR)/$<_$*/src" RAYLIB_RELEASE_PATH="$(ROOTDIR)/$(INSTALLDIR)/$*/lib" \
 			PLATFORM=PLATFORM_ANDROID ANDROID_NDK="$(NDK)" ANDROID_TOOLCHAIN="$(NDK_TOOLCHAINS)" ANDROID_ARCH="$(RAYLIB_ARCH_NAME_$*)" ANDROID_API_VERSION=$(ANDROID_API)
+	mkdir -p "$(INSTALLDIR)/$*/include"
+	install -m 644 "$<_$*/src/raylib.h" "$(INSTALLDIR)/$*/include"
 
 
 .PHONY: build-libs
