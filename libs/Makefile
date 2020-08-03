@@ -158,7 +158,7 @@ $(CACHEDIR)/glfm-master.zip:
 	wget -nc -P $(CACHEDIR) https://github.com/brackeen/glfm/archive/master.zip -O "$@"
 
 $(CACHEDIR)/nanovg-%.tar.gz:
-	wget -nc -P $(CACHEDIR) "https://github.com/inniyah/nanovg/archive/test_$*.tar.gz" -O "$@"
+	wget -nc -P $(CACHEDIR) "https://github.com/inniyah/nanovg/archive/v$*.tar.gz" -O "$@"
 
 $(BUILDDIR)/ogg: $(CACHEDIR)/libogg-1.3.4.tar.xz
 	@mkdir -p "$@"
@@ -231,7 +231,7 @@ $(BUILDDIR)/glfm: $(CACHEDIR)/glfm-master.zip
 	rm "$@/$(notdir $@)-master"
 	if [ -e $(ROOTDIR)/patches/$(notdir $@)/series ]; then cd "$@" && QUILT_PATCHES=$(ROOTDIR)/patches/$(notdir $@) quilt push -a; fi
 
-$(BUILDDIR)/nanovg: $(CACHEDIR)/nanovg-20200803.tar.gz
+$(BUILDDIR)/nanovg: $(CACHEDIR)/nanovg-0.1-rc2.tar.gz
 	@mkdir -p "$@"
 	tar xvfa "$<" --strip 1 --directory "$@"
 	if [ -e $(ROOTDIR)/patches/$(notdir $@)/series ]; then cd "$@" && QUILT_PATCHES=$(ROOTDIR)/patches/$(notdir $@) quilt push -a; fi
@@ -626,6 +626,10 @@ build-nanovg/%: $(INSTALLDIR)/%/lib/libnanovg.a
 
 .PHONY: install-libs/%
 install-libs/%: build-libs/%
+	mkdir -p "$(INSTALLDIR)/$*/bin"
+	mkdir -p "$(INSTALLDIR)/$*/lib"
+	mkdir -p "$(INSTALLDIR)/$*/include"
+
 	@#	mkdir -p "$(DEPLOYDIR)/$*/include"
 	( cd "$(INSTALLDIR)/$*/include" ; tar cf - . ) | ( cd "$(DEPLOYDIR)/$*/include" ; tar xf - )
 	mkdir -p "$(DEPLOYDIR)/$*/bin"
@@ -640,6 +644,10 @@ install-libs/%: build-libs/%
 
 .PHONY: install-libs-raw/%
 install-libs-raw/%:
+	mkdir -p "$(INSTALLDIR)/$*/bin"
+	mkdir -p "$(INSTALLDIR)/$*/lib"
+	mkdir -p "$(INSTALLDIR)/$*/include"
+
 	mkdir -p "$(DEPLOYDIR)/$*/include"
 	( cd "$(INSTALLDIR)/$*/include" ; tar cf - . ) | ( cd "$(DEPLOYDIR)/$*/include" ; tar xf - )
 	mkdir -p "$(DEPLOYDIR)/$*/bin"
