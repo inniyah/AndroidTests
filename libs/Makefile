@@ -505,6 +505,9 @@ $(INSTALLDIR)/%/lib/libglfw.a: $(BUILDDIR)/glfw
 		-DCMAKE_EXE_LINKER_FLAGS="$(LDFLAGS) -landroid -L'$(ROOTDIR)/$(INSTALLDIR)/$*/lib/'" \
 		-DCMAKE_INSTALL_PREFIX="/$*" \
 		"$(ROOTDIR)/$<"
+	mkdir -p "$(INSTALLDIR)/$*/bin"
+	mkdir -p "$(INSTALLDIR)/$*/lib"
+	mkdir -p "$(INSTALLDIR)/$*/include"
 	cd "$<_$*" && make && make install DESTDIR="$(ROOTDIR)/$(INSTALLDIR)/"
 
 .PRECIOUS: $(INSTALLDIR)/%/lib/libglfm.a

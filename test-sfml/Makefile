@@ -167,7 +167,9 @@ build/obj/mips/%.o: jni/%.cpp
 	mkdir -p $(dir $@) && $(CLANG_MIPS) $(JNI_DEFS) $(JNI_CXXFLAGS) -I ../libs/mipsel/include/ -c -o $@ $<
 
 build/apk/lib/mips/lib$(JNI_NAME).so: $(JNI_OBJS_MIPS)
-	mkdir -p -p $(dir $@) && $(CLANGXX_MIPS) -shared -o $@ $+ $(JNI_LDFLAGS) ../libs/mipsel/lib/libsfml-main.a -L ../libs/mipsel/lib/ $(JNI_LIBS)
+	mkdir -p -p $(dir $@) && $(CLANGXX_MIPS) -shared -o $@ \
+		-Wl,--whole-archive ../libs/mipsel/lib/libsfml-main.a -Wl,--no-whole-archive \
+		$+ $(JNI_LDFLAGS) -L ../libs/mipsel/lib/ $(JNI_LIBS)
 
 
 build/obj/mips64/%.o: jni/%.c
@@ -177,7 +179,9 @@ build/obj/mips64/%.o: jni/%.cpp
 	mkdir -p $(dir $@) && $(CLANG_MIPS64) $(JNI_DEFS) $(JNI_CXXFLAGS) -I ../libs/mips64el/include/ -c -o $@ $<
 
 build/apk/lib/mips64/lib$(JNI_NAME).so: $(JNI_OBJS_MIPS64)
-	mkdir -p -p $(dir $@) && $(CLANGXX_MIPS64) -shared -o $@ $+ $(JNI_LDFLAGS) ../libs/mips64el/lib/libsfml-main.a -L ../libs/mips64el/lib/ $(JNI_LIBS)
+	mkdir -p -p $(dir $@) && $(CLANGXX_MIPS64) -shared -o $@ \
+		-Wl,--whole-archive ../libs/mips64el/lib/libsfml-main.a -Wl,--no-whole-archive \
+		$+ $(JNI_LDFLAGS) -L ../libs/mips64el/lib/ $(JNI_LIBS)
 
 deps:
 	mkdir -p build/apk/lib/armeabi/
