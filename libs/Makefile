@@ -157,6 +157,9 @@ $(CACHEDIR)/glfw-%.tar.gz:
 $(CACHEDIR)/glfm-master.zip:
 	wget -nc -P $(CACHEDIR) https://github.com/brackeen/glfm/archive/master.zip -O "$@"
 
+$(CACHEDIR)/nanovg-%.tar.gz:
+	wget -nc -P $(CACHEDIR) "https://github.com/inniyah/nanovg/archive/test_$*.tar.gz" -O "$@"
+
 $(BUILDDIR)/ogg: $(CACHEDIR)/libogg-1.3.4.tar.xz
 	@mkdir -p "$@"
 	tar xvfa "$<" --strip 1 --directory "$@"
@@ -227,6 +230,12 @@ $(BUILDDIR)/glfm: $(CACHEDIR)/glfm-master.zip
 	unzip "$<" -d "$@"
 	rm "$@/$(notdir $@)-master"
 	if [ -e $(ROOTDIR)/patches/$(notdir $@)/series ]; then cd "$@" && QUILT_PATCHES=$(ROOTDIR)/patches/$(notdir $@) quilt push -a; fi
+
+$(BUILDDIR)/nanovg: $(CACHEDIR)/nanovg-20200803.tar.gz
+	@mkdir -p "$@"
+	tar xvfa "$<" --strip 1 --directory "$@"
+	if [ -e $(ROOTDIR)/patches/$(notdir $@)/series ]; then cd "$@" && QUILT_PATCHES=$(ROOTDIR)/patches/$(notdir $@) quilt push -a; fi
+
 
 .PRECIOUS: $(INSTALLDIR)/%/lib/libogg.a
 $(INSTALLDIR)/%/lib/libogg.a: $(BUILDDIR)/ogg
@@ -537,6 +546,33 @@ $(INSTALLDIR)/%/lib/libglfm.a: $(BUILDDIR)/glfm
 	install -m 644 "$<_$*"/*.a "$(INSTALLDIR)/$*/lib"
 	install -m 644 "$</include"/*.h "$(INSTALLDIR)/$*/include"
 
+.PRECIOUS: $(INSTALLDIR)/%/lib/libnanovg.a
+$(INSTALLDIR)/%/lib/libnanovg.a: $(BUILDDIR)/nanovg $(INSTALLDIR)/%/include/stb
+	mkdir -p "$<_$*"
+	cd "$<_$*" && cmake \
+		-DCMAKE_BUILD_TYPE=Release \
+		-DANDROID_ABI=$(ANDROID_ABI_$*) \
+		-DANDROID_NATIVE_API_LEVEL=android-$(ANDROID_NATIVE_API) \
+		-DCMAKE_TOOLCHAIN_FILE="$(NDK)/build/cmake/android.toolchain.cmake" \
+		-DCMAKE_FIND_ROOT_PATH="$(NDK_SYSROOT)" \
+		-DCMAKE_FIND_ROOT_PATH_MODE_PROGRAM=NEVER \
+		-DCMAKE_FIND_ROOT_PATH_MODE_LIBRARY=ONLY \
+		-DCMAKE_FIND_ROOT_PATH_MODE_INCLUDE=ONLY \
+		-DCMAKE_FIND_ROOT_PATH_MODE_PACKAGE=ONLY \
+		-DCMAKE_SYSROOT="$(NDK_SYSROOT)" \
+		-DCMAKE_C_FLAGS="$(CFLAGS) -I '$(NDK_SYSROOT)/usr/include/' -I '$(ROOTDIR)/$(INSTALLDIR)/$*/include/'" \
+		-DCMAKE_CXX_FLAGS="$(CXXFLAGS) -I '$(NDK_SYSROOT)/usr/include/' -I '$(ROOTDIR)/$(INSTALLDIR)/$*/include/'" \
+		-DCMAKE_SHARED_LINKER_FLAGS="$(LDFLAGS) -L'$(ROOTDIR)/$(INSTALLDIR)/$*/lib/'" \
+		-DCMAKE_EXE_LINKER_FLAGS="$(LDFLAGS) -L'$(ROOTDIR)/$(INSTALLDIR)/$*/lib/'" \
+		-DCMAKE_INSTALL_PREFIX="/$*" \
+		"$(ROOTDIR)/$<"
+	cd "$<_$*" && make 
+	mkdir -p "$(INSTALLDIR)/$*/bin"
+	mkdir -p "$(INSTALLDIR)/$*/lib"
+	mkdir -p "$(INSTALLDIR)/$*/include"
+	install -m 644 "$<_$*"/*.a "$(INSTALLDIR)/$*/lib"
+	install -m 644 "$</include"/*.h "$(INSTALLDIR)/$*/include"
+
 
 .PHONY: build-libs
 build-libs: check build-libs/armv7a build-libs/aarch64 build-libs/i686 build-libs/x86_64
@@ -580,6 +616,10 @@ build-glfw/%: $(INSTALLDIR)/%/lib/libglfw.a
 
 .PHONY: build-glfm/%
 build-glfm/%: $(INSTALLDIR)/%/lib/libglfm.a
+	@#
+
+.PHONY: build-nanovg/%
+build-nanovg/%: $(INSTALLDIR)/%/lib/libnanovg.a
 	@#
 
 .PHONY: install-libs/%
