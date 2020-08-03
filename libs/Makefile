@@ -148,7 +148,7 @@ $(CACHEDIR)/raylib-%.tar.gz:
 $(CACHEDIR)/raylib-%.tar.gz:
 	wget -nc -P $(CACHEDIR) "https://github.com/raysan5/raylib/archive/$*.tar.gz" -O "$@"
 
-$(CACHEDIR)/glfw-%.tar.gz:
+$(CACHEDIR)/glfw3-%.tar.gz:
 	wget -nc -P $(CACHEDIR) "https://github.com/inniyah/glfw/archive/android_$*.tar.gz" -O "$@"
 
 #~ $(CACHEDIR)/glfm-%.tar.gz:
@@ -214,7 +214,7 @@ $(BUILDDIR)/raylib: $(CACHEDIR)/raylib-3.0.0.tar.gz
 	tar xvfa "$<" --strip 1 --directory "$@"
 	if [ -e $(ROOTDIR)/patches/$(notdir $@)/series ]; then cd "$@" && QUILT_PATCHES=$(ROOTDIR)/patches/$(notdir $@) quilt push -a; fi
 
-$(BUILDDIR)/glfw: $(CACHEDIR)/glfw-3.3+1.tar.gz
+$(BUILDDIR)/glfw3: $(CACHEDIR)/glfw3-3.3+1.tar.gz
 	@mkdir -p "$@"
 	tar xvfa "$<" --strip 1 --directory "$@"
 	if [ -e $(ROOTDIR)/patches/$(notdir $@)/series ]; then cd "$@" && QUILT_PATCHES=$(ROOTDIR)/patches/$(notdir $@) quilt push -a; fi
@@ -491,7 +491,7 @@ $(INSTALLDIR)/%/lib/libraylib.a: $(BUILDDIR)/raylib
 	install -m 644 "$<_$*/src/raylib.h" "$(INSTALLDIR)/$*/include"
 
 .PRECIOUS: $(INSTALLDIR)/%/lib/libglfw.a
-$(INSTALLDIR)/%/lib/libglfw.a: $(BUILDDIR)/glfw
+$(INSTALLDIR)/%/lib/libglfw.a: $(BUILDDIR)/glfw3
 	mkdir -p "$<_$*"
 	cd "$<_$*" && cmake \
 		-DCMAKE_BUILD_TYPE=Release \
@@ -551,6 +551,9 @@ $(INSTALLDIR)/%/lib/libnanovg.a: $(BUILDDIR)/nanovg $(INSTALLDIR)/%/include/stb
 	mkdir -p "$<_$*"
 	cd "$<_$*" && cmake \
 		-DCMAKE_BUILD_TYPE=Release \
+		-DNANOVG_BUILD_GL2=OFF \
+		-DNANOVG_BUILD_GL3=OFF \
+		-DNANOVG_BUILD_EXAMPLES=OFF \
 		-DANDROID_ABI=$(ANDROID_ABI_$*) \
 		-DANDROID_NATIVE_API_LEVEL=android-$(ANDROID_NATIVE_API) \
 		-DCMAKE_TOOLCHAIN_FILE="$(NDK)/build/cmake/android.toolchain.cmake" \
@@ -566,12 +569,7 @@ $(INSTALLDIR)/%/lib/libnanovg.a: $(BUILDDIR)/nanovg $(INSTALLDIR)/%/include/stb
 		-DCMAKE_EXE_LINKER_FLAGS="$(LDFLAGS) -L'$(ROOTDIR)/$(INSTALLDIR)/$*/lib/'" \
 		-DCMAKE_INSTALL_PREFIX="/$*" \
 		"$(ROOTDIR)/$<"
-	cd "$<_$*" && make 
-	mkdir -p "$(INSTALLDIR)/$*/bin"
-	mkdir -p "$(INSTALLDIR)/$*/lib"
-	mkdir -p "$(INSTALLDIR)/$*/include"
-	install -m 644 "$<_$*"/*.a "$(INSTALLDIR)/$*/lib"
-	install -m 644 "$</include"/*.h "$(INSTALLDIR)/$*/include"
+	cd "$<_$*" && make && make install DESTDIR="$(ROOTDIR)/$(INSTALLDIR)/"
 
 
 .PHONY: build-libs
@@ -580,6 +578,10 @@ build-libs: check build-libs/armv7a build-libs/aarch64 build-libs/i686 build-lib
 
 .PHONY: install-libs
 install-libs: check install-libs/armv7a install-libs/aarch64 install-libs/i686 install-libs/x86_64
+	@#
+
+.PHONY: install-libs-raw
+install-libs-raw: install-libs-raw/armv7a install-libs-raw/aarch64 install-libs-raw/i686 install-libs-raw/x86_64
 	@#
 
 .PHONY: build-%
@@ -610,8 +612,8 @@ build-sfml/%: $(INSTALLDIR)/%/lib/libsfml-main.a
 build-raylib/%: $(INSTALLDIR)/%/lib/libraylib.a
 	@#
 
-.PHONY: build-glfw/%
-build-glfw/%: $(INSTALLDIR)/%/lib/libglfw.a
+.PHONY: build-glfw3/%
+build-glfw3/%: $(INSTALLDIR)/%/lib/libglfw.a
 	@#
 
 .PHONY: build-glfm/%
@@ -624,7 +626,20 @@ build-nanovg/%: $(INSTALLDIR)/%/lib/libnanovg.a
 
 .PHONY: install-libs/%
 install-libs/%: build-libs/%
-#~ install-libs/%:
+	@#	mkdir -p "$(DEPLOYDIR)/$*/include"
+	( cd "$(INSTALLDIR)/$*/include" ; tar cf - . ) | ( cd "$(DEPLOYDIR)/$*/include" ; tar xf - )
+	mkdir -p "$(DEPLOYDIR)/$*/bin"
+	( cd "$(INSTALLDIR)/$*/bin" ; tar cf - . ) | ( cd "$(DEPLOYDIR)/$*/bin" ; tar xf - )
+	mkdir -p "$(DEPLOYDIR)/$*/lib"
+	( cd "$(INSTALLDIR)/$*/lib" ; tar cf - . ) | ( cd "$(DEPLOYDIR)/$*/lib" ; tar xf - )
+
+	#~ find "$(DEPLOYDIR)/$*/bin" -type f -executable | while read -r FILE; do "$(NDK_BIN_$*)/strip" "$$FILE"; done
+	#~ find "$(DEPLOYDIR)/$*/lib" -type f -name "*.a" | while read -r FILE; do "$(NDK_BIN_$*)/strip" "$$FILE"; done
+	find "$(DEPLOYDIR)/$*/lib" -type f -name "*.a" | while read -r FILE; do "$(NDK_BIN_$*)/ranlib" "$$FILE"; done
+	#~ find "$(DEPLOYDIR)/$*/lib" -type f -name "*.so*" | while read -r FILE; do "$(NDK_BIN_$*)/strip" "$$FILE"; done
+
+.PHONY: install-libs-raw/%
+install-libs-raw/%:
 	mkdir -p "$(DEPLOYDIR)/$*/include"
 	( cd "$(INSTALLDIR)/$*/include" ; tar cf - . ) | ( cd "$(DEPLOYDIR)/$*/include" ; tar xf - )
 	mkdir -p "$(DEPLOYDIR)/$*/bin"
