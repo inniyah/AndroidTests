@@ -154,6 +154,9 @@ list: build/$(APK_NAME).apk
 	jar tf $<
 
 
+remove:
+	$(ADB) uninstall $(PACKAGE_NAME)
+
 # Test app with the adb tool
 #############################
 
