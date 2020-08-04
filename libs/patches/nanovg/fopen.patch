@@ -15,7 +15,7 @@ Index: nanovg/src/android.c
 ===================================================================
 --- /dev/null
 +++ nanovg/src/android.c
-@@ -0,0 +1,44 @@
+@@ -0,0 +1,45 @@
 +// See: http://www.50ply.com/blog/2013/01/19/loading-compressed-android-assets-with-file-pointer/
 +// See: https://github.com/android/ndk/issues/562
 +
@@ -32,6 +32,7 @@ Index: nanovg/src/android.c
 +}
 +
 +static int android_write(void* cookie, const char* buf, int size) {
++  (void)cookie; (void)buf; (void)size; // unused
 +  return EACCES; // can't provide write access to the apk
 +}
 +

@@ -7,7 +7,9 @@ INSTALLDIR := build/output
 DEPLOYDIR := .
 TMPDIR := build/tmp
 
-COMMON_CFLAGS = -O2 -gz -g3 -fPIC -Wall -Wdate-time -D_FORTIFY_SOURCE=2 -D_GNU_SOURCE \
+COMMON_CFLAGS = -O2 -gz -g3 -fPIC -W -Wall -Wdate-time \
+	-D_FORTIFY_SOURCE=2 -D_GNU_SOURCE \
+	-Dftello=ftell -Dfseeko=fseek \
 	-Werror=int-conversion -Werror=implicit-function-declaration
 CFLAGS = -std=c11 $(COMMON_CFLAGS)
 CXXFLAGS = -std=c++11 $(COMMON_CFLAGS)
@@ -337,6 +339,8 @@ build-freetype/% $(INSTALLDIR)/%/lib/libfreetype.a: $(BUILDDIR)/freetype
 build-harfbuzz/% $(INSTALLDIR)/%/lib/libharfbuzz.a: $(BUILDDIR)/harfbuzz $(INSTALLDIR)/%/lib/libfreetype.a
 	mkdir -p "$<_$*"
 	cd "$<_$*" && cmake \
+		--debug-output \
+		-DCMAKE_VERBOSE_MAKEFILE=ON \
 		-DCMAKE_BUILD_TYPE=Release \
 		-DHB_HAVE_FREETYPE=ON \
 		-DFREETYPE_LIBRARY="'$(ROOTDIR)/$(INSTALLDIR)/$*/lib/" \
@@ -370,6 +374,8 @@ build-harfbuzz/% $(INSTALLDIR)/%/lib/libharfbuzz.a: $(BUILDDIR)/harfbuzz $(INSTA
 #~ $(INSTALLDIR)/%/lib/libopenal.so: $(BUILDDIR)/openal
 #~ 	mkdir -p "$<_$*"
 #~ 	cd "$<_$*" && PATH="$(NDK_TOOLCHAINS)/bin/:$$PATH" PKG_CONFIG_LIBDIR="$(INSTALLDIR)/$*/lib/pkgconfig" PKG_CONFIG_PATH="" cmake \
+#~ 		--debug-output \
+#~ 		-DCMAKE_VERBOSE_MAKEFILE=ON \
 #~ 		-DCMAKE_BUILD_TYPE=Release \
 #~ 		-DCMAKE_C_COMPILER="$(CC_$*)" \
 #~ 		-DCMAKE_CXX_COMPILER="$(CXX_$*)" \
@@ -405,6 +411,8 @@ build-harfbuzz/% $(INSTALLDIR)/%/lib/libharfbuzz.a: $(BUILDDIR)/harfbuzz $(INSTA
 build-openal/% $(INSTALLDIR)/%/lib/libopenal.so: $(BUILDDIR)/openal
 	mkdir -p "$<_$*"
 	cd "$<_$*" && cmake \
+		--debug-output \
+		-DCMAKE_VERBOSE_MAKEFILE=ON \
 		-DCMAKE_BUILD_TYPE=Release \
 		-DALSOFT_REQUIRE_OPENSL=ON \
 		-DANDROID_ABI=$(ANDROID_ABI_$*) \
@@ -539,6 +547,8 @@ build-raylib/% $(INSTALLDIR)/%/lib/libraylib.a: $(BUILDDIR)/raylib
 build-glfw3/% $(INSTALLDIR)/%/lib/libglfw3.a: $(BUILDDIR)/glfw3
 	mkdir -p "$<_$*"
 	cd "$<_$*" && cmake \
+		--debug-output \
+		-DCMAKE_VERBOSE_MAKEFILE=ON \
 		-DCMAKE_BUILD_TYPE=Release \
 		-DGLFW_BUILD_EXAMPLES=OFF \
 		-DGLFW_BUILD_TESTS=OFF \
@@ -572,6 +582,8 @@ build-glfw3/% $(INSTALLDIR)/%/lib/libglfw3.a: $(BUILDDIR)/glfw3
 build-glfm/% $(INSTALLDIR)/%/lib/libglfm.a: $(BUILDDIR)/glfm
 	mkdir -p "$<_$*"
 	cd "$<_$*" && cmake \
+		--debug-output \
+		-DCMAKE_VERBOSE_MAKEFILE=ON \
 		-DCMAKE_BUILD_TYPE=Release \
 		-DANDROID_ABI=$(ANDROID_ABI_$*) \
 		-DANDROID_NATIVE_API_LEVEL=android-$(ANDROID_NATIVE_API) \
@@ -603,6 +615,8 @@ build-glfm/% $(INSTALLDIR)/%/lib/libglfm.a: $(BUILDDIR)/glfm
 build-nanovg/% $(INSTALLDIR)/%/lib/libnanovg.a: $(BUILDDIR)/nanovg $(INSTALLDIR)/%/include/stb
 	mkdir -p "$<_$*"
 	cd "$<_$*" && cmake \
+		--debug-output \
+		-DCMAKE_VERBOSE_MAKEFILE=ON \
 		-DCMAKE_BUILD_TYPE=Release \
 		-DNANOVG_SHARED_LIBS=OFF \
 		-DNANOVG_STATIC_LIBS=ON \
