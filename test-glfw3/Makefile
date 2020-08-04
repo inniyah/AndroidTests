@@ -30,7 +30,7 @@ NDK_TOOLCHAINS = $(NDK)/toolchains/llvm/prebuilt/linux-x86_64
 NDK_SYSROOT = $(NDK)/toolchains/llvm/prebuilt/linux-x86_64/sysroot
 NDK_BIN = $(NDK)/toolchains/llvm/prebuilt/linux-x86_64/bin/
 
-NDK_INCLUDE = = $(NDK_SYSROOT)/usr/lib/include
+NDK_INCLUDE = $(NDK_SYSROOT)/usr/lib/include
 
 ORG_DIRS = $(subst .,/,$(PACKAGE_NAME))
 

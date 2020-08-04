@@ -64,7 +64,7 @@ NDK_BIN_x86_64 = $(NDK_TOOLCHAINS)/x86_64-linux-android/bin
 NDK_BIN_mipsel = $(NDK_TOOLCHAINS)/mipsel-linux-android/bin
 NDK_BIN_mips64el = $(NDK_TOOLCHAINS)/mips64el-linux-android/bin
 
-NDK_INCLUDE = = $(NDK_SYSROOT)/usr/lib/include
+NDK_INCLUDE = $(NDK_SYSROOT)/usr/lib/include
 
 ORG_DIRS = $(subst .,/,$(PACKAGE_NAME))
 

@@ -4,11 +4,11 @@
 
 #if defined(__ANDROID__)
 #include <android/log.h>
-#define LOGV(...) (__android_log_print(ANDROID_LOG_VERBOSE, "GAME", __VA_ARGS__))
-#define LOGI(...) (__android_log_print(ANDROID_LOG_INFO, "GAME", __VA_ARGS__))
-#define LOGW(...) (__android_log_print(ANDROID_LOG_WARN, "GAME", __VA_ARGS__))
-#define LOGE(...) (__android_log_print(ANDROID_LOG_ERROR, "GAME", __VA_ARGS__))
-#define LOGF(...) (__android_log_print(ANDROID_LOG_FATAL, "GAME", __VA_ARGS__))
+#define LOGV(...) (__android_log_print(ANDROID_LOG_VERBOSE, "GLFW Demo", __VA_ARGS__))
+#define LOGI(...) (__android_log_print(ANDROID_LOG_INFO,    "GLFW Demo", __VA_ARGS__))
+#define LOGW(...) (__android_log_print(ANDROID_LOG_WARN,    "GLFW Demo", __VA_ARGS__))
+#define LOGE(...) (__android_log_print(ANDROID_LOG_ERROR,   "GLFW Demo", __VA_ARGS__))
+#define LOGF(...) (__android_log_print(ANDROID_LOG_FATAL,   "GLFW Demo", __VA_ARGS__))
 #else
 #include <stdio.h>
 #define LOGV(...) { printf("[DEBUG] "); printf(__VA_ARGS__); printf("\n"); }
