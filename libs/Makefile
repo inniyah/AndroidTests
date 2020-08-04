@@ -603,6 +603,8 @@ build-nanovg/% $(INSTALLDIR)/%/lib/libnanovg.a: $(BUILDDIR)/nanovg $(INSTALLDIR)
 	mkdir -p "$<_$*"
 	cd "$<_$*" && cmake \
 		-DCMAKE_BUILD_TYPE=Release \
+		-DNANOVG_SHARED_LIBS=OFF \
+		-DNANOVG_STATIC_LIBS=ON \
 		-DNANOVG_BUILD_GL2=OFF \
 		-DNANOVG_BUILD_GL3=OFF \
 		-DNANOVG_BUILD_EXAMPLES=OFF \
