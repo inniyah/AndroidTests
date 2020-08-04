@@ -1,12 +1,12 @@
 APK_NAME = APKName
-PACKAGE_NAME = com.example.hellojni
+PACKAGE_NAME = com.mambrosi.testassets
 KEYS_DIR = ../keys
 
 JNI_SRCS = $(shell find jni -name "*.c")
 JNI_CFLAGS = -fPIC -pedantic -Wall -Wno-unused-value -Wno-unused-function
 JNI_LDFLAGS = -Wl,--as-needed -Wl,--no-undefined -Wl,--no-allow-shlib-undefined
-JNI_LIBS = -llog -landroid -lGLESv2
-JNI_NAME = hello-jni
+JNI_LIBS = -llog -landroid
+JNI_NAME = assetstest
 
 JDK = /usr/lib/jvm/java-8-openjdk-amd64
 SDK = /usr/lib/android-sdk
@@ -54,6 +54,7 @@ check:
 
 clean:
 	rm -rf build
+	rm -f logcat.txt
 
 # Generate R.java file with Android Asset Packaging Tool (aapt)
 ################################################################
@@ -74,7 +75,7 @@ build/gen/$(ORG_DIRS)/R.java: check
 
 build/obj/$(ORG_DIRS)/MainActivity.class build/obj/$(ORG_DIRS)/R.class: build/gen/$(ORG_DIRS)/R.java
 	@mkdir -p "build/obj"
-	$(JAVAC) -bootclasspath "$(SDK)/jre/lib/rt.jar" -classpath "$(PLATFORM)" -d "build/obj" $+ "src/$(ORG_DIRS)"/*.java
+	$(JAVAC) -bootclasspath "$(SDK)/jre/lib/rt.jar" -classpath "$(PLATFORM)" -d "build/obj" $+ "java/$(ORG_DIRS)"/*.java
 
 # Translate the .class files in build/obj/ to Dalvik byte code with dx tool
 ############################################################################
@@ -115,6 +116,7 @@ build/apk/lib: $(JNI_SRCS)
 build/$(APK_NAME).unsigned.apk: build/apk/classes.dex build/apk/lib
 	@mkdir -p "build/apk"
 	$(AAPT) package -f -M "AndroidManifest.xml" -S res/ -I "$(PLATFORM)" -F "build/$(APK_NAME).unsigned.apk" "build/apk/"
+	find assets -type f | while read -r FILE; do $(AAPT) add -v "build/$(APK_NAME).unsigned.apk" "$$FILE"; done
 
 # Use zipalign tool in the APK
 ###############################
@@ -160,7 +162,8 @@ remove:
 #############################
 
 test: build/$(APK_NAME).apk
+	$(ADB) logcat -b all -c
 	$(ADB) install -r $<
-
-	# The --activity-clear-top is for clean the task avoiding the warning "Warning: Activity not started, its current task has been brought to the front".
-	$(ADB) shell am start --activity-clear-top -n "$(PACKAGE_NAME)/.HelloJni"
+	$(ADB) shell setprop log.redirect-stdio true
+	$(ADB) shell am start --activity-clear-top -n "$(PACKAGE_NAME)/.MainActivity"
+	$(ADB) logcat | tee logcat.txt
