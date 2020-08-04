@@ -236,9 +236,12 @@ $(BUILDDIR)/nanovg: $(CACHEDIR)/nanovg-0.1-rc2.tar.gz
 	tar xvfa "$<" --strip 1 --directory "$@"
 	if [ -e $(ROOTDIR)/patches/$(notdir $@)/series ]; then cd "$@" && QUILT_PATCHES=$(ROOTDIR)/patches/$(notdir $@) quilt push -a; fi
 
+# Ogg bitstream library
+# http://xiph.org/ogg/
 
+.PHONY: build-ogg/%
 .PRECIOUS: $(INSTALLDIR)/%/lib/libogg.a
-$(INSTALLDIR)/%/lib/libogg.a: $(BUILDDIR)/ogg
+build-ogg/% $(INSTALLDIR)/%/lib/libogg.a: $(BUILDDIR)/ogg
 	mkdir -p "$<_$*"
 	cd "$<_$*" && PATH="$(NDK_TOOLCHAINS)/bin/:$$PATH" \
 		CC="$(CC_$*)" CXX="$(CXX_$*)" AR="$(NDK_BIN_$*)/ar" \
@@ -254,10 +257,14 @@ $(INSTALLDIR)/%/lib/libogg.a: $(BUILDDIR)/ogg
 			--prefix="/$*"
 	cd "$<_$*" && make && make install DESTDIR="$(ROOTDIR)/$(INSTALLDIR)/"
 
+# Decoder library for Vorbis General Audio Compression Codec
+# https://www.xiph.org/vorbis/
+
+.PHONY: build-vorbis/%
 .PRECIOUS: $(INSTALLDIR)/%/lib/libvorbis.a
 .PRECIOUS: $(INSTALLDIR)/%/lib/libvorbisfile.a
 .PRECIOUS: $(INSTALLDIR)/%/lib/libvorbisenc.a
-$(INSTALLDIR)/%/lib/libvorbisfile.a $(INSTALLDIR)/%/lib/libvorbisenc.a \
+build-vorbis/% $(INSTALLDIR)/%/lib/libvorbisfile.a $(INSTALLDIR)/%/lib/libvorbisenc.a \
 		$(INSTALLDIR)/%/lib/libvorbis.a: $(BUILDDIR)/vorbis $(INSTALLDIR)/%/lib/libogg.a
 	mkdir -p "$<_$*"
 	cd "$<_$*" && PATH="$(NDK_TOOLCHAINS)/bin/:$$PATH" \
@@ -275,8 +282,12 @@ $(INSTALLDIR)/%/lib/libvorbisfile.a $(INSTALLDIR)/%/lib/libvorbisenc.a \
 			--with-ogg="$(ROOTDIR)/$(INSTALLDIR)/$*/"
 	cd "$<_$*" && make && make install DESTDIR="$(ROOTDIR)/$(INSTALLDIR)/"
 
+# Free Lossless Audio Codec
+# http://xiph.org/flac/
+
+.PHONY: build-flac/%
 .PRECIOUS: $(INSTALLDIR)/%/lib/libFLAC.a
-$(INSTALLDIR)/%/lib/libFLAC.a: $(BUILDDIR)/flac $(INSTALLDIR)/%/lib/libogg.a
+build-flac/% $(INSTALLDIR)/%/lib/libFLAC.a: $(BUILDDIR)/flac $(INSTALLDIR)/%/lib/libogg.a
 	mkdir -p "$<_$*"
 	cd "$<_$*" && PATH="$(NDK_TOOLCHAINS)/bin/:$$PATH" \
 		CC="$(CC_$*)" CXX="$(CXX_$*)" AR="$(NDK_BIN_$*)/ar" \
@@ -293,8 +304,12 @@ $(INSTALLDIR)/%/lib/libFLAC.a: $(BUILDDIR)/flac $(INSTALLDIR)/%/lib/libogg.a
 			--with-ogg="$(ROOTDIR)/$(INSTALLDIR)/$*/"
 	cd "$<_$*" && make && make install DESTDIR="$(ROOTDIR)/$(INSTALLDIR)/"
 
+# FreeType 2 font engine
+# https://www.freetype.org/
+
+.PHONY: build-freetype/%
 .PRECIOUS:$(INSTALLDIR)/%/lib/libfreetype.a
-$(INSTALLDIR)/%/lib/libfreetype.a: $(BUILDDIR)/freetype
+build-freetype/% $(INSTALLDIR)/%/lib/libfreetype.a: $(BUILDDIR)/freetype
 	mkdir -p "$<_$*"
 	cd "$<_$*" && PATH="$(NDK_TOOLCHAINS)/bin/:$$PATH" \
 		CC="$(CC_$*)" CXX="$(CXX_$*)" AR="$(NDK_BIN_$*)/ar" \
@@ -313,8 +328,12 @@ $(INSTALLDIR)/%/lib/libfreetype.a: $(BUILDDIR)/freetype
 	mkdir -p "$(ROOTDIR)/$(INSTALLDIR)/$*/lib/"
 	install -m 644 "$<_$*/.libs"/lib*.a "$(ROOTDIR)/$(INSTALLDIR)/$*/lib/"
 
+# OpenType text shaping engine
+# https://www.freedesktop.org/wiki/Software/HarfBuzz
+
+.PHONY: build-harfbuzz/%
 .PRECIOUS: $(INSTALLDIR)/%/lib/libharfbuzz.a
-$(INSTALLDIR)/%/lib/libharfbuzz.a: $(BUILDDIR)/harfbuzz $(INSTALLDIR)/%/lib/libfreetype.a
+build-harfbuzz/% $(INSTALLDIR)/%/lib/libharfbuzz.a: $(BUILDDIR)/harfbuzz $(INSTALLDIR)/%/lib/libfreetype.a
 	mkdir -p "$<_$*"
 	cd "$<_$*" && cmake \
 		-DCMAKE_BUILD_TYPE=Release \
@@ -338,9 +357,13 @@ $(INSTALLDIR)/%/lib/libharfbuzz.a: $(BUILDDIR)/harfbuzz $(INSTALLDIR)/%/lib/libf
 		"$(ROOTDIR)/$<"
 	cd "$<_$*" && make && make install DESTDIR="$(ROOTDIR)/$(INSTALLDIR)/"
 
+# Open Audio Library
+# http://kcat.strangesoft.net/openal.html
+
 # https://kcat.strangesoft.net/openal.html
 # http://github.com/kcat/openal-soft
 # http://repo.or.cz/w/openal-soft.git
+#~ .PHONY: build-openal/%
 #~ .PRECIOUS: $(INSTALLDIR)/%/lib/libopenal.a
 #~ .PRECIOUS: $(INSTALLDIR)/%/lib/libopenal.so
 #~ $(INSTALLDIR)/%/lib/libopenal.so: $(BUILDDIR)/openal
@@ -375,9 +398,10 @@ $(INSTALLDIR)/%/lib/libharfbuzz.a: $(BUILDDIR)/harfbuzz $(INSTALLDIR)/%/lib/libf
 # https://github.com/kramlat/openal-soft-android
 # https://github.com/AerialX/openal-soft-android
 # https://repo.or.cz/w/openal-soft/android.git
+.PHONY: build-openal/%
 .PRECIOUS: $(INSTALLDIR)/%/lib/libopenal.a
 .PRECIOUS: $(INSTALLDIR)/%/lib/libopenal.so
-$(INSTALLDIR)/%/lib/libopenal.so: $(BUILDDIR)/openal
+build-openal/% $(INSTALLDIR)/%/lib/libopenal.so: $(BUILDDIR)/openal
 	mkdir -p "$<_$*"
 	cd "$<_$*" && cmake \
 		-DCMAKE_BUILD_TYPE=Release \
@@ -403,13 +427,21 @@ $(INSTALLDIR)/%/lib/libopenal.so: $(BUILDDIR)/openal
 		"$(ROOTDIR)/$<"
 	cd "$<_$*" && make && make install DESTDIR="$(ROOTDIR)/$(INSTALLDIR)/"
 
-.PRECIOUS: $(INSTALLDIR)/%/include/stb
-$(INSTALLDIR)/%/include/stb: $(BUILDDIR)/stb
-	mkdir -p "$@"
-	install -m 644 "$<"/*.h "$@"
+# Single-file public domain (or MIT licensed) libraries
+# https://github.com/nothings/stb
 
+.PHONY: build-stb/%
+.PRECIOUS: $(INSTALLDIR)/%/include/stb
+build-stb/% $(INSTALLDIR)/%/include/stb: $(BUILDDIR)/stb
+	mkdir -p "$(INSTALLDIR)/$*/include/stb"
+	install -m 644 "$<"/*.h "$(INSTALLDIR)/$*/include/stb"
+
+# Library for reading and writing PNG (Portable Network Graphics) format files
+# http://libpng.org/pub/png/libpng.html
+
+.PHONY: build-png/%
 .PRECIOUS: $(INSTALLDIR)/%/lib/libpng16.a
-$(INSTALLDIR)/%/lib/libpng16.a: $(BUILDDIR)/png
+build-png/% $(INSTALLDIR)/%/lib/libpng16.a: $(BUILDDIR)/png
 	mkdir -p "$<_$*"
 	cd "$<_$*" && PATH="$(NDK_TOOLCHAINS)/bin/:$$PATH" \
 		CC="$(CC_$*)" CXX="$(CXX_$*)" AR="$(NDK_BIN_$*)/ar" \
@@ -425,7 +457,10 @@ $(INSTALLDIR)/%/lib/libpng16.a: $(BUILDDIR)/png
 			--prefix="/$*"
 	cd "$<_$*" && make && make install DESTDIR="$(ROOTDIR)/$(INSTALLDIR)/"
 
+# Simple and Fast Multimedia Library
+# http://www.sfml-dev.org/
 
+.PHONY: build-sfml/%
 .PRECIOUS: $(INSTALLDIR)/%/lib/libsfml-activity.so
 .PRECIOUS: $(INSTALLDIR)/%/lib/libsfml-audio.so
 .PRECIOUS: $(INSTALLDIR)/%/lib/libsfml-graphics.so
@@ -433,6 +468,7 @@ $(INSTALLDIR)/%/lib/libpng16.a: $(BUILDDIR)/png
 .PRECIOUS: $(INSTALLDIR)/%/lib/libsfml-network.so
 .PRECIOUS: $(INSTALLDIR)/%/lib/libsfml-system.so
 .PRECIOUS: $(INSTALLDIR)/%/lib/libsfml-window.so
+build-sfml/% \
 $(INSTALLDIR)/%/lib/libsfml-activity.so $(INSTALLDIR)/%/lib/libsfml-audio.so $(INSTALLDIR)/%/lib/libsfml-graphics.so \
 $(INSTALLDIR)/%/lib/libsfml-main.a $(INSTALLDIR)/%/lib/libsfml-network.so \
 $(INSTALLDIR)/%/lib/libsfml-system.so $(INSTALLDIR)/%/lib/libsfml-window.so: $(BUILDDIR)/sfml \
@@ -469,13 +505,17 @@ $(INSTALLDIR)/%/lib/libsfml-system.so $(INSTALLDIR)/%/lib/libsfml-window.so: $(B
 	( cd "$(TMPDIR)/usr/lib/android-ndk/sources/third_party/sfml/include" ; tar cf - . ) | ( cd "$(INSTALLDIR)/$*/include" ; tar xf - )
 	( cd "$(TMPDIR)/usr/lib/android-ndk/sources/third_party/sfml/lib/$(ANDROID_ABI_$*)" ; tar cf - . ) | ( cd "$(INSTALLDIR)/$*/lib" ; tar xf - )
 
+# Simple and easy-to-use library to enjoy videogames programming
+# https://www.raylib.com/
+
 RAYLIB_ARCH_NAME_armv7a = ARM
 RAYLIB_ARCH_NAME_aarch64 = ARM64
 RAYLIB_ARCH_NAME_i686 = x86
 RAYLIB_ARCH_NAME_x86_64 = x86_64
 
+.PHONY: build-raylib/%
 .PRECIOUS: $(INSTALLDIR)/%/lib/libraylib.a
-$(INSTALLDIR)/%/lib/libraylib.a: $(BUILDDIR)/raylib
+build-raylib/% $(INSTALLDIR)/%/lib/libraylib.a: $(BUILDDIR)/raylib
 	mkdir -p "$<_$*/src"
 	mkdir -p "$(INSTALLDIR)/$*/bin"
 	mkdir -p "$(INSTALLDIR)/$*/lib"
@@ -490,8 +530,12 @@ $(INSTALLDIR)/%/lib/libraylib.a: $(BUILDDIR)/raylib
 			PLATFORM=PLATFORM_ANDROID ANDROID_NDK="$(NDK)" ANDROID_TOOLCHAIN="$(NDK_TOOLCHAINS)" ANDROID_ARCH="$(RAYLIB_ARCH_NAME_$*)" ANDROID_API_VERSION=$(ANDROID_API)
 	install -m 644 "$<_$*/src/raylib.h" "$(INSTALLDIR)/$*/include"
 
-.PRECIOUS: $(INSTALLDIR)/%/lib/libglfw.a
-$(INSTALLDIR)/%/lib/libglfw.a: $(BUILDDIR)/glfw3
+# Open Source, multi-platform library for OpenGL, OpenGL ES and Vulkan development
+# https://www.glfw.org/
+
+.PHONY: build-glfw3/%
+.PRECIOUS: $(INSTALLDIR)/%/lib/libglfw3.a
+build-glfw3/% $(INSTALLDIR)/%/lib/libglfw3.a: $(BUILDDIR)/glfw3
 	mkdir -p "$<_$*"
 	cd "$<_$*" && cmake \
 		-DCMAKE_BUILD_TYPE=Release \
@@ -519,8 +563,12 @@ $(INSTALLDIR)/%/lib/libglfw.a: $(BUILDDIR)/glfw3
 	mkdir -p "$(INSTALLDIR)/$*/include"
 	cd "$<_$*" && make && make install DESTDIR="$(ROOTDIR)/$(INSTALLDIR)/"
 
+# OpenGL ES layer for mobile devices and the web
+# https://github.com/brackeen/glfm
+
+.PHONY: build-glfm/%
 .PRECIOUS: $(INSTALLDIR)/%/lib/libglfm.a
-$(INSTALLDIR)/%/lib/libglfm.a: $(BUILDDIR)/glfm
+build-glfm/% $(INSTALLDIR)/%/lib/libglfm.a: $(BUILDDIR)/glfm
 	mkdir -p "$<_$*"
 	cd "$<_$*" && cmake \
 		-DCMAKE_BUILD_TYPE=Release \
@@ -546,8 +594,12 @@ $(INSTALLDIR)/%/lib/libglfm.a: $(BUILDDIR)/glfm
 	install -m 644 "$<_$*"/*.a "$(INSTALLDIR)/$*/lib"
 	install -m 644 "$</include"/*.h "$(INSTALLDIR)/$*/include"
 
+# Small antialiased vector graphics rendering library for OpenGL
+# https://github.com/memononen/nanovg
+
+.PHONY: build-nanovg/%
 .PRECIOUS: $(INSTALLDIR)/%/lib/libnanovg.a
-$(INSTALLDIR)/%/lib/libnanovg.a: $(BUILDDIR)/nanovg $(INSTALLDIR)/%/include/stb
+build-nanovg/% $(INSTALLDIR)/%/lib/libnanovg.a: $(BUILDDIR)/nanovg $(INSTALLDIR)/%/include/stb
 	mkdir -p "$<_$*"
 	cd "$<_$*" && cmake \
 		-DCMAKE_BUILD_TYPE=Release \
@@ -597,31 +649,11 @@ clean:
 cleanall: clean
 	rm -rf armv7a aarch64 i686 x86_64
 
-
 .PHONY: build-libs/%
 build-libs/%: $(INSTALLDIR)/%/lib/libogg.a $(INSTALLDIR)/%/lib/libvorbis.a $(INSTALLDIR)/%/lib/libFLAC.a \
 	$(INSTALLDIR)/%/lib/libfreetype.a $(INSTALLDIR)/%/lib/libpng16.a $(INSTALLDIR)/%/lib/libharfbuzz.a \
-	$(INSTALLDIR)/%/include/stb $(INSTALLDIR)/%/lib/libopenal.so $(INSTALLDIR)/%/lib/libsfml-main.a
-	@#
-
-.PHONY: build-sfml/%
-build-sfml/%: $(INSTALLDIR)/%/lib/libsfml-main.a
-	@#
-
-.PHONY: build-raylib/%
-build-raylib/%: $(INSTALLDIR)/%/lib/libraylib.a
-	@#
-
-.PHONY: build-glfw3/%
-build-glfw3/%: $(INSTALLDIR)/%/lib/libglfw.a
-	@#
-
-.PHONY: build-glfm/%
-build-glfm/%: $(INSTALLDIR)/%/lib/libglfm.a
-	@#
-
-.PHONY: build-nanovg/%
-build-nanovg/%: $(INSTALLDIR)/%/lib/libnanovg.a
+	$(INSTALLDIR)/%/include/stb $(INSTALLDIR)/%/lib/libopenal.so $(INSTALLDIR)/%/lib/libsfml-main.a \
+	$(INSTALLDIR)/%/lib/libglfw3.a $(INSTALLDIR)/%/lib/libnanovg.a
 	@#
 
 .PHONY: install-libs/%
@@ -630,7 +662,7 @@ install-libs/%: build-libs/%
 	mkdir -p "$(INSTALLDIR)/$*/lib"
 	mkdir -p "$(INSTALLDIR)/$*/include"
 
-	@#	mkdir -p "$(DEPLOYDIR)/$*/include"
+	mkdir -p "$(DEPLOYDIR)/$*/include"
 	( cd "$(INSTALLDIR)/$*/include" ; tar cf - . ) | ( cd "$(DEPLOYDIR)/$*/include" ; tar xf - )
 	mkdir -p "$(DEPLOYDIR)/$*/bin"
 	( cd "$(INSTALLDIR)/$*/bin" ; tar cf - . ) | ( cd "$(DEPLOYDIR)/$*/bin" ; tar xf - )
