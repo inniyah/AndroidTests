@@ -34,8 +34,10 @@ NDK_INCLUDE = $(NDK_SYSROOT)/usr/lib/include
 
 ORG_DIRS = $(subst .,/,$(PACKAGE_NAME))
 
-CFLAGS = -std=c17 -ggdb -O0 -g3 -fPIC -Wall -DDEBUG -I "$(NDK_INCLUDE)"
-CXXFLAGS = -std=c++17 -ggdb -g3 -O0 -fPIC -Wall -DANDROID_STL=c++_shared -I "$(NDK_INCLUDE)"
+COMMON_CFLAGS = -ggdb -O0 -g3 -fPIC -Wall -DDEBUG -I "$(NDK_INCLUDE)" \
+	-Werror=int-conversion -Werror=implicit-function-declaration
+CFLAGS = -std=c17 $(COMMON_CFLAGS)
+CXXFLAGS = -std=c++17 $(COMMON_CFLAGS) -DANDROID_STL=c++_shared
 DEFS = -DNDEBUG -DASSETS_PREFIX=\"\"
 INCS = -I "$(NDK)/sources/android/native_app_glue/"
 LDFLAGS = -Wl,--as-needed -Wl,--no-undefined -Wl,--no-allow-shlib-undefined

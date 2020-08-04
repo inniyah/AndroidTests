@@ -19,6 +19,9 @@
 #define GLFW_INCLUDE_ES3
 #include <GLFW/glfw3.h>
 
+#define GLFW_EXPOSE_NATIVE_ANDROID
+#include <GLFW/glfw3native.h>
+
 #include "demo.h"
 
 #include <nanovg/nanovg.h>
@@ -62,7 +65,11 @@ int main() {
 		glfwWindowHint(GLFW_SAMPLES, 4);
 	#endif
 
-    GLFWwindow * window = glfwCreateWindow(1000, 600, "NanoVG", NULL, NULL);
+	GLFWwindow * window = glfwCreateWindow(1000, 600, "NanoVG", NULL, NULL);
+	struct android_app * cyborg_app = glfwGetAndroidApp(window);
+	JNIEnv * cyborg_env = cyborg_app->activity->env;
+
+	nvgSetAndroidAssetManager(NULL);
 
 	if (!window) {
 		glfwTerminate();
