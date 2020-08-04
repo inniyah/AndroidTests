@@ -66,10 +66,12 @@ int main() {
 	#endif
 
 	GLFWwindow * window = glfwCreateWindow(1000, 600, "NanoVG", NULL, NULL);
+
 	struct android_app * cyborg_app = glfwGetAndroidApp(window);
 	JNIEnv * cyborg_env = cyborg_app->activity->env;
+	AAssetManager * cybord_ass = cyborg_app->activity->assetManager;
 
-	nvgSetAndroidAssetManager(NULL);
+	nvgSetAndroidAssetManager(cybord_ass);
 
 	if (!window) {
 		glfwTerminate();
