@@ -7,7 +7,8 @@ INSTALLDIR := build/output
 DEPLOYDIR := .
 TMPDIR := build/tmp
 
-COMMON_CFLAGS = -O2 -gz -g3 -fPIC -Wall -Wdate-time -D_FORTIFY_SOURCE=2
+COMMON_CFLAGS = -O2 -gz -g3 -fPIC -Wall -Wdate-time -D_FORTIFY_SOURCE=2 -D_GNU_SOURCE \
+	-Werror=int-conversion -Werror=implicit-function-declaration
 CFLAGS = -std=c11 $(COMMON_CFLAGS)
 CXXFLAGS = -std=c++11 $(COMMON_CFLAGS)
 LDFLAGS = -Wl,--as-needed -Wl,--no-undefined -Wl,--no-allow-shlib-undefined
