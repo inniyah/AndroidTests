@@ -1,0 +1,13 @@
+Index: glfw3/src/android_window.c
+===================================================================
+--- glfw3.orig/src/android_window.c
++++ glfw3/src/android_window.c
+@@ -27,6 +27,8 @@
+ 
+ #include "internal.h"
+ 
++#include <string.h>
++
+ static int32_t handle_input(struct android_app* app, AInputEvent* event)
+ {
+     if (AInputEvent_getType(event) == AINPUT_EVENT_TYPE_MOTION)
