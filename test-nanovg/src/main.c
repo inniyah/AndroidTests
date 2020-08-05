@@ -19,8 +19,10 @@
 #define GLFW_INCLUDE_ES3
 #include <GLFW/glfw3.h>
 
+#if defined(__ANDROID__)
 #define GLFW_EXPOSE_NATIVE_ANDROID
 #include <GLFW/glfw3native.h>
+#endif
 
 #include "demo.h"
 
@@ -56,10 +58,12 @@ int main() {
 
 	glfwSetErrorCallback(error_cb);
 
-    glfwWindowHint(GLFW_CLIENT_API, GLFW_OPENGL_ES_API);
-    glfwWindowHint(GLFW_CONTEXT_CREATION_API, GLFW_EGL_CONTEXT_API);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
+#ifndef _WIN32 // don't require this on win32, and works with more cards
+	glfwWindowHint(GLFW_CLIENT_API, GLFW_OPENGL_ES_API);
+	glfwWindowHint(GLFW_CONTEXT_CREATION_API, GLFW_EGL_CONTEXT_API);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
+#endif
 
 	#ifdef DEMO_MSAA
 		glfwWindowHint(GLFW_SAMPLES, 4);
@@ -67,16 +71,17 @@ int main() {
 
 	GLFWwindow * window = glfwCreateWindow(1000, 600, "NanoVG", NULL, NULL);
 
-	struct android_app * cyborg_app = glfwGetAndroidApp(window);
-	JNIEnv * cyborg_env = cyborg_app->activity->env;
-	AAssetManager * cybord_ass = cyborg_app->activity->assetManager;
-
-	nvgSetAndroidAssetManager(cybord_ass);
-
 	if (!window) {
 		glfwTerminate();
 		return -1;
 	}
+
+#if defined(__ANDROID__)
+	struct android_app * cyborg_app = glfwGetAndroidApp(window);
+	JNIEnv * cyborg_env = cyborg_app->activity->env;
+	AAssetManager * cybord_ass = cyborg_app->activity->assetManager;
+	nvgSetAndroidAssetManager(cybord_ass);
+#endif
 
 	glfwSetKeyCallback(window, key);
 
@@ -147,61 +152,3 @@ int main() {
 	glfwTerminate();
 	return 0;
 }
-
-
-#if 0
-int main2()
-{
-
-	if (loadDemoData(vg, &data) == -1)
-		return -1;
-
-	glfwSwapInterval(0);
-
-	glfwSetTime(0);
-	//prevt = glfwGetTime();
-
-	while (!glfwWindowShouldClose(window))
-	{
-		double mx, my, t;
-		int winWidth, winHeight;
-		int fbWidth, fbHeight;
-		float pxRatio;
-
-		t = glfwGetTime();
-		//double dt = t - prevt;
-		//prevt = t;
-
-		glfwGetCursorPos(window, &mx, &my);
-		glfwGetWindowSize(window, &winWidth, &winHeight);
-		glfwGetFramebufferSize(window, &fbWidth, &fbHeight);
-
-		// Calculate pixel ration for hi-dpi devices.
-		pxRatio = (float)fbWidth / (float)winWidth;
-
-		// Update and render
-		glViewport(0, 0, fbWidth, fbHeight);
-		if (premult)
-			glClearColor(0,0,0,0);
-		else
-			glClearColor(0.3f, 0.3f, 0.32f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT|GL_STENCIL_BUFFER_BIT);
-
-		nvgBeginFrame(vg, winWidth, winHeight, pxRatio);
-
-		renderDemo(vg, mx,my, winWidth,winHeight, t, blowup, &data);
-
-		nvgEndFrame(vg);
-
-		glfwSwapBuffers(window);
-		glfwPollEvents();
-	}
-
-	freeDemoData(vg, &data);
-
-	nvgDeleteGLES3(vg);
-
-	glfwTerminate();
-	return 0;
-}
-#endif
