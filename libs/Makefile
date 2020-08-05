@@ -670,7 +670,7 @@ cleanall: clean
 build-libs/%: $(INSTALLDIR)/%/lib/libogg.a $(INSTALLDIR)/%/lib/libvorbis.a $(INSTALLDIR)/%/lib/libFLAC.a \
 	$(INSTALLDIR)/%/lib/libfreetype.a $(INSTALLDIR)/%/lib/libpng16.a $(INSTALLDIR)/%/lib/libharfbuzz.a \
 	$(INSTALLDIR)/%/include/stb $(INSTALLDIR)/%/lib/libopenal.so $(INSTALLDIR)/%/lib/libsfml-main.a \
-	$(INSTALLDIR)/%/lib/libglfw3.a $(INSTALLDIR)/%/lib/libnanovg.a
+	$(INSTALLDIR)/%/lib/libglfw3.a $(INSTALLDIR)/%/lib/libnanovg.a $(INSTALLDIR)/%/lib/libraylib.a
 	@#
 
 .PHONY: install-libs/%
