@@ -77,33 +77,6 @@ Index: glfw3/src/android_init.c
      _glfwInitTimerPOSIX();
      return GLFW_TRUE;
  }
-Index: glfw3/src/android_joystick.c
-===================================================================
---- glfw3.orig/src/android_joystick.c
-+++ glfw3/src/android_joystick.c
-@@ -40,4 +40,3 @@ int _glfwPlatformPollJoystick(_GLFWjoyst
- void _glfwPlatformUpdateGamepadGUID(char* guid)
- {
- }
--
-Index: glfw3/src/android_joystick.h
-===================================================================
---- glfw3.orig/src/android_joystick.h
-+++ glfw3/src/android_joystick.h
-@@ -28,4 +28,3 @@
- #define _GLFW_PLATFORM_LIBRARY_JOYSTICK_STATE int nulljs
- 
- #define _GLFW_PLATFORM_MAPPING_NAME "Android"
--
-Index: glfw3/src/android_monitor.c
-===================================================================
---- glfw3.orig/src/android_monitor.c
-+++ glfw3/src/android_monitor.c
-@@ -73,4 +73,3 @@ GLFWbool _glfwPlatformGetGammaRamp(_GLFW
- void _glfwPlatformSetGammaRamp(_GLFWmonitor* monitor, const GLFWgammaramp* ramp)
- {
- }
--
 Index: glfw3/src/android_platform.h
 ===================================================================
 --- glfw3.orig/src/android_platform.h
@@ -123,11 +96,6 @@ Index: glfw3/src/android_platform.h
  } android_gstate;
  
  typedef VkFlags VkAndroidSurfaceCreateFlagsKHR;
-@@ -66,4 +67,3 @@ typedef struct VkAndroidSurfaceCreateInf
- } VkAndroidSurfaceCreateInfoKHR;
- 
- typedef VkResult (APIENTRY *PFN_vkCreateAndroidSurfaceKHR)(VkInstance,const VkAndroidSurfaceCreateInfoKHR*,const VkAllocationCallbacks*,VkSurfaceKHR*);
--
 Index: glfw3/src/android_window.c
 ===================================================================
 --- glfw3.orig/src/android_window.c
