@@ -187,7 +187,7 @@ build/apk/lib/mips64/lib$(JNI_LIB_NAME).so: $(OBJS_mips64el)
 deps:
 	mkdir -p build/apk/lib/armeabi/
 	install -m 755 $(NDK_LIBS_armv7a)/libc++_shared.so build/apk/lib/armeabi/
-	#~ find "build/apk/lib/armeabi/" -type f -name "*.so*" | while read -r FILE; do "$(NDK_BIN_armv7a)/strip" "$$FILE"; done
+	find "build/apk/lib/armeabi/" -type f -name "*.so*" | while read -r FILE; do "$(NDK_BIN_armv7a)/strip" "$$FILE"; done
 	mkdir -p build/apk/lib/arm64-v8a/
 	install -m 755 $(NDK_LIBS_aarch64)/libc++_shared.so build/apk/lib/arm64-v8a/
 	find "build/apk/lib/arm64-v8a/" -type f -name "*.so*" | while read -r FILE; do "$(NDK_BIN_aarch64)/strip" "$$FILE"; done

@@ -44,8 +44,8 @@ extern "C" {
 #define LOGF(...) { printf("[FATAL] "); printf(__VA_ARGS__); printf("\n"); }
 #endif
 
-#ifndef DATADIR
-#  define DATADIR "./data"
+#ifndef ASSETS_PREFIX
+#  define ASSETS_PREFIX "./assets/"
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -136,8 +136,8 @@ void ui_handler(int item, UIevent event) {
 }
 
 void init(NVGcontext *vg) {
-    bndSetFont(nvgCreateFont(vg, "system", "/usr/share/fonts/truetype/ttf-dejavu/DejaVuSans.ttf"));
-    bndSetIconImage(nvgCreateImage(vg, DATADIR "/blender_icons16.png", 0));
+    bndSetFont(nvgCreateFont(vg, "system", ASSETS_PREFIX "DejaVuSans.ttf"));
+    bndSetIconImage(nvgCreateImage(vg, ASSETS_PREFIX "blender_icons16.png", 0));
 }
 
 void testrect(NVGcontext *vg, UIrect rect) {
