@@ -40,8 +40,8 @@ CFLAGS = -std=c17 $(COMMON_CFLAGS)
 CXXFLAGS = -std=c++17 $(COMMON_CFLAGS) -DANDROID_STL=c++_shared
 DEFS = -DNDEBUG -DASSETS_PREFIX=\"\"
 INCS = -I "$(NDK)/sources/android/native_app_glue/"
-LDFLAGS = -Wl,--as-needed -Wl,--no-undefined -Wl,--no-allow-shlib-undefined
-LIBS = -lOpenSLES -lEGL -lGLESv3 -llog -landroid -lm -lz
+LDFLAGS = -Wl,--as-needed -Wl,--no-undefined -Wl,--no-allow-shlib-undefined -u ANativeActivity_onCreate
+LIBS = -lraylib -lOpenSLES -lEGL -lGLESv3 -llog -landroid -lm -lz
 
 OBJS_armv7a = $(patsubst src/%,build/obj/armeabi/%,$(OBJS))
 OBJS_aarch64 = $(patsubst src/%,build/obj/arm64-v8a/%,$(OBJS))
@@ -121,7 +121,6 @@ build/obj/armeabi/%.o: src/%.cpp
 
 build/apk/lib/armeabi/lib$(JNI_LIB_NAME).so: $(OBJS_armv7a)
 	mkdir -p -p $(dir $@) && $(CLANGXX_armv7a) -shared -o $@ \
-		-Wl,--whole-archive ../libs/armv7a/lib/libraylib.a -Wl,--no-whole-archive \
 		$+ $(LDFLAGS) -L ../libs/armv7a/lib/ $(LIBS)
 
 
@@ -133,7 +132,6 @@ build/obj/arm64-v8a/%.o: src/%.cpp
 
 build/apk/lib/arm64-v8a/lib$(JNI_LIB_NAME).so: $(OBJS_aarch64)
 	mkdir -p -p $(dir $@) && $(CLANGXX_aarch64) -shared -o $@ \
-		-Wl,--whole-archive ../libs/aarch64/lib/libraylib.a -Wl,--no-whole-archive \
 		$+ $(LDFLAGS) -L ../libs/aarch64/lib/ $(LIBS)
 
 
@@ -157,7 +155,6 @@ build/obj/x86_x64/%.o: src/%.cpp
 
 build/apk/lib/x86_x64/lib$(JNI_LIB_NAME).so: $(OBJS_x86_64)
 	mkdir -p -p $(dir $@) && $(CLANGXX_x86_64) -shared -o $@ \
-		-Wl,--whole-archive ../libs/x86_64/lib/libraylib.a -Wl,--no-whole-archive \
 		$+ $(LDFLAGS) -L ../libs/x86_64/lib/ $(LIBS)
 
 
@@ -169,7 +166,6 @@ build/obj/mips/%.o: src/%.cpp
 
 build/apk/lib/mips/lib$(JNI_LIB_NAME).so: $(OBJS_mipsel)
 	mkdir -p -p $(dir $@) && $(CLANGXX_mipsel) -shared -o $@ \
-		-Wl,--whole-archive ../libs/mipsel/lib/libraylib.a -Wl,--no-whole-archive \
 		$+ $(LDFLAGS) -L ../libs/mipsel/lib/ $(LIBS)
 
 
