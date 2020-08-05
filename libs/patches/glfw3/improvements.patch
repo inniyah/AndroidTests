@@ -1,0 +1,225 @@
+Index: glfw3/src/android_init.c
+===================================================================
+--- glfw3.orig/src/android_init.c
++++ glfw3/src/android_init.c
+@@ -33,19 +33,24 @@ struct android_app* _globalApp;
+ extern int main();
+ void handle_cmd(struct android_app* _app, int32_t cmd) {
+     switch (cmd) {
+-    case APP_CMD_INIT_WINDOW: {
+-        break;
++        case APP_CMD_INIT_WINDOW: {
++            break;
++        }
++        case APP_CMD_LOST_FOCUS: {
++            break;
++        }
++        case APP_CMD_GAINED_FOCUS: {
++            break;
++        }
++        case APP_CMD_CONFIG_CHANGED: {
++            __android_log_print(ANDROID_LOG_INFO, "GLFW3", "New orientation: %d", AConfiguration_getOrientation(_globalApp->config));
++            break;
++        }
++        case  APP_CMD_TERM_WINDOW: {
++            _glfwInputWindowCloseRequest(_glfw.windowListHead);
++            break;
++        }
+     }
+-    case APP_CMD_LOST_FOCUS: {
+-        break;
+-    }
+-    case APP_CMD_GAINED_FOCUS: {
+-        break;
+-    }
+-    case  APP_CMD_TERM_WINDOW: {
+-        glfwDestroyWindow((GLFWwindow *) _glfw.windowListHead);
+-    }
+-}
+ }
+ 
+ // Android Entry Point
+@@ -53,8 +58,26 @@ void android_main(struct android_app *ap
+     app->onAppCmd = handle_cmd;
+     // hmmm...global....eek
+     _globalApp = app;
+-    main();
++
++    struct android_poll_source* source;
++    do {
++        switch(app->activityState) {
++            case APP_CMD_START:
++            case APP_CMD_RESUME:
++                main();
++                __android_log_print(ANDROID_LOG_INFO, "GLFW3", "main done %d", app->destroyRequested);
++                break;
++        }
++
++        ALooper_pollAll(-1, NULL, NULL,(void**)&source);
++
++        if (source != NULL) {
++            source->process(app, source);
++        }
++    } while (!app->destroyRequested);
++    __android_log_print(ANDROID_LOG_INFO, "GLFW3", "completely done %d", app->destroyRequested);
+ }
++
+ //////////////////////////////////////////////////////////////////////////
+ //////                       GLFW platform API                      //////
+ //////////////////////////////////////////////////////////////////////////
+@@ -62,6 +85,9 @@ void android_main(struct android_app *ap
+ int _glfwPlatformInit(void)
+ {
+     _glfw.gstate.app = _globalApp;
++    _glfw.gstate.window_created = 0;
++    _glfw.gstate.last_cursor_x = 0;
++    _glfw.gstate.last_cursor_y = 0;
+     _glfwInitTimerPOSIX();
+     return GLFW_TRUE;
+ }
+Index: glfw3/src/android_joystick.c
+===================================================================
+--- glfw3.orig/src/android_joystick.c
++++ glfw3/src/android_joystick.c
+@@ -40,4 +40,3 @@ int _glfwPlatformPollJoystick(_GLFWjoyst
+ void _glfwPlatformUpdateGamepadGUID(char* guid)
+ {
+ }
+-
+Index: glfw3/src/android_joystick.h
+===================================================================
+--- glfw3.orig/src/android_joystick.h
++++ glfw3/src/android_joystick.h
+@@ -28,4 +28,3 @@
+ #define _GLFW_PLATFORM_LIBRARY_JOYSTICK_STATE int nulljs
+ 
+ #define _GLFW_PLATFORM_MAPPING_NAME "Android"
+-
+Index: glfw3/src/android_monitor.c
+===================================================================
+--- glfw3.orig/src/android_monitor.c
++++ glfw3/src/android_monitor.c
+@@ -73,4 +73,3 @@ GLFWbool _glfwPlatformGetGammaRamp(_GLFW
+ void _glfwPlatformSetGammaRamp(_GLFWmonitor* monitor, const GLFWgammaramp* ramp)
+ {
+ }
+-
+Index: glfw3/src/android_platform.h
+===================================================================
+--- glfw3.orig/src/android_platform.h
++++ glfw3/src/android_platform.h
+@@ -49,11 +49,12 @@
+ #define _GLFW_PLATFORM_LIBRARY_CONTEXT_STATE
+ #define _GLFW_EGL_NATIVE_DISPLAY EGL_DEFAULT_DISPLAY
+ 
+-float x,y;
+-
+ typedef struct android_gstate {
++    int window_created;
+     struct android_app* app;
+     struct android_poll_source* source;
++    int last_cursor_x;
++    int last_cursor_y;
+ } android_gstate;
+ 
+ typedef VkFlags VkAndroidSurfaceCreateFlagsKHR;
+@@ -66,4 +67,3 @@ typedef struct VkAndroidSurfaceCreateInf
+ } VkAndroidSurfaceCreateInfoKHR;
+ 
+ typedef VkResult (APIENTRY *PFN_vkCreateAndroidSurfaceKHR)(VkInstance,const VkAndroidSurfaceCreateInfoKHR*,const VkAllocationCallbacks*,VkSurfaceKHR*);
+-
+Index: glfw3/src/android_window.c
+===================================================================
+--- glfw3.orig/src/android_window.c
++++ glfw3/src/android_window.c
+@@ -26,30 +26,61 @@
+ //========================================================================
+ 
+ #include "internal.h"
+-
++#include <android/log.h>
+ #include <string.h>
+ 
+ static int32_t handle_input(struct android_app* app, AInputEvent* event)
+ {
+-    if (AInputEvent_getType(event) == AINPUT_EVENT_TYPE_MOTION)
+-        for (size_t i = 0; i < AMotionEvent_getPointerCount(event); ++i)
+-        {
++    int32_t ev_type = AInputEvent_getType(event);
++    if (AINPUT_EVENT_TYPE_MOTION == ev_type) {
++        float x,y;
++        for (size_t i = 0; i < AMotionEvent_getPointerCount(event); ++i) {
+             x = AMotionEvent_getX(event, i);
+             y = AMotionEvent_getY(event, i);
+         }
+-    if (AInputEvent_getType(event) == AINPUT_EVENT_TYPE_KEY)
+-        _glfwInputKey(_glfw.windowListHead, 0 , AKeyEvent_getKeyCode(event), GLFW_PRESS,0);
++
++        _glfwInputCursorPos(_glfw.windowListHead, x, y);
++
++        _glfw.gstate.last_cursor_x = x;
++        _glfw.gstate.last_cursor_y = y;
++
++        switch(AInputEvent_getSource(event)){
++            case AINPUT_SOURCE_TOUCHSCREEN: {
++                int action = AKeyEvent_getAction(event) & AMOTION_EVENT_ACTION_MASK;
++                switch(action) {
++                    case AMOTION_EVENT_ACTION_UP:
++                        _glfwInputMouseClick(_glfw.windowListHead, GLFW_MOUSE_BUTTON_LEFT, GLFW_PRESS, 0);
++                        break;
++                    case AMOTION_EVENT_ACTION_DOWN:
++                        _glfwInputMouseClick(_glfw.windowListHead, GLFW_MOUSE_BUTTON_LEFT, GLFW_RELEASE, 0);
++                        break;
++                }
++                break;
++            }
++        }
++
++    } else if (AINPUT_EVENT_TYPE_KEY == ev_type) {
++        _glfwInputKey(_glfw.windowListHead, 0 , AKeyEvent_getKeyCode(event), GLFW_PRESS, 0);
++    }
+ 
+     return 0;
+ }
+ 
++static void handle_size_change(ANativeActivity* activity, const ARect* rect) {
++    __android_log_print(ANDROID_LOG_INFO, "wurst", "Config changed: l=%d,t=%d,r=%d,b=%d", rect->left, rect->top, rect->right, rect->bottom);
++    if (!_glfw.gstate.window_created) {
++        _glfw.gstate.window_created = 1;
++    } else {
++        _glfwInputWindowSize(_glfw.windowListHead, rect->right - rect->left, rect->bottom - rect->top);
++    }
++}
++
+ static void handleEvents(int timeout) {
+-    ALooper_pollOnce(0, NULL, NULL,(void**)&_glfw.gstate.source);
++    ALooper_pollAll(timeout, NULL, NULL,(void**)&_glfw.gstate.source);
+ 
+     if (_glfw.gstate.source != NULL) {
+         _glfw.gstate.source->process(_glfw.gstate.app, _glfw.gstate.source);
+     }
+-    _glfwInputCursorPos(_glfw.windowListHead, x, y);
+ }
+ 
+ //////////////////////////////////////////////////////////////////////////
+@@ -68,6 +99,7 @@ int _glfwPlatformCreateWindow(_GLFWwindo
+     // hmmm maybe should be ANative_Window only?
+     window->android = _glfw.gstate.app;
+     window->android->onInputEvent = handle_input;
++    window->android->activity->callbacks->onContentRectChanged = handle_size_change;
+ 
+     //ANativeWindow_setBuffersGeometry(window->android->window, wndconfig->width, wndconfig->height, 0);
+ 
+@@ -282,10 +314,8 @@ void _glfwPlatformPostEmptyEvent(void)
+ 
+ void _glfwPlatformGetCursorPos(_GLFWwindow* window, double* xpos, double* ypos)
+ {
+-    if (xpos)
+-        *xpos = x;
+-    if (ypos)
+-        *ypos = y;
++    *xpos = (double) _glfw.gstate.last_cursor_x;
++    *ypos = (double) _glfw.gstate.last_cursor_y;
+ }
+ 
+ void _glfwPlatformSetCursorPos(_GLFWwindow* window, double x, double y)

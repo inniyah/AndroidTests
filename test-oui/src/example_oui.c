@@ -30,11 +30,11 @@ extern "C" {
 
 #if defined(__ANDROID__)
 #include <android/log.h>
-#define LOGV(...) (__android_log_print(ANDROID_LOG_VERBOSE, "NanoVG Demo", __VA_ARGS__))
-#define LOGI(...) (__android_log_print(ANDROID_LOG_INFO,    "NanoVG Demo", __VA_ARGS__))
-#define LOGW(...) (__android_log_print(ANDROID_LOG_WARN,    "NanoVG Demo", __VA_ARGS__))
-#define LOGE(...) (__android_log_print(ANDROID_LOG_ERROR,   "NanoVG Demo", __VA_ARGS__))
-#define LOGF(...) (__android_log_print(ANDROID_LOG_FATAL,   "NanoVG Demo", __VA_ARGS__))
+#define LOGV(...) (__android_log_print(ANDROID_LOG_VERBOSE, "NanoVG OUI Demo", __VA_ARGS__))
+#define LOGI(...) (__android_log_print(ANDROID_LOG_INFO,    "NanoVG OUI Demo", __VA_ARGS__))
+#define LOGW(...) (__android_log_print(ANDROID_LOG_WARN,    "NanoVG OUI Demo", __VA_ARGS__))
+#define LOGE(...) (__android_log_print(ANDROID_LOG_ERROR,   "NanoVG OUI Demo", __VA_ARGS__))
+#define LOGF(...) (__android_log_print(ANDROID_LOG_FATAL,   "NanoVG OUI Demo", __VA_ARGS__))
 #else
 #include <stdio.h>
 #define LOGV(...) { printf("[DEBUG] "); printf(__VA_ARGS__); printf("\n"); }
