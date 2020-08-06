@@ -234,7 +234,7 @@ $(BUILDDIR)/glfm: $(CACHEDIR)/glfm-master.zip
 	rm "$@/$(notdir $@)-master"
 	if [ -e $(ROOTDIR)/patches/$(notdir $@)/series ]; then cd "$@" && QUILT_PATCHES=$(ROOTDIR)/patches/$(notdir $@) quilt push -a; fi
 
-$(BUILDDIR)/nanovg: $(CACHEDIR)/nanovg-0.1-rc2.tar.gz
+$(BUILDDIR)/nanovg: $(CACHEDIR)/nanovg-0.1-rc3.tar.gz
 	@mkdir -p "$@"
 	tar xvfa "$<" --strip 1 --directory "$@"
 	if [ -e $(ROOTDIR)/patches/$(notdir $@)/series ]; then cd "$@" && QUILT_PATCHES=$(ROOTDIR)/patches/$(notdir $@) quilt push -a; fi
