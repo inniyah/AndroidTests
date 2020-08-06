@@ -1264,7 +1264,7 @@ int main() {
     
     init(_vg);
 
-    LOGV("sizeof(UIitem)=%u\n", sizeof(UIitem));
+    LOGV("sizeof(UIitem)=%u\n", (unsigned int)sizeof(UIitem));
 
     glfwSwapInterval(0);
 
@@ -1314,8 +1314,8 @@ int main() {
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
-    LOGV("Peak item count: %i (%lu bytes)\nPeak allocated handles: %u bytes\n",
-        peak_items, peak_items * sizeof(UIitem), peak_alloc);
+    LOGV("Peak item count: %i (%u bytes)\nPeak allocated handles: %u bytes\n",
+        peak_items, peak_items * (unsigned int)sizeof(UIitem), peak_alloc);
 
     uiDestroyContext(uictx);
 
