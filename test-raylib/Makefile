@@ -143,7 +143,6 @@ build/obj/x86/%.o: src/%.cpp
 
 build/apk/lib/x86/lib$(JNI_LIB_NAME).so: $(OBJS_i686)
 	mkdir -p -p $(dir $@) && $(CLANGXX_i686) -shared -o $@ \
-		-Wl,--whole-archive ../libs/i686/lib/libraylib.a -Wl,--no-whole-archive \
 		$+ $(LDFLAGS) -L ../libs/i686/lib/ $(LIBS)
 
 
@@ -177,7 +176,6 @@ build/obj/mips64/%.o: src/%.cpp
 
 build/apk/lib/mips64/lib$(JNI_LIB_NAME).so: $(OBJS_mips64el)
 	mkdir -p -p $(dir $@) && $(CLANGXX_mips64el) -shared -o $@ \
-		-Wl,--whole-archive ../libs/mips64el/lib/libraylib.a -Wl,--no-whole-archive \
 		$+ $(LDFLAGS) -L ../libs/mips64el/lib/ $(LIBS)
 
 deps:
