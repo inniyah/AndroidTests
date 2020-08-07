@@ -41,7 +41,7 @@ CXXFLAGS = -std=c++17 $(COMMON_CFLAGS) -DANDROID_STL=c++_shared
 DEFS = -DNDEBUG -DASSETS_PREFIX=\"\" -DNANOGUI_USE_GLES -DNANOGUI_GLES_VERSION=3
 INCS = -I "$(NDK)/sources/android/native_app_glue/"
 LDFLAGS = -Wl,--as-needed -Wl,--no-undefined -Wl,--no-allow-shlib-undefined
-LIBS = -lnanovg -lnanogui -lEGL -lGLESv3 -llog -landroid -lm -lz
+LIBS = -lnanogui -lnanovg -lEGL -lGLESv3 -llog -landroid -lm -lz
 
 OBJS_armv7a = $(patsubst src/%,build/obj/armeabi/%,$(OBJS))
 OBJS_aarch64 = $(patsubst src/%,build/obj/arm64-v8a/%,$(OBJS))
