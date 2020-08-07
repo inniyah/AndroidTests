@@ -55,9 +55,16 @@ Index: nanogui/src/screen.cpp
 ===================================================================
 --- nanogui.orig/src/screen.cpp
 +++ nanogui/src/screen.cpp
-@@ -49,10 +49,10 @@
+@@ -47,12 +47,16 @@
+ #  if defined(NANOGUI_USE_OPENGL)
+ #    define NANOVG_GL3_IMPLEMENTATION
  #  elif defined(NANOGUI_USE_GLES)
- #    define NANOVG_GLES2_IMPLEMENTATION
+-#    define NANOVG_GLES2_IMPLEMENTATION
++#    if NANOGUI_GLES_VERSION == 2
++#      define NANOVG_GLES2_IMPLEMENTATION
++#    elif NANOGUI_GLES_VERSION == 3
++#      define NANOVG_GLES3_IMPLEMENTATION
++#    endif
  #  endif
 -#  include <nanovg_gl.h>
 +#  include <nanovg/nanovg_gl.h>
@@ -68,6 +75,30 @@ Index: nanogui/src/screen.cpp
  #endif
  
  #if defined(__APPLE__)
+@@ -495,7 +499,11 @@ void Screen::initialize(GLFWwindow *wind
+ #if defined(NANOGUI_USE_OPENGL)
+     m_nvg_context = nvgCreateGL3(flags);
+ #elif defined(NANOGUI_USE_GLES)
++#  if NANOGUI_GLES_VERSION == 2
+     m_nvg_context = nvgCreateGLES2(flags);
++#  elif NANOGUI_GLES_VERSION == 3
++    m_nvg_context = nvgCreateGLES3(flags);
++#  endif
+ #elif defined(NANOGUI_USE_METAL)
+     void *nswin = glfwGetCocoaWindow(window);
+     metal_window_init(nswin, m_float_buffer);
+@@ -537,7 +545,11 @@ Screen::~Screen() {
+ #if defined(NANOGUI_USE_OPENGL)
+         nvgDeleteGL3(m_nvg_context);
+ #elif defined(NANOGUI_USE_GLES)
++#  if NANOGUI_GLES_VERSION == 2
+         nvgDeleteGLES2(m_nvg_context);
++#  elif NANOGUI_GLES_VERSION == 3
++        nvgDeleteGLES3(m_nvg_context);
++#  endif
+ #elif defined(NANOGUI_USE_METAL)
+         nvgDeleteMTL(m_nvg_context);
+ #endif
 Index: nanogui/include/nanogui/opengl.h
 ===================================================================
 --- nanogui.orig/include/nanogui/opengl.h
