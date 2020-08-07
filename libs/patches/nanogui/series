@@ -1,0 +1,5 @@
+use_system_stb.patch
+fix_buffer_overflow.patch
+cmake.patch
+pkg_config.patch
+fix_android_build.patch

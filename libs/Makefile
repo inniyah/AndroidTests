@@ -163,6 +163,9 @@ $(CACHEDIR)/glfm-master.zip:
 $(CACHEDIR)/nanovg-%.tar.gz:
 	wget -nc -P $(CACHEDIR) "https://github.com/inniyah/nanovg/archive/v$*.tar.gz" -O "$@"
 
+$(CACHEDIR)/nanogui-master.zip:
+	wget -nc -P $(CACHEDIR) https://github.com/mitsuba-renderer/nanogui/archive/master.zip -O "$@"
+
 $(BUILDDIR)/ogg: $(CACHEDIR)/libogg-1.3.4.tar.xz
 	@mkdir -p "$@"
 	tar xvfa "$<" --strip 1 --directory "$@"
@@ -237,6 +240,13 @@ $(BUILDDIR)/glfm: $(CACHEDIR)/glfm-master.zip
 $(BUILDDIR)/nanovg: $(CACHEDIR)/nanovg-0.1-rc3.tar.gz
 	@mkdir -p "$@"
 	tar xvfa "$<" --strip 1 --directory "$@"
+	if [ -e $(ROOTDIR)/patches/$(notdir $@)/series ]; then cd "$@" && QUILT_PATCHES=$(ROOTDIR)/patches/$(notdir $@) quilt push -a; fi
+
+$(BUILDDIR)/nanogui: $(CACHEDIR)/nanogui-master.zip
+	@mkdir -p "$@"
+	cd "$@" && ln -s . $(notdir $@)-master
+	unzip "$<" -d "$@"
+	rm "$@/$(notdir $@)-master"
 	if [ -e $(ROOTDIR)/patches/$(notdir $@)/series ]; then cd "$@" && QUILT_PATCHES=$(ROOTDIR)/patches/$(notdir $@) quilt push -a; fi
 
 # Ogg bitstream library
@@ -634,6 +644,43 @@ build-nanovg/% $(INSTALLDIR)/%/lib/libnanovg.a: $(BUILDDIR)/nanovg $(INSTALLDIR)
 		-DCMAKE_SYSROOT="$(NDK_SYSROOT)" \
 		-DCMAKE_C_FLAGS="$(CFLAGS) -I '$(NDK_SYSROOT)/usr/include/' -I '$(ROOTDIR)/$(INSTALLDIR)/$*/include/'" \
 		-DCMAKE_CXX_FLAGS="$(CXXFLAGS) -I '$(NDK_SYSROOT)/usr/include/' -I '$(ROOTDIR)/$(INSTALLDIR)/$*/include/'" \
+		-DCMAKE_SHARED_LINKER_FLAGS="$(LDFLAGS) -L'$(ROOTDIR)/$(INSTALLDIR)/$*/lib/'" \
+		-DCMAKE_EXE_LINKER_FLAGS="$(LDFLAGS) -L'$(ROOTDIR)/$(INSTALLDIR)/$*/lib/'" \
+		-DCMAKE_INSTALL_PREFIX="/$*" \
+		"$(ROOTDIR)/$<"
+	cd "$<_$*" && make && make install DESTDIR="$(ROOTDIR)/$(INSTALLDIR)/"
+
+# Minimalistic cross-platform widget library
+# https://github.com/wjakob/nanogui
+# https://github.com/mitsuba-renderer/nanogui
+
+.PHONY: build-nanogui/%
+.PRECIOUS: $(INSTALLDIR)/%/lib/libnanogui.a
+build-nanogui/% $(INSTALLDIR)/%/lib/libnanogui.a: $(BUILDDIR)/nanogui \
+		$(INSTALLDIR)/%/lib/libglfw3.a $(INSTALLDIR)/%/lib/libnanovg.a
+	mkdir -p "$<_$*"
+	cd "$<_$*" && cmake \
+		--debug-output \
+		-DCMAKE_VERBOSE_MAKEFILE=ON \
+		-DCMAKE_BUILD_TYPE=Release \
+		-DNANOGUI_BACKEND='GLES 3' \
+		-DNANOGUI_BUILD_EXAMPLES=OFF \
+		-DNANOGUI_BUILD_SHARED=OFF \
+		-DNANOGUI_BUILD_PYTHON=OFF \
+		-DNANOGUI_BUILD_GLAD=OFF \
+		-DNANOGUI_BUILD_GLFW=OFF \
+		-DNANOGUI_INSTALL=ON \
+		-DANDROID_ABI=$(ANDROID_ABI_$*) \
+		-DANDROID_NATIVE_API_LEVEL=android-$(ANDROID_NATIVE_API) \
+		-DCMAKE_TOOLCHAIN_FILE="$(NDK)/build/cmake/android.toolchain.cmake" \
+		-DCMAKE_FIND_ROOT_PATH="$(NDK_SYSROOT)" \
+		-DCMAKE_FIND_ROOT_PATH_MODE_PROGRAM=NEVER \
+		-DCMAKE_FIND_ROOT_PATH_MODE_LIBRARY=ONLY \
+		-DCMAKE_FIND_ROOT_PATH_MODE_INCLUDE=ONLY \
+		-DCMAKE_FIND_ROOT_PATH_MODE_PACKAGE=ONLY \
+		-DCMAKE_SYSROOT="$(NDK_SYSROOT)" \
+		-DCMAKE_C_FLAGS="$(CFLAGS) -I '$(ROOTDIR)/$(INSTALLDIR)/$*/include/' -I '$(NDK_SYSROOT)/usr/include/'" \
+		-DCMAKE_CXX_FLAGS="$(CXXFLAGS) -stdlib=libc++ -I '$(ROOTDIR)/$(INSTALLDIR)/$*/include/' -I '$(NDK_SYSROOT)/usr/include/'" \
 		-DCMAKE_SHARED_LINKER_FLAGS="$(LDFLAGS) -L'$(ROOTDIR)/$(INSTALLDIR)/$*/lib/'" \
 		-DCMAKE_EXE_LINKER_FLAGS="$(LDFLAGS) -L'$(ROOTDIR)/$(INSTALLDIR)/$*/lib/'" \
 		-DCMAKE_INSTALL_PREFIX="/$*" \
