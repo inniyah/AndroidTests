@@ -166,6 +166,9 @@ $(CACHEDIR)/nanovg-%.tar.gz:
 $(CACHEDIR)/nanogui-master.zip:
 	wget -nc -P $(CACHEDIR) https://github.com/mitsuba-renderer/nanogui/archive/master.zip -O "$@"
 
+$(CACHEDIR)/glm-%.tar.gz:
+	wget -nc -P $(CACHEDIR) "https://github.com/g-truc/glm/archive/$*.tar.gz" -O "$@"
+
 $(BUILDDIR)/ogg: $(CACHEDIR)/libogg-1.3.4.tar.xz
 	@mkdir -p "$@"
 	tar xvfa "$<" --strip 1 --directory "$@"
@@ -247,6 +250,11 @@ $(BUILDDIR)/nanogui: $(CACHEDIR)/nanogui-master.zip
 	cd "$@" && ln -s . $(notdir $@)-master
 	unzip "$<" -d "$@"
 	rm "$@/$(notdir $@)-master"
+	if [ -e $(ROOTDIR)/patches/$(notdir $@)/series ]; then cd "$@" && QUILT_PATCHES=$(ROOTDIR)/patches/$(notdir $@) quilt push -a; fi
+
+$(BUILDDIR)/glm: $(CACHEDIR)/glm-0.9.9.8.tar.gz
+	@mkdir -p "$@"
+	tar xvfa "$<" --strip 1 --directory "$@"
 	if [ -e $(ROOTDIR)/patches/$(notdir $@)/series ]; then cd "$@" && QUILT_PATCHES=$(ROOTDIR)/patches/$(notdir $@) quilt push -a; fi
 
 # Ogg bitstream library
@@ -686,6 +694,15 @@ build-nanogui/% $(INSTALLDIR)/%/lib/libnanogui.a: $(BUILDDIR)/nanogui \
 		-DCMAKE_INSTALL_PREFIX="/$*" \
 		"$(ROOTDIR)/$<"
 	cd "$<_$*" && make && make install DESTDIR="$(ROOTDIR)/$(INSTALLDIR)/"
+
+# Header only C++ mathematics library for graphics software based on the OpenGL Shading Language (GLSL) specifications.
+# https://github.com/g-truc/glm
+
+.PHONY: build-glm/%
+.PRECIOUS: $(INSTALLDIR)/%/include/glm
+build-glm/% $(INSTALLDIR)/%/include/glm: $(BUILDDIR)/glm
+	mkdir -p "$(INSTALLDIR)/$*/include/glm"
+	( cd "$</glm/" ; tar cf - . ) | ( cd "$(INSTALLDIR)/$*/include/glm" ; tar xf - )
 
 
 .PHONY: build-libs
