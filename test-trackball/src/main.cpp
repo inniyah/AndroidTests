@@ -269,11 +269,20 @@ int main() {
     // Only during the initialisation
     GLuint MatrixID = glGetUniformLocation(shader_program, "MVP");
 
+    // Trackball Controls
+
+    sasmaster::Camera3D tCam(glm::vec3(0.0f, 0.0f, 4.0f));
+    sasmaster::TrackballControls* tball = &sasmaster::TrackballControls::GetInstance(&tCam, glm::vec4(0.0f, 0.0f, (float)screen_width, (float)screen_height));
+    tball->Init(window); // Init GLFW callbacks
+
     // Main loop
 
     while (!glfwWindowShouldClose(window)) {
         glfwPollEvents();
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+        tball->Update();
+        mvp = Projection * tCam.m_viewMatr * Model;
 
         // Send our transformation to the currently bound shader, in the "MVP" uniform
         glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &mvp[0][0]);
