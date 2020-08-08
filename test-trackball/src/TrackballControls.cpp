@@ -58,11 +58,11 @@ namespace sasmaster {
 
     //------------------------   Static callbacks -------------------------------------------------
 
-    static void MouseButtonCallBack(GLFWwindow* win ,int button,int action,int mods){
+    static void MouseButtonCallBack(GLFWwindow* win, int button, int action, int mods){
         if(action == GLFW_PRESS){
-            double xpos,ypos;
-            glfwGetCursorPos(win,&xpos,&ypos);
-            s_instance->MouseDown(button,action,mods,(int)xpos,(int)ypos);
+            double xpos, ypos;
+            glfwGetCursorPos(win, &xpos, &ypos);
+            s_instance->MouseDown(button, action, mods, (int)xpos, (int)ypos);
         }
         if(action == GLFW_RELEASE){
             s_instance->MouseUp();
@@ -70,14 +70,14 @@ namespace sasmaster {
     }
 
     static void MouseMoveCallBack(GLFWwindow* win, double xpos, double ypos) {
-        s_instance->MouseMove((int)xpos,(int)ypos);
+        s_instance->MouseMove((int)xpos, (int)ypos);
     }
 
     static void MouseScrollCallBack(GLFWwindow* win, double xpos, double ypos) {
-        s_instance->MouseWheel(xpos,ypos);
+        s_instance->MouseWheel(xpos, ypos);
     }
 
-    static void KeyboardCallBack(GLFWwindow* win,int key,int scancode,int action,int mods) {
+    static void KeyboardCallBack(GLFWwindow* win, int key, int scancode, int action,int mods) {
         if(action == GLFW_PRESS){
             s_instance->KeyDown(key);
         }
@@ -88,47 +88,47 @@ namespace sasmaster {
 
     //-----------------------------------------------------------------------------------------------
 
-    TrackballControls::TrackballControls(Camera3D* cam,glm::vec4 screenSize)
-        :m_pCam(cam),
-        m_screen(screenSize),
-        m_enabled(true),
+    TrackballControls::TrackballControls(Camera3D* cam, glm::vec4 screenSize) :
         m_rotateSpeed(1.0f),
         m_zoomSpeed(1.2f),
         m_panSpeed(0.3f),
-        m_noRotate(false),
-        m_noPan(false),
-        m_noZoom(false),
-        m_noRoll(false),
-        m_staticMoving(false),
         m_dynamicDampingFactor(0.2f),
         m_minDistance(0.0f),
         m_maxDistance(FloatInfinity),
+        m_enabled(true),
+        m_noRotate(false),
+        m_noZoom(false),
+        m_noPan(false),
+        m_noRoll(false),
+        m_staticMoving(false),
+        m_pCam(cam),
+        m_screen(screenSize),
         m_target(0.0f),
         m_lastPos(0.0f),
-        m_state(TCB_STATE::NONE),
-        m_prevState(TCB_STATE::NONE),
         m_eye(0.0f),
         m_rotStart(0.0f),
         m_rotEnd(0.0f),
         m_zoomStart(0.0f),
         m_zoomEnd(0.0f),
         m_panStart(0.0f),
-        m_panEnd(0.0f)
+        m_panEnd(0.0f),
+        m_state(TCB_STATE::NONE),
+        m_prevState(TCB_STATE::NONE)
     {
     }
 
     void TrackballControls::Init(GLFWwindow *win) {
-        glfwSetCursorPosCallback(win,&MouseMoveCallBack);
-        glfwSetMouseButtonCallback(win,&MouseButtonCallBack);
-        glfwSetScrollCallback(win,&MouseScrollCallBack);
-        glfwSetKeyCallback(win,&KeyboardCallBack);
+        glfwSetCursorPosCallback(win, &MouseMoveCallBack);
+        glfwSetMouseButtonCallback(win, &MouseButtonCallBack);
+        glfwSetScrollCallback(win, &MouseScrollCallBack);
+        glfwSetKeyCallback(win, &KeyboardCallBack);
     }
 
     void TrackballControls::Update() {
         //   _eye.setFrom( object.position ).sub( target );
         m_eye = m_pCam->m_eye - m_target;
 
-        //    m_eye -= m_eye  - m_target  ; // Vector3.Subtract(_eye, _target);
+        //    m_eye -= m_eye - m_target  ; // Vector3.Subtract(_eye, _target);
         if (!m_noRotate) {
             RotateCamera();
         }

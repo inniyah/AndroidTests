@@ -231,7 +231,7 @@ test: build/$(APK_FILENAME).apk
 	$(ADB) install -r $<
 	$(ADB) shell setprop log.redirect-stdio true
 	$(ADB) shell am start --activity-clear-top -n "$(PACKAGE_NAME)/android.app.NativeActivity"
-	$(ADB) logcat | tee logcat.txt
+	$(ADB) logcat | tee logcat.txt | grep GLFW
 
 remove:
 	$(ADB) uninstall $(PACKAGE_NAME)
