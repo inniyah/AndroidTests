@@ -160,8 +160,8 @@ static const GLfloat g_color_buffer_data[] = {
 
 
 int main() {
-    static const GLuint screen_width = 800;
-    static const GLuint screen_height = 600;
+    GLuint screen_width = 800;
+    GLuint screen_height = 600;
 
     glfwInit();
 
@@ -187,6 +187,9 @@ int main() {
     JNIEnv * cyborg_env = cyborg_app->activity->env;
     AAssetManager * cybord_ass = cyborg_app->activity->assetManager;
     setAndroidAssetManager(cybord_ass);
+
+    screen_width = ANativeWindow_getWidth(cyborg_app->window);
+    screen_height = ANativeWindow_getHeight(cyborg_app->window);
 #endif
 
     GLuint shader_program = get_shader_program(vertex_shader_source, fragment_shader_source);
