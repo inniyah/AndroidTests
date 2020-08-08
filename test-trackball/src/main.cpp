@@ -199,6 +199,75 @@ int main() {
     objl::Loader<asset_istream> obj_loader;
     if (!obj_loader.LoadFile(obj_filename)) {
         LOGE("Error loading OBJ Model: '%s'", obj_filename.c_str());
+    } else {
+        std::vector<glm::vec3> m_verts;
+        std::vector<glm::vec3> m_norms;
+        std::vector<glm::vec2> m_uv;
+        std::vector<std::vector<glm::ivec3> > m_faces; // this ivec3 means vertex/uv/normal
+
+        for (unsigned int i = 0; i < obj_loader.LoadedMeshes.size(); i++) {
+            // Copy one of the loaded meshes to be our current mesh
+            objl::Mesh curMesh = obj_loader.LoadedMeshes[i];
+
+            // Print Mesh Name
+            LOGV("Mesh: '%s'", curMesh.MeshName.c_str());
+
+            // Print Vertices
+            LOGV("Vertices:");
+
+            // Go through each vertex and print its number, position, normal and texture coordinate
+            for (unsigned int j = 0; j < curMesh.Vertices.size(); j++) {
+                LOGV("V%d: P(%f, %f, %f), N(%f, %f, %f), TC(%f, %f)", j,
+                    curMesh.Vertices[j].Position.X, curMesh.Vertices[j].Position.Y, curMesh.Vertices[j].Position.Z,
+                    curMesh.Vertices[j].Normal.X,curMesh.Vertices[j].Normal.Y, curMesh.Vertices[j].Normal.Z,
+                    curMesh.Vertices[j].TextureCoordinate.X, curMesh.Vertices[j].TextureCoordinate.Y
+                );
+
+                glm::vec3 v(curMesh.Vertices[j].Position.X, curMesh.Vertices[j].Position.Y, curMesh.Vertices[j].Position.Z);
+                m_verts.push_back(v);
+                glm::vec3 n(curMesh.Vertices[j].Normal.X, curMesh.Vertices[j].Normal.Y, curMesh.Vertices[j].Normal.Z);
+                n = glm::normalize(n);
+                m_norms.push_back(n);
+                glm::vec2 uv(curMesh.Vertices[j].TextureCoordinate.X, curMesh.Vertices[j].TextureCoordinate.Y);
+                m_uv.push_back(uv);
+
+            }
+
+            // Print Indices
+            LOGV("Indices:");
+
+            // Go through every 3rd index and print the triangle that these indices represent
+            for (unsigned int j = 0; j < curMesh.Indices.size(); j += 3) {
+                LOGV("T%d: %d, %d, %d", j / 3, curMesh.Indices[j], curMesh.Indices[j + 1], curMesh.Indices[j + 2]);
+
+                std::vector<glm::ivec3> f;
+                for (unsigned int k = 0; k < 3; k++) {
+                    glm::ivec3 tmp(
+                        curMesh.Indices[j + k], // Index of the vertex position
+                        curMesh.Indices[j + k], // Index of the texture coordinate (uv)
+                        curMesh.Indices[j + k]  // Index of the vertex normal
+                    );
+                    f.push_back(tmp);
+                }
+                m_faces.push_back(f);
+            }
+
+            // Print Material
+            LOGV("Material: '%s'", curMesh.MeshMaterial.name.c_str());
+            LOGV("Ambient Color: %f, %f, %f", curMesh.MeshMaterial.Ka.X, curMesh.MeshMaterial.Ka.Y, curMesh.MeshMaterial.Ka.Z);
+            LOGV("Diffuse Color:  %f, %f, %f", curMesh.MeshMaterial.Kd.X, curMesh.MeshMaterial.Kd.Y, curMesh.MeshMaterial.Kd.Z);
+            LOGV("Specular Color:  %f, %f, %f", curMesh.MeshMaterial.Ks.X, curMesh.MeshMaterial.Ks.Y, curMesh.MeshMaterial.Ks.Z);
+            LOGV("Specular Exponent: %f", curMesh.MeshMaterial.Ns);
+            LOGV("Optical Density: %f", curMesh.MeshMaterial.Ni);
+            LOGV("Dissolve: %f", curMesh.MeshMaterial.d);
+            LOGV("Illumination: %d", curMesh.MeshMaterial.illum);
+            LOGV("Ambient Texture Map: '%s'", curMesh.MeshMaterial.map_Ka.c_str());
+            LOGV("Diffuse Texture Map: '%s'", curMesh.MeshMaterial.map_Kd.c_str());
+            LOGV("Specular Color Texture Map: '%s'", curMesh.MeshMaterial.map_Ks.c_str());
+            LOGV("Specular Highlight Texture Map: '%s'", curMesh.MeshMaterial.map_Ns.c_str());
+            LOGV("Alpha Texture Map: '%s'", curMesh.MeshMaterial.map_d.c_str());
+            LOGV("Bump Map: '%s'", curMesh.MeshMaterial.map_bump.c_str());
+        }
     }
 
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);

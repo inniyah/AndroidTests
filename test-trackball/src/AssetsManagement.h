@@ -59,6 +59,7 @@ void setAndroidAssetManager(AAssetManager * manager) {
   android_asset_manager = manager;
 }
 
+// See: http://www.50ply.com/blog/2013/01/19/loading-compressed-android-assets-with-file-pointer/
 FILE * asset_fopen(const char * fname, const char * mode) {
   if (strchr(mode, 'w')) { // for writing
     LOGE("Unable to open asset (trying to write): '%s' ('%s')", fname, mode);
@@ -77,7 +78,7 @@ FILE * asset_fopen(const char * fname, const char * mode) {
   return funopen(asset, android_asset_read, android_asset_write, android_asset_seek, android_asset_close);
 }
 
-
+// See: https://stackoverflow.com/questions/11063786/can-i-use-ifstream-in-android-ndk-to-access-assets
 class asset_streambuf : public std::streambuf {
 public:
     asset_streambuf(const std::string& filename) : asset(nullptr) {
