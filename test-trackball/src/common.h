@@ -14,7 +14,7 @@
 
 #include "AssetsManagement.h"
 
-//#define fopen asset_fopen
+#define fopen asset_fopen
 
 #else // ! __ANDROID__
 

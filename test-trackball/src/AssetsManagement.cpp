@@ -61,7 +61,7 @@ AAssetManager * getAndroidAssetManager() {
 }
 
 // See: http://www.50ply.com/blog/2013/01/19/loading-compressed-android-assets-with-file-pointer/
-FILE * asset_fopen(const char * fname, const char * mode) {
+extern "C" FILE * asset_fopen(const char * fname, const char * mode) {
   if (strchr(mode, 'w')) { // for writing
     LOGE("Unable to open asset (trying to write): '%s' ('%s')", fname, mode);
     return NULL;

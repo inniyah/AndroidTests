@@ -40,7 +40,7 @@
 void setAndroidAssetManager(AAssetManager * manager);
 AAssetManager * getAndroidAssetManager();
 
-FILE * asset_fopen(const char * fname, const char * mode);
+extern "C" FILE * asset_fopen(const char * fname, const char * mode);
 
 // See: https://stackoverflow.com/questions/11063786/can-i-use-ifstream-in-android-ndk-to-access-assets
 class asset_streambuf : public std::streambuf {

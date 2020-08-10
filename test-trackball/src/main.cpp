@@ -13,6 +13,9 @@
 
 #include <glm/gtc/matrix_transform.hpp>
 
+#define STB_IMAGE_IMPLEMENTATION
+#include <stb/stb_image.h>
+
 static const GLchar* vertex_shader_source =
     "#version 300 es\n"
     "uniform mat4 MVP;\n"
@@ -36,10 +39,12 @@ static const GLchar* fragment_shader_source =
     "in vec3 ourColor;\n"
     "in vec2 TexCoord;\n"
     ""
-    "out vec3 FragColor;\n"
+    "uniform sampler2D ourTexture;\n"
+    ""
+    "out vec4 FragColor;\n"
     ""
     "void main() {\n"
-    "    FragColor = ourColor;\n"
+    "    FragColor = texture(ourTexture, TexCoord) * vec4(ourColor, 1.0);\n"
     "}\n";
 
 int main() {
@@ -196,6 +201,7 @@ int main() {
     glDeleteShader(vertexShader);
     glDeleteShader(fragmentShader);
 
+    // set up model data
 
     float vertices[] = {
         // positions          // colors           // texture coords
@@ -231,8 +237,33 @@ int main() {
     glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
     glEnableVertexAttribArray(2);
 
+    // load texture
 
+    unsigned int texture;
+    glGenTextures(1, &texture);
+    glBindTexture(GL_TEXTURE_2D, texture); 
+     // set the texture wrapping parameters
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    // set texture filtering parameters
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    // load image, create texture and generate mipmaps
+    int width, height, nrChannels;
+    stbi_set_flip_vertically_on_load(true); // tell stb_image.h to flip loaded texture's on the y-axis.
 
+    unsigned char *data = stbi_load("metal.jpg", &width, &height, &nrChannels, 0);
+    if (data) {
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+        glGenerateMipmap(GL_TEXTURE_2D);
+    } else {
+        LOGE("Failed to load texture");
+    }
+    stbi_image_free(data);
+
+    glUniform1i(glGetUniformLocation(shaderProgram, "ourTexture"), 0);
+
+    // prepare show
 
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glViewport(0, 0, screen_width, screen_height);
