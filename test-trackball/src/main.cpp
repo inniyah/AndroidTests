@@ -16,148 +16,20 @@
 static const GLchar* vertex_shader_source =
     "#version 300 es\n"
     "uniform mat4 MVP;\n"
-    "layout(location = 0) in vec3 vertexPosition_modelspace;\n"
-    "layout(location = 1) in vec3 vertexColor;\n"
-    "out vec3 fragmentColor;\n"
-    "void main() {\n"
-    "    gl_Position =  MVP * vec4(vertexPosition_modelspace, 1);\n"
-    "    fragmentColor = vertexColor;\n"
-    "}\n";
+    "layout (location = 0) in vec3 aPos;\n"
+    "void main()\n"
+    "{\n"
+    "    gl_Position =  MVP * vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
+
+    "}\0";
 
 static const GLchar* fragment_shader_source =
     "#version 300 es\n"
-    "in vec3 fragmentColor;\n"
-    "out vec3 color;\n"
-    "void main() {\n"
-    "    color = fragmentColor;\n"
-    "}\n";
-
-static GLint get_shader_program(const char *vertex_shader_source, const char *fragment_shader_source) {
-    enum Consts {INFOLOG_LEN = 512};
-    GLchar infoLog[INFOLOG_LEN];
-    GLint fragment_shader;
-    GLint shader_program;
-    GLint success;
-    GLint vertex_shader;
-
-    /* Vertex shader */
-    vertex_shader = glCreateShader(GL_VERTEX_SHADER);
-    glShaderSource(vertex_shader, 1, &vertex_shader_source, NULL);
-    glCompileShader(vertex_shader);
-    glGetShaderiv(vertex_shader, GL_COMPILE_STATUS, &success);
-    if (!success) {
-        glGetShaderInfoLog(vertex_shader, INFOLOG_LEN, NULL, infoLog);
-        LOGF("ERROR::SHADER::VERTEX::COMPILATION_FAILED\n%s\n", infoLog);
-    }
-
-    /* Fragment shader */
-    fragment_shader = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(fragment_shader, 1, &fragment_shader_source, NULL);
-    glCompileShader(fragment_shader);
-    glGetShaderiv(fragment_shader, GL_COMPILE_STATUS, &success);
-    if (!success) {
-        glGetShaderInfoLog(fragment_shader, INFOLOG_LEN, NULL, infoLog);
-        LOGF("ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n%s\n", infoLog);
-    }
-
-    /* Link shaders */
-    shader_program = glCreateProgram();
-    glAttachShader(shader_program, vertex_shader);
-    glAttachShader(shader_program, fragment_shader);
-    glLinkProgram(shader_program);
-    glGetProgramiv(shader_program, GL_LINK_STATUS, &success);
-    if (!success) {
-        glGetProgramInfoLog(shader_program, INFOLOG_LEN, NULL, infoLog);
-        LOGF("ERROR::SHADER::PROGRAM::LINKING_FAILED\n%s\n", infoLog);
-    }
-
-    glDeleteShader(vertex_shader);
-    glDeleteShader(fragment_shader);
-    return shader_program;
-}
-
-
-// Our vertices. Three consecutive floats give a 3D vertex; Three consecutive vertices give a triangle.
-// A cube has 6 faces with 2 triangles each, so this makes 6*2=12 triangles, and 12*3 vertices
-static const GLfloat g_vertex_buffer_data[] = {
-    -1.0f,-1.0f,-1.0f, // triangle 1 : begin
-    -1.0f,-1.0f, 1.0f,
-    -1.0f, 1.0f, 1.0f, // triangle 1 : end
-    1.0f, 1.0f,-1.0f, // triangle 2 : begin
-    -1.0f,-1.0f,-1.0f,
-    -1.0f, 1.0f,-1.0f, // triangle 2 : end
-    1.0f,-1.0f, 1.0f,
-    -1.0f,-1.0f,-1.0f,
-    1.0f,-1.0f,-1.0f,
-    1.0f, 1.0f,-1.0f,
-    1.0f,-1.0f,-1.0f,
-    -1.0f,-1.0f,-1.0f,
-    -1.0f,-1.0f,-1.0f,
-    -1.0f, 1.0f, 1.0f,
-    -1.0f, 1.0f,-1.0f,
-    1.0f,-1.0f, 1.0f,
-    -1.0f,-1.0f, 1.0f,
-    -1.0f,-1.0f,-1.0f,
-    -1.0f, 1.0f, 1.0f,
-    -1.0f,-1.0f, 1.0f,
-    1.0f,-1.0f, 1.0f,
-    1.0f, 1.0f, 1.0f,
-    1.0f,-1.0f,-1.0f,
-    1.0f, 1.0f,-1.0f,
-    1.0f,-1.0f,-1.0f,
-    1.0f, 1.0f, 1.0f,
-    1.0f,-1.0f, 1.0f,
-    1.0f, 1.0f, 1.0f,
-    1.0f, 1.0f,-1.0f,
-    -1.0f, 1.0f,-1.0f,
-    1.0f, 1.0f, 1.0f,
-    -1.0f, 1.0f,-1.0f,
-    -1.0f, 1.0f, 1.0f,
-    1.0f, 1.0f, 1.0f,
-    -1.0f, 1.0f, 1.0f,
-    1.0f,-1.0f, 1.0f
-};
-
-// One color for each vertex. They were generated randomly.
-static const GLfloat g_color_buffer_data[] = {
-    0.583f,  0.771f,  0.014f,
-    0.609f,  0.115f,  0.436f,
-    0.327f,  0.483f,  0.844f,
-    0.822f,  0.569f,  0.201f,
-    0.435f,  0.602f,  0.223f,
-    0.310f,  0.747f,  0.185f,
-    0.597f,  0.770f,  0.761f,
-    0.559f,  0.436f,  0.730f,
-    0.359f,  0.583f,  0.152f,
-    0.483f,  0.596f,  0.789f,
-    0.559f,  0.861f,  0.639f,
-    0.195f,  0.548f,  0.859f,
-    0.014f,  0.184f,  0.576f,
-    0.771f,  0.328f,  0.970f,
-    0.406f,  0.615f,  0.116f,
-    0.676f,  0.977f,  0.133f,
-    0.971f,  0.572f,  0.833f,
-    0.140f,  0.616f,  0.489f,
-    0.997f,  0.513f,  0.064f,
-    0.945f,  0.719f,  0.592f,
-    0.543f,  0.021f,  0.978f,
-    0.279f,  0.317f,  0.505f,
-    0.167f,  0.620f,  0.077f,
-    0.347f,  0.857f,  0.137f,
-    0.055f,  0.953f,  0.042f,
-    0.714f,  0.505f,  0.345f,
-    0.783f,  0.290f,  0.734f,
-    0.722f,  0.645f,  0.174f,
-    0.302f,  0.455f,  0.848f,
-    0.225f,  0.587f,  0.040f,
-    0.517f,  0.713f,  0.338f,
-    0.053f,  0.959f,  0.120f,
-    0.393f,  0.621f,  0.362f,
-    0.673f,  0.211f,  0.457f,
-    0.820f,  0.883f,  0.371f,
-    0.982f,  0.099f,  0.879f
-};
-
+    "out vec4 FragColor;\n"
+    "void main()\n"
+    "{\n"
+    "   FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
+    "}\n\0";
 
 int main() {
     GLuint screen_width = 800;
@@ -193,9 +65,6 @@ int main() {
 #endif
 
     LOGI("Screen Size: %d x %d\n", screen_width, screen_height);
-
-    GLuint shader_program = get_shader_program(vertex_shader_source, fragment_shader_source);
-    GLint pos = glGetAttribLocation(shader_program, "position");
 
     std::string obj_filename = "epol.obj";
     objl::Loader<asset_istream> obj_loader;
@@ -272,48 +141,101 @@ int main() {
         }
     }
 
+    // See: https://learnopengl.com/Getting-started/Hello-Triangle
+    // See: https://learnopengl.com/code_viewer_gh.php?code=src/1.getting_started/2.2.hello_triangle_indexed/hello_triangle_indexed.cpp
+
+    // vertex shader
+
+    GLint vertexShader = glCreateShader(GL_VERTEX_SHADER);
+    glShaderSource(vertexShader, 1, &vertex_shader_source, NULL);
+    glCompileShader(vertexShader);
+
+    int success;
+    char infoLog[512];
+    glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
+    if (!success) {
+        glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
+        LOGF("ERROR::SHADER::VERTEX::COMPILATION_FAILED\n%s\n", infoLog);
+    }
+
+    // fragment shader
+
+    GLint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+    glShaderSource(fragmentShader, 1, &fragment_shader_source, NULL);
+    glCompileShader(fragmentShader);
+
+    glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
+    if (!success) {
+        glGetShaderInfoLog(fragmentShader, 512, NULL, infoLog);
+        LOGF("ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n%s\n", infoLog);
+    }
+
+    // link shaders
+
+    GLint shaderProgram = glCreateProgram();
+    glAttachShader(shaderProgram, vertexShader);
+    glAttachShader(shaderProgram, fragmentShader);
+    glLinkProgram(shaderProgram);
+
+    glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
+    if (!success) {
+        glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
+        LOGF("ERROR::SHADER::PROGRAM::LINKING_FAILED\n%s\n", infoLog);
+    }
+    glDeleteShader(vertexShader);
+    glDeleteShader(fragmentShader);
+
+    // set up data
+
+    float vertices[] = {
+         1.0f,  1.0f,  1.0f,  // top right
+         1.0f, -1.0f,  1.0f,  // bottom right
+        -1.0f, -1.0f, -1.0f,  // bottom left
+        -1.0f,  1.0f, -1.0f   // top left 
+    };
+
+    unsigned int indices[] = {  // note that we start from 0!
+        0, 1, 3,  // first Triangle
+        1, 2, 3   // second Triangle
+    };
+
+    unsigned int VBO, VAO, EBO;
+    glGenVertexArrays(1, &VAO);
+    glGenBuffers(1, &VBO);
+    glGenBuffers(1, &EBO);
+
+    // bind the Vertex Array Object (VAO) first
+    glBindVertexArray(VAO);
+
+    // then bind and set vertex buffers (VBO)
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+    // and finally configure vertex attributes (EBO)
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+
+    // note that this is allowed, the call to glVertexAttribPointer registered VBO as the vertex attribute's bound vertex buffer object so afterwards we can safely unbind
+    glBindBuffer(GL_ARRAY_BUFFER, 0); 
+
+    // remember: do NOT unbind the EBO while a VAO is active as the bound element buffer object IS stored in the VAO; keep the EBO bound.
+    //glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+    // You can unbind the VAO afterwards so other VAO calls won't accidentally modify this VAO, but this rarely happens. Modifying other
+    // VAOs requires a call to glBindVertexArray anyways so we generally don't unbind VAOs (nor VBOs) when it's not directly necessary.
+    glBindVertexArray(0); 
+
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glViewport(0, 0, screen_width, screen_height);
 
     glEnable(GL_DEPTH_TEST); // Enable depth test
-    glDepthFunc(GL_LESS); // Accept fragment if it closer to the camera than the former one
+    glDepthFunc(GL_LESS);    // Accept fragment if it closer to the camera than the former one
 
-
-    // 1st attribute buffer : vertices
-
-    GLuint vertexbuffer; // This will identify our vertex buffer
-    glGenBuffers(1, &vertexbuffer); // Generate 1 buffer, put the resulting identifier in vertexbuffer
-    glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer); // The following commands will talk about our 'vertexbuffer' buffer
-    glBufferData(GL_ARRAY_BUFFER, sizeof(g_vertex_buffer_data), g_vertex_buffer_data, GL_STATIC_DRAW); // Give our vertices to OpenGL.
-
-    glEnableVertexAttribArray(0);
-    glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
-    glVertexAttribPointer(
-       0,                  // attribute 0. No particular reason for 0, but must match the layout in the shader.
-       3,                  // size
-       GL_FLOAT,           // type
-       GL_FALSE,           // normalized?
-       0,                  // stride
-       (void*)0            // array buffer offset
-    );
-
-    // 2nd attribute buffer : colors
-
-    GLuint colorbuffer;
-    glGenBuffers(1, &colorbuffer);
-    glBindBuffer(GL_ARRAY_BUFFER, colorbuffer);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(g_color_buffer_data), g_color_buffer_data, GL_STATIC_DRAW);
-
-    glEnableVertexAttribArray(1);
-    glBindBuffer(GL_ARRAY_BUFFER, colorbuffer);
-    glVertexAttribPointer(
-        1,                                // attribute. No particular reason for 1, but must match the layout in the shader.
-        3,                                // size
-        GL_FLOAT,                         // type
-        GL_FALSE,                         // normalized?
-        0,                                // stride
-        (void*)0                          // array buffer offset
-    );
+    // uncomment this call to draw in wireframe polygons.
+    //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
     // MVP matrix
 
@@ -324,7 +246,7 @@ int main() {
 
     // Projection matrix : 45° Field of View, 4:3 ratio, display range : 0.1 unit <-> 100 units
     glm::mat4 Projection = glm::perspective(glm::radians(45.0f), (float) screen_width / (float)screen_height, 0.1f, 100.0f);
-    //~ glm::mat4 Projection = glm::ortho(-10.0f,10.0f,-10.0f,10.0f,0.0f,100.0f); // For an ortho camera - In world coordinates
+    //glm::mat4 Projection = glm::ortho(-10.0f,10.0f,-10.0f,10.0f,0.0f,100.0f); // For an ortho camera - In world coordinates
 
     // Camera matrix
     glm::mat4 View = glm::lookAt(
@@ -341,7 +263,7 @@ int main() {
 
     // Get a handle for our "MVP" uniform
     // Only during the initialisation
-    GLuint MatrixID = glGetUniformLocation(shader_program, "MVP");
+    GLuint MatrixID = glGetUniformLocation(shaderProgram, "MVP");
 
     // Trackball Controls
 
@@ -352,7 +274,7 @@ int main() {
     // Main loop
 
     while (!glfwWindowShouldClose(window)) {
-        glfwPollEvents();
+        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         tball->Update();
@@ -361,20 +283,29 @@ int main() {
         // Send our transformation to the currently bound shader, in the "MVP" uniform
         glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &mvp[0][0]);
 
-        glUseProgram(shader_program);
+        // draw our first triangle
+        glUseProgram(shaderProgram);
 
-        glDrawArrays(GL_TRIANGLES, 0, 12*3); // 12*3 indices starting at 0 -> 12 triangles -> 6 squares
+        glBindVertexArray(VAO); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
+        //glDrawArrays(GL_TRIANGLES, 0, 6);
+
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        // glBindVertexArray(0); // no need to unbind it every time 
+ 
         glfwSwapBuffers(window);
+        glfwPollEvents();
     }
 
-    glDeleteBuffers(1, &vertexbuffer);
-    glDeleteBuffers(1, &colorbuffer);
+    // optional: de-allocate all resources once they've outlived their purpose:
+    // ------------------------------------------------------------------------
+    glDeleteVertexArrays(1, &VAO);
+    glDeleteBuffers(1, &VBO);
+    glDeleteBuffers(1, &EBO);
+    glDeleteProgram(shaderProgram);
 
-    //~ glDetachShader(shader_program, vertex_shader);
-    //~ glDetachShader(shader_program, fragment_shader);
-
-    //~ glDeleteShader(vertex_shader);
-    //~ glDeleteShader(fragment_shader);
-
+    // glfw: terminate, clearing all previously allocated GLFW resources.
+    // ------------------------------------------------------------------
     glfwTerminate();
+
+    return 0;
 }
