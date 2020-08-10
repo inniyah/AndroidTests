@@ -31,6 +31,8 @@
 #include <GLFW/glfw3.h>
 
 #include "TrackballControls.h"
+#include "common.h"
+
 #include <glm/gtc/quaternion.hpp>
 #include <glm/gtx/norm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -59,6 +61,7 @@ namespace sasmaster {
     //------------------------   Static callbacks -------------------------------------------------
 
     static void MouseButtonCallBack(GLFWwindow* win, int button, int action, int mods){
+        LOGV("MouseButtonCallBack -> button = %d, action = %d, mods = %d", button, action, mods);
         if(action == GLFW_PRESS){
             double xpos, ypos;
             glfwGetCursorPos(win, &xpos, &ypos);
@@ -70,10 +73,12 @@ namespace sasmaster {
     }
 
     static void MouseMoveCallBack(GLFWwindow* win, double xpos, double ypos) {
+        LOGV("MouseMoveCallBack -> x = %f, y = %f", (float)xpos, (float)ypos);
         s_instance->MouseMove((int)xpos, (int)ypos);
     }
 
     static void MouseScrollCallBack(GLFWwindow* win, double xpos, double ypos) {
+        LOGV("MouseScrollCallBack -> x = %f, y = %f", (float)xpos, (float)ypos);
         s_instance->MouseWheel(xpos, ypos);
     }
 

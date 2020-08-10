@@ -83,7 +83,7 @@ class TrackballControls {
         bool m_staticMoving;
 
     private:
-        TrackballControls(Camera3D* cam,glm::vec4 screenSize);
+        TrackballControls(Camera3D* cam, glm::vec4 screenSize);
 
         glm::vec3 GetMouseProjectionOnBall(int clientX, int clientY);
         glm::vec2 GetMouseOnScreen(int clientX, int clientY);

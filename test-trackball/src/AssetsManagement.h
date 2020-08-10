@@ -22,6 +22,8 @@
  * THE SOFTWARE.
  */
 
+#include "common.h"
+
 #include <stdio.h>
 #include <string.h>
 #include <errno.h>
@@ -35,59 +37,21 @@
 #ifndef ASSETS_MANAGEMENT_H
 #define ASSETS_MANAGEMENT_H
 
-static AAssetManager * android_asset_manager = NULL;
+void setAndroidAssetManager(AAssetManager * manager);
+AAssetManager * getAndroidAssetManager();
 
-static int android_asset_read(void * cookie, char * buf, int size) {
-  return AAsset_read((AAsset*)cookie, buf, size);
-}
-
-static int android_asset_write(void * cookie, const char * buf, int size) {
-  (void)cookie; (void)buf; (void)size; // unused
-  return EACCES; // can't provide write access to the apk
-}
-
-static fpos_t android_asset_seek(void * cookie, fpos_t offset, int whence) {
-  return AAsset_seek((AAsset*)cookie, offset, whence);
-}
-
-static int android_asset_close(void * cookie) {
-  AAsset_close((AAsset*)cookie);
-  return 0;
-}
-
-void setAndroidAssetManager(AAssetManager * manager) {
-  android_asset_manager = manager;
-}
-
-// See: http://www.50ply.com/blog/2013/01/19/loading-compressed-android-assets-with-file-pointer/
-FILE * asset_fopen(const char * fname, const char * mode) {
-  if (strchr(mode, 'w')) { // for writing
-    LOGE("Unable to open asset (trying to write): '%s' ('%s')", fname, mode);
-    return NULL;
-  }
-  if (!android_asset_manager) {
-    LOGE("Unable to open asset (unknown asset manager): '%s' ('%s')", fname, mode);
-    return NULL;
-  }
-  AAsset* asset = AAssetManager_open(android_asset_manager, fname, 0);
-  if (!asset) {
-    LOGW("Unable to open asset: '%s' ('%s')", fname, mode);
-    return NULL;
-  }
-  LOGV("Opening asset: '%s' ('%s')", fname, mode);
-  return funopen(asset, android_asset_read, android_asset_write, android_asset_seek, android_asset_close);
-}
+FILE * asset_fopen(const char * fname, const char * mode);
 
 // See: https://stackoverflow.com/questions/11063786/can-i-use-ifstream-in-android-ndk-to-access-assets
 class asset_streambuf : public std::streambuf {
 public:
     asset_streambuf(const std::string& filename) : asset(nullptr) {
-        if (!android_asset_manager) {
+        if (!getAndroidAssetManager()) {
             LOGE("Unable to open asset (unknown asset manager): '%s'", filename.c_str());
             return;
          }
 
-        asset = AAssetManager_open(android_asset_manager, filename.c_str(), AASSET_MODE_STREAMING);
+        asset = AAssetManager_open(getAndroidAssetManager(), filename.c_str(), AASSET_MODE_STREAMING);
 
         if (!asset) {
             LOGW("Unable to open asset: '%s'", filename.c_str());

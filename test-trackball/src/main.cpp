@@ -179,8 +179,8 @@ int main() {
 
     glfwMakeContextCurrent(window);
 
-    LOGI("GL_VERSION  : %s\n", glGetString(GL_VERSION) );
-    LOGI("GL_RENDERER : %s\n", glGetString(GL_RENDERER) );
+    LOGI("GL_VERSION  : %s\n", glGetString(GL_VERSION));
+    LOGI("GL_RENDERER : %s\n", glGetString(GL_RENDERER));
 
 #if defined(__ANDROID__)
     struct android_app * cyborg_app = glfwGetAndroidApp(window);
@@ -191,6 +191,8 @@ int main() {
     screen_width = ANativeWindow_getWidth(cyborg_app->window);
     screen_height = ANativeWindow_getHeight(cyborg_app->window);
 #endif
+
+    LOGI("Screen Size: %d x %d\n", screen_width, screen_height);
 
     GLuint shader_program = get_shader_program(vertex_shader_source, fragment_shader_source);
     GLint pos = glGetAttribLocation(shader_program, "position");
