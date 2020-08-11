@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
 #include "glfm.h"
 #define FILE_COMPAT_ANDROID_ACTIVITY glfmAndroidGetActivity()
 #include "file_compat.h"
