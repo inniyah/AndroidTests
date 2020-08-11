@@ -82,6 +82,14 @@ int main() {
 
     LOGI("Screen Size: %d x %d\n", screen_width, screen_height);
 
+    unsigned int size_vertice = 8;
+    unsigned int num_vertices = 0;
+    GLfloat* vertices = nullptr;
+
+    unsigned int size_triangle = 3;
+    unsigned int num_triangles = 0;
+    GLuint* triangle_indices = nullptr;
+
     std::string obj_filename = "epol.obj";
     objl::Loader<asset_istream> obj_loader;
     if (!obj_loader.LoadFile(obj_filename)) {
@@ -99,8 +107,20 @@ int main() {
             // Print Mesh Name
             LOGV("Mesh: '%s'", curMesh.MeshName.c_str());
 
+            //~ float vertices[] = {
+            //~     // positions          // colors           // texture coords
+            //~      0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f, // top right
+            //~      0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f, // bottom right
+            //~     -0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f, // bottom left
+            //~     -0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f  // top left 
+            //~ };
+
             // Print Vertices
-            LOGV("Vertices:");
+            LOGV("Vertices (%lu):", (unsigned long)curMesh.Vertices.size());
+
+            if (vertices) delete[] vertices;
+            num_vertices = curMesh.Vertices.size();
+            vertices = new GLfloat[num_vertices * size_vertice];
 
             // Go through each vertex and print its number, position, normal and texture coordinate
             for (unsigned int j = 0; j < curMesh.Vertices.size(); j++) {
@@ -109,6 +129,16 @@ int main() {
                     curMesh.Vertices[j].Normal.X,curMesh.Vertices[j].Normal.Y, curMesh.Vertices[j].Normal.Z,
                     curMesh.Vertices[j].TextureCoordinate.X, curMesh.Vertices[j].TextureCoordinate.Y
                 );
+
+                unsigned int base = size_vertice * j;
+                vertices[base + 0] = curMesh.Vertices[j].Position.X;
+                vertices[base + 1] = curMesh.Vertices[j].Position.Y;
+                vertices[base + 2] = curMesh.Vertices[j].Position.Z;
+                vertices[base + 3] = 1.0f;
+                vertices[base + 4] = 1.0f;
+                vertices[base + 5] = 1.0f;
+                vertices[base + 6] = curMesh.Vertices[j].TextureCoordinate.X;
+                vertices[base + 7] = curMesh.Vertices[j].TextureCoordinate.Y;
 
                 glm::vec3 v(curMesh.Vertices[j].Position.X, curMesh.Vertices[j].Position.Y, curMesh.Vertices[j].Position.Z);
                 m_verts.push_back(v);
@@ -120,12 +150,26 @@ int main() {
 
             }
 
-            // Print Indices
-            LOGV("Indices:");
+            //~ unsigned int triangle_indices[] = {
+            //~     0, 1, 3, // first triangle
+            //~     1, 2, 3  // second triangle
+            //~ };
 
-            // Go through every 3rd index and print the triangle that these indices represent
+            // Print Indices
+            LOGV("Indices (%lu):", (unsigned long)curMesh.Indices.size());
+
+            if (triangle_indices) delete[] triangle_indices;
+            num_triangles = curMesh.Indices.size() / 3;
+            triangle_indices = new GLuint[num_triangles * size_triangle];
+
+            // Go through every 3rd index and print the triangle that these triangle_indices represent
             for (unsigned int j = 0; j < curMesh.Indices.size(); j += 3) {
                 LOGV("T%d: %d, %d, %d", j / 3, curMesh.Indices[j], curMesh.Indices[j + 1], curMesh.Indices[j + 2]);
+
+                unsigned int base = (j / 3) * size_triangle;
+                triangle_indices[base + 0] = curMesh.Indices[j + 0];
+                triangle_indices[base + 1] = curMesh.Indices[j + 1];
+                triangle_indices[base + 2] = curMesh.Indices[j + 2];
 
                 std::vector<glm::ivec3> f;
                 for (unsigned int k = 0; k < 3; k++) {
@@ -203,17 +247,6 @@ int main() {
 
     // set up model data
 
-    float vertices[] = {
-        // positions          // colors           // texture coords
-         0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f, // top right
-         0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f, // bottom right
-        -0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f, // bottom left
-        -0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f  // top left 
-    };
-    unsigned int indices[] = {
-        0, 1, 3, // first triangle
-        1, 2, 3  // second triangle
-    };
     unsigned int VBO, VAO, EBO;
     glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &VBO);
@@ -222,23 +255,24 @@ int main() {
     glBindVertexArray(VAO);
 
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, num_vertices * size_vertice * sizeof(vertices[0]), vertices, GL_STATIC_DRAW);
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, num_triangles * size_triangle * sizeof(triangle_indices[0]), triangle_indices, GL_STATIC_DRAW);
 
     // position attribute
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
+
     // color attribute
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
     glEnableVertexAttribArray(1);
+
     // texture coord attribute
     glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
     glEnableVertexAttribArray(2);
 
     // load texture
-
     unsigned int texture;
     glGenTextures(1, &texture);
     glBindTexture(GL_TEXTURE_2D, texture); 
@@ -324,14 +358,22 @@ int main() {
         glUseProgram(shaderProgram);
 
         glBindVertexArray(VAO); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
-        //glDrawArrays(GL_TRIANGLES, 0, 6);
+        //glDrawArrays(GL_TRIANGLES, 0, num_triangles * size_triangle);
 
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        glDrawElements(GL_TRIANGLES, num_triangles * size_triangle, GL_UNSIGNED_INT, 0);
         // glBindVertexArray(0); // no need to unbind it every time 
  
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
+
+    if (vertices) delete[] vertices;
+    num_vertices = 0;
+    vertices = nullptr;
+
+    if (triangle_indices) delete[] triangle_indices;
+    num_triangles = 0;
+    triangle_indices = nullptr;
 
     // optional: de-allocate all resources once they've outlived their purpose:
     // ------------------------------------------------------------------------
