@@ -21,8 +21,9 @@ static const GLchar* vertex_shader_source =
     "uniform mat4 MVP;\n"
     ""
     "layout (location = 0) in vec3 aPos;\n"
-    "layout (location = 1) in vec3 aColor;\n"
+    "layout (location = 1) in vec3 aNorm;\n"
     "layout (location = 2) in vec2 aTexCoord;\n"
+    "layout (location = 3) in vec3 aColor;\n"
     ""
     "out vec3 ourColor;\n"
     "out vec2 TexCoord;\n"
@@ -82,7 +83,7 @@ int main() {
 
     LOGI("Screen Size: %d x %d\n", screen_width, screen_height);
 
-    unsigned int size_vertice = 8;
+    unsigned int size_vertice = 11;
     unsigned int num_vertices = 0;
     GLfloat* vertices = nullptr;
 
@@ -107,14 +108,6 @@ int main() {
             // Print Mesh Name
             LOGV("Mesh: '%s'", curMesh.MeshName.c_str());
 
-            //~ float vertices[] = {
-            //~     // positions          // colors           // texture coords
-            //~      0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f, // top right
-            //~      0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f, // bottom right
-            //~     -0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f, // bottom left
-            //~     -0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f  // top left 
-            //~ };
-
             // Print Vertices
             LOGV("Vertices (%lu):", (unsigned long)curMesh.Vertices.size());
 
@@ -131,14 +124,21 @@ int main() {
                 );
 
                 unsigned int base = size_vertice * j;
-                vertices[base + 0] = curMesh.Vertices[j].Position.X;
-                vertices[base + 1] = curMesh.Vertices[j].Position.Y;
-                vertices[base + 2] = curMesh.Vertices[j].Position.Z;
-                vertices[base + 3] = 1.0f;
-                vertices[base + 4] = 1.0f;
-                vertices[base + 5] = 1.0f;
-                vertices[base + 6] = curMesh.Vertices[j].TextureCoordinate.X;
-                vertices[base + 7] = curMesh.Vertices[j].TextureCoordinate.Y;
+
+                vertices[base +  0] = curMesh.Vertices[j].Position.X;
+                vertices[base +  1] = curMesh.Vertices[j].Position.Y;
+                vertices[base +  2] = curMesh.Vertices[j].Position.Z;
+
+                vertices[base +  3] = curMesh.Vertices[j].Normal.X;
+                vertices[base +  4] = curMesh.Vertices[j].Normal.Y;
+                vertices[base +  5] = curMesh.Vertices[j].Normal.Z;
+
+                vertices[base +  6] = curMesh.Vertices[j].TextureCoordinate.X;
+                vertices[base +  7] = curMesh.Vertices[j].TextureCoordinate.Y;
+
+                vertices[base +  8] = 1.0f;
+                vertices[base +  9] = 1.0f;
+                vertices[base + 10] = 1.0f;
 
                 glm::vec3 v(curMesh.Vertices[j].Position.X, curMesh.Vertices[j].Position.Y, curMesh.Vertices[j].Position.Z);
                 m_verts.push_back(v);
@@ -149,11 +149,6 @@ int main() {
                 m_uv.push_back(uv);
 
             }
-
-            //~ unsigned int triangle_indices[] = {
-            //~     0, 1, 3, // first triangle
-            //~     1, 2, 3  // second triangle
-            //~ };
 
             // Print Indices
             LOGV("Indices (%lu):", (unsigned long)curMesh.Indices.size());
@@ -261,16 +256,21 @@ int main() {
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, num_triangles * size_triangle * sizeof(triangle_indices[0]), triangle_indices, GL_STATIC_DRAW);
 
     // position attribute
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, size_vertice * sizeof(GLfloat), (void*)0);
     glEnableVertexAttribArray(0);
 
-    // color attribute
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
+    // normal attribute
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, size_vertice * sizeof(GLfloat), (void*)(3 * sizeof(float)));
     glEnableVertexAttribArray(1);
 
     // texture coord attribute
-    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, size_vertice * sizeof(GLfloat), (void*)(6 * sizeof(float)));
     glEnableVertexAttribArray(2);
+
+    // color attribute
+    glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, size_vertice * sizeof(GLfloat), (void*)(8 * sizeof(float)));
+    glEnableVertexAttribArray(3);
+
 
     // load texture
     unsigned int texture;
