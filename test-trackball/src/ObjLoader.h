@@ -167,7 +167,7 @@ namespace objl
     // Structure: Vertex
     //
     // Description: Model Vertex object that holds
-    //    a Position, Normal, and Texture Coordinate
+    //    a Position, Normal, Texture Coordinate and RGB Color
     struct Vertex {
         // Position Vector
         Vector3 Position;
@@ -177,6 +177,9 @@ namespace objl
 
         // Texture Coordinate Vector
         Vector2 TextureCoordinate;
+
+        // Color
+        Vector3 Color;
     };
 
     struct Material {
@@ -439,6 +442,7 @@ namespace objl
             std::vector<Vector3> Positions;
             std::vector<Vector2> TCoords;
             std::vector<Vector3> Normals;
+            std::vector<Vector3> Colors;
 
             std::vector<Vertex> Vertices;
             std::vector<unsigned int> Indices;
@@ -465,6 +469,7 @@ namespace objl
                         std::cout
                             << "\r- " << meshname
                             << "\t| vertices > " << Positions.size()
+                            << "\t| colors > " << Colors.size()
                             << "\t| texcoords > " << TCoords.size()
                             << "\t| normals > " << Normals.size()
                             << "\t| triangles > " << (Vertices.size() / 3)
@@ -517,13 +522,21 @@ namespace objl
                 if (algorithm::firstToken(curline) == "v") {
                     std::vector<std::string> spos;
                     Vector3 vpos;
+                    Vector3 vcol(1.0f, 1.0f, 1.0f);
                     algorithm::split(algorithm::tail(curline), spos, " ");
 
                     vpos.X = std::stof(spos[0]);
                     vpos.Y = std::stof(spos[1]);
                     vpos.Z = std::stof(spos[2]);
 
+                    if (spos.size() >= 6) {
+                        vcol.X = std::stof(spos[3]);
+                        vcol.Y = std::stof(spos[4]);
+                        vcol.Z = std::stof(spos[5]);
+                    }
+
                     Positions.push_back(vpos);
+                    Colors.push_back(vcol);
                 }
                 // Generate a Vertex Texture Coordinate
                 if (algorithm::firstToken(curline) == "vt") {
@@ -552,7 +565,7 @@ namespace objl
                 if (algorithm::firstToken(curline) == "f") {
                     // Generate the vertices
                     std::vector<Vertex> vVerts;
-                    GenVerticesFromRawOBJ(vVerts, Positions, TCoords, Normals, curline);
+                    GenVerticesFromRawOBJ(vVerts, Positions, Colors, TCoords, Normals, curline);
 
                     // Add Vertices
                     for (int i = 0; i < int(vVerts.size()); i++) {
@@ -686,6 +699,7 @@ namespace objl
         //    tcoords, normals and a face line
         void GenVerticesFromRawOBJ(std::vector<Vertex>& oVerts,
             const std::vector<Vector3>& iPositions,
+            const std::vector<Vector3>& iColors,
             const std::vector<Vector2>& iTCoords,
             const std::vector<Vector3>& iNormals,
             std::string icurline)
@@ -732,6 +746,7 @@ namespace objl
                 case 1: // P
                 {
                     vVert.Position = algorithm::getElement(iPositions, svert[0]);
+                    vVert.Color = algorithm::getElement(iColors, svert[0]);
                     vVert.TextureCoordinate = Vector2(0, 0);
                     noNormal = true;
                     oVerts.push_back(vVert);
@@ -740,6 +755,7 @@ namespace objl
                 case 2: // P/T
                 {
                     vVert.Position = algorithm::getElement(iPositions, svert[0]);
+                    vVert.Color = algorithm::getElement(iColors, svert[0]);
                     vVert.TextureCoordinate = algorithm::getElement(iTCoords, svert[1]);
                     noNormal = true;
                     oVerts.push_back(vVert);
@@ -748,6 +764,7 @@ namespace objl
                 case 3: // P//N
                 {
                     vVert.Position = algorithm::getElement(iPositions, svert[0]);
+                    vVert.Color = algorithm::getElement(iColors, svert[0]);
                     vVert.TextureCoordinate = Vector2(0, 0);
                     vVert.Normal = algorithm::getElement(iNormals, svert[2]);
                     oVerts.push_back(vVert);
@@ -756,6 +773,7 @@ namespace objl
                 case 4: // P/T/N
                 {
                     vVert.Position = algorithm::getElement(iPositions, svert[0]);
+                    vVert.Color = algorithm::getElement(iColors, svert[0]);
                     vVert.TextureCoordinate = algorithm::getElement(iTCoords, svert[1]);
                     vVert.Normal = algorithm::getElement(iNormals, svert[2]);
                     oVerts.push_back(vVert);

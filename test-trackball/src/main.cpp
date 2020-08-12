@@ -117,8 +117,9 @@ int main() {
 
             // Go through each vertex and print its number, position, normal and texture coordinate
             for (unsigned int j = 0; j < curMesh.Vertices.size(); j++) {
-                LOGV("V%d: P(%f, %f, %f), N(%f, %f, %f), TC(%f, %f)", j,
+                LOGV("V%d: P(%f, %f, %f), C(%f, %f, %f), N(%f, %f, %f), TC(%f, %f)", j,
                     curMesh.Vertices[j].Position.X, curMesh.Vertices[j].Position.Y, curMesh.Vertices[j].Position.Z,
+                    curMesh.Vertices[j].Color.X, curMesh.Vertices[j].Color.Y, curMesh.Vertices[j].Color.Z,
                     curMesh.Vertices[j].Normal.X,curMesh.Vertices[j].Normal.Y, curMesh.Vertices[j].Normal.Z,
                     curMesh.Vertices[j].TextureCoordinate.X, curMesh.Vertices[j].TextureCoordinate.Y
                 );
@@ -136,9 +137,9 @@ int main() {
                 vertices[base +  6] = curMesh.Vertices[j].TextureCoordinate.X;
                 vertices[base +  7] = curMesh.Vertices[j].TextureCoordinate.Y;
 
-                vertices[base +  8] = 1.0f;
-                vertices[base +  9] = 1.0f;
-                vertices[base + 10] = 1.0f;
+                vertices[base +  8] = curMesh.Vertices[j].Color.X;
+                vertices[base +  9] = curMesh.Vertices[j].Color.Y;
+                vertices[base + 10] = curMesh.Vertices[j].Color.Z;
 
                 glm::vec3 v(curMesh.Vertices[j].Position.X, curMesh.Vertices[j].Position.Y, curMesh.Vertices[j].Position.Z);
                 m_verts.push_back(v);
