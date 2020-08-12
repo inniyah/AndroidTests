@@ -48,6 +48,7 @@ static const GLchar* fragment_shader_source =
     "    FragColor = texture(ourTexture, TexCoord) * vec4(ourColor, 1.0);\n"
     "}\n";
 
+
 int main() {
     GLuint screen_width = 800;
     GLuint screen_height = 600;
@@ -90,6 +91,8 @@ int main() {
     unsigned int size_triangle = 3;
     unsigned int num_triangles = 0;
     GLuint* triangle_indices = nullptr;
+
+    std::string diffuse_texture_path;
 
     std::string obj_filename = "epol.obj";
     objl::Loader<asset_istream> obj_loader;
@@ -178,6 +181,8 @@ int main() {
                 }
                 m_faces.push_back(f);
             }
+
+            diffuse_texture_path = curMesh.MeshMaterial.map_Kd;
 
             // Print Material
             LOGV("Material: '%s'", curMesh.MeshMaterial.name.c_str());
@@ -287,12 +292,12 @@ int main() {
     int width, height, nrChannels;
     stbi_set_flip_vertically_on_load(true); // tell stb_image.h to flip loaded texture's on the y-axis.
 
-    unsigned char *data = stbi_load("metal.jpg", &width, &height, &nrChannels, 0);
+    unsigned char *data = stbi_load(diffuse_texture_path.c_str(), &width, &height, &nrChannels, 0);
     if (data) {
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
         glGenerateMipmap(GL_TEXTURE_2D);
     } else {
-        LOGE("Failed to load texture");
+        LOGE("Failed to load texture '%s'", diffuse_texture_path.c_str());
     }
     stbi_image_free(data);
 
