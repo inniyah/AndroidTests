@@ -65,12 +65,19 @@ ANDROID_ABI_x86_64 = x86_64
 ANDROID_ABI_mipsel = mipsel
 ANDROID_ABI_mips64el = mips64el
 
-HOST_armv7a = arm-linux
-HOST_aarch64 = aarch64-linux
-HOST_i686 = i686-linux
-HOST_x86_64 = x86_64-linux
-HOST_mipsel = mips-linux
-HOST_mips64el = mips64-linux
+HOST_armv7a = arm-linux-androideabi
+HOST_aarch64 = aarch64-linux-android
+HOST_i686 = i686-linux-android
+HOST_x86_64 = x86_64-linux-android
+HOST_mipsel = mips-linux-android
+HOST_mips64el = mips64-linux-android
+
+ARCH_armv7a = arm
+ARCH_aarch64 = aarch64
+ARCH_i686 = i686
+ARCH_x86_64 = x86_64
+ARCH_mipsel = mips
+ARCH_mips64el = mips64
 
 NDK_SYSROOT = $(NDK_TOOLCHAINS)/sysroot
 
@@ -110,6 +117,8 @@ check:
 	@test -n "$(ADB)" -o ! -x "$(ADB)"                       || ( >&2 echo "Package 'adb' is needed" ; false )
 	@test -n "$(PLATFORM)" -o ! -r "$(PLATFORM)"             || ( >&2 echo "Package 'libandroid-$(ANDROID_API)-java' is needed" ; false )
 	@test -n "$(NDK_SYSROOT)" -a -d "$(NDK_SYSROOT)"         || ( >&2 echo "Package 'google-android-ndk-installer' is needed" ; false )
+
+
 
 $(CACHEDIR)/flac-1.3.3.tar.xz:
 	@mkdir -p $(CACHEDIR)
@@ -168,6 +177,10 @@ $(CACHEDIR)/nanogui-master.zip:
 
 $(CACHEDIR)/glm-%.tar.gz:
 	wget -nc -P $(CACHEDIR) "https://github.com/g-truc/glm/archive/$*.tar.gz" -O "$@"
+
+$(CACHEDIR)/python3-%.tar.xz:
+	wget -nc -P $(CACHEDIR) "https://www.python.org/ftp/python/$*/Python-$*.tar.xz" -O "$@"
+
 
 $(BUILDDIR)/ogg: $(CACHEDIR)/libogg-1.3.4.tar.xz
 	@mkdir -p "$@"
@@ -257,6 +270,13 @@ $(BUILDDIR)/glm: $(CACHEDIR)/glm-0.9.9.8.tar.gz
 	tar xvfa "$<" --strip 1 --directory "$@"
 	if [ -e $(ROOTDIR)/patches/$(notdir $@)/series ]; then cd "$@" && QUILT_PATCHES=$(ROOTDIR)/patches/$(notdir $@) quilt push -a; fi
 
+$(BUILDDIR)/python3: $(CACHEDIR)/python3-3.8.5.tar.xz
+	@mkdir -p "$@"
+	tar xvfa "$<" --strip 1 --directory "$@"
+	if [ -e $(ROOTDIR)/patches/$(notdir $@)/series ]; then cd "$@" && QUILT_PATCHES=$(ROOTDIR)/patches/$(notdir $@) quilt push -a; fi
+
+
+
 # Ogg bitstream library
 # http://xiph.org/ogg/
 
@@ -266,6 +286,7 @@ build-ogg/% $(INSTALLDIR)/%/lib/libogg.a: $(BUILDDIR)/ogg
 	mkdir -p "$<_$*"
 	cd "$<_$*" && PATH="$(NDK_TOOLCHAINS)/bin/:$$PATH" \
 		CC="$(CC_$*)" CXX="$(CXX_$*)" AR="$(NDK_BIN_$*)/ar" \
+		RANLIB="$(NDK_BIN_$*)/ranlib" READELF="$(NDK_BIN_$*)/readelf" \
 		CFLAGS="$(CFLAGS) -I '$(ROOTDIR)/$(INSTALLDIR)/$*/include/'" \
 		CXXFLAGS="$(CXXFLAGS) -I '$(ROOTDIR)/$(INSTALLDIR)/$*/include/' -fno-rtti" \
 		LDFLAGS="$(LDFLAGS) -L'$(ROOTDIR)/$(INSTALLDIR)/$*/lib/'" \
@@ -290,6 +311,7 @@ build-vorbis/% $(INSTALLDIR)/%/lib/libvorbisfile.a $(INSTALLDIR)/%/lib/libvorbis
 	mkdir -p "$<_$*"
 	cd "$<_$*" && PATH="$(NDK_TOOLCHAINS)/bin/:$$PATH" \
 		CC="$(CC_$*)" CXX="$(CXX_$*)" AR="$(NDK_BIN_$*)/ar" \
+		RANLIB="$(NDK_BIN_$*)/ranlib" READELF="$(NDK_BIN_$*)/readelf" \
 		CFLAGS="$(CFLAGS) -I '$(ROOTDIR)/$(INSTALLDIR)/$*/include/'" \
 		CXXFLAGS="$(CXXFLAGS) -I '$(ROOTDIR)/$(INSTALLDIR)/$*/include/' -fno-rtti" \
 		LDFLAGS="$(LDFLAGS) -L'$(ROOTDIR)/$(INSTALLDIR)/$*/lib/'" \
@@ -312,6 +334,7 @@ build-flac/% $(INSTALLDIR)/%/lib/libFLAC.a: $(BUILDDIR)/flac $(INSTALLDIR)/%/lib
 	mkdir -p "$<_$*"
 	cd "$<_$*" && PATH="$(NDK_TOOLCHAINS)/bin/:$$PATH" \
 		CC="$(CC_$*)" CXX="$(CXX_$*)" AR="$(NDK_BIN_$*)/ar" \
+		RANLIB="$(NDK_BIN_$*)/ranlib" READELF="$(NDK_BIN_$*)/readelf" \
 		CFLAGS="$(CFLAGS) -I '$(ROOTDIR)/$(INSTALLDIR)/$*/include/' -DFLAC__NO_DLL" \
 		CXXFLAGS="$(CXXFLAGS) -I '$(ROOTDIR)/$(INSTALLDIR)/$*/include/' -DFLAC__NO_DLL" \
 		LDFLAGS="$(LDFLAGS) -L'$(ROOTDIR)/$(INSTALLDIR)/$*/lib/'" \
@@ -334,6 +357,7 @@ build-freetype/% $(INSTALLDIR)/%/lib/libfreetype.a: $(BUILDDIR)/freetype
 	mkdir -p "$<_$*"
 	cd "$<_$*" && PATH="$(NDK_TOOLCHAINS)/bin/:$$PATH" \
 		CC="$(CC_$*)" CXX="$(CXX_$*)" AR="$(NDK_BIN_$*)/ar" \
+		RANLIB="$(NDK_BIN_$*)/ranlib" READELF="$(NDK_BIN_$*)/readelf" \
 		CFLAGS="$(CFLAGS) -I '$(ROOTDIR)/$(INSTALLDIR)/$*/include/'" \
 		CXXFLAGS="$(CXXFLAGS) -I '$(ROOTDIR)/$(INSTALLDIR)/$*/include/' -fno-rtti" \
 		LDFLAGS="$(LDFLAGS) -L'$(ROOTDIR)/$(INSTALLDIR)/$*/lib/'" \
@@ -472,6 +496,7 @@ build-png/% $(INSTALLDIR)/%/lib/libpng16.a: $(BUILDDIR)/png
 	mkdir -p "$<_$*"
 	cd "$<_$*" && PATH="$(NDK_TOOLCHAINS)/bin/:$$PATH" \
 		CC="$(CC_$*)" CXX="$(CXX_$*)" AR="$(NDK_BIN_$*)/ar" \
+		RANLIB="$(NDK_BIN_$*)/ranlib" READELF="$(NDK_BIN_$*)/readelf" \
 		CFLAGS="$(CFLAGS) -I '$(ROOTDIR)/$(INSTALLDIR)/$*/include/'" \
 		CXXFLAGS="$(CXXFLAGS) -I '$(ROOTDIR)/$(INSTALLDIR)/$*/include/' -fno-rtti" \
 		LDFLAGS="$(LDFLAGS) -L'$(ROOTDIR)/$(INSTALLDIR)/$*/lib/'" \
@@ -550,6 +575,7 @@ build-raylib/% $(INSTALLDIR)/%/lib/libraylib.a: $(BUILDDIR)/raylib
 	( cd "$</src" ; tar cf - . ) | ( cd "$<_$*/src" ; tar xf - )
 	cd "$<_$*/src" && PATH="$(NDK_TOOLCHAINS)/bin/:$$PATH" \
 		CC="$(CC_$*)" CXX="$(CXX_$*)" AR="$(NDK_BIN_$*)/ar" \
+		RANLIB="$(NDK_BIN_$*)/ranlib" READELF="$(NDK_BIN_$*)/readelf" \
 		CFLAGS="$(CFLAGS) -I '$(ROOTDIR)/$(INSTALLDIR)/$*/include/' -I '$(NDK_INCS_$*)' -I '$(NDK_SYSROOT)/usr/include' -I '$(NDK)/sources/android/native_app_glue/'" \
 		CXXFLAGS="$(CXXFLAGS) -I '$(ROOTDIR)/$(INSTALLDIR)/$*/include/' -I '$(NDK_INCS_$*)' -I '$(NDK_SYSROOT)/usr/include' -I '$(NDK)/sources/android/native_app_glue/' -fno-rtti" \
 		LDFLAGS="$(LDFLAGS) -L'$(ROOTDIR)/$(INSTALLDIR)/$*/lib/'" \
@@ -704,6 +730,30 @@ build-glm/% $(INSTALLDIR)/%/include/glm: $(BUILDDIR)/glm
 	mkdir -p "$(INSTALLDIR)/$*/include/glm"
 	( cd "$</glm/" ; tar cf - . ) | ( cd "$(INSTALLDIR)/$*/include/glm" ; tar xf - )
 
+# Interpreted, high-level, general-purpose programming language.
+# https://www.python.org/
+
+.PHONY: build-python3/%
+.PRECIOUS: $(INSTALLDIR)/%/lib/python3.a
+build-python3/% $(INSTALLDIR)/%/lib/python3.a: $(BUILDDIR)/python3
+	mkdir -p "$<_$*"
+	cd "$<_$*" && PATH="$(NDK_TOOLCHAINS)/bin/:$$PATH" \
+		CC="$(CC_$*)" CXX="$(CXX_$*)" AR="$(NDK_BIN_$*)/ar" \
+		RANLIB="$(NDK_BIN_$*)/ranlib" READELF="$(NDK_BIN_$*)/readelf" \
+		CFLAGS="$(CFLAGS) -I '$(ROOTDIR)/$(INSTALLDIR)/$*/include/'" \
+		CXXFLAGS="$(CXXFLAGS) -I '$(ROOTDIR)/$(INSTALLDIR)/$*/include/' -fno-rtti" \
+		LDFLAGS="$(LDFLAGS) -L'$(ROOTDIR)/$(INSTALLDIR)/$*/lib/' -lm" \
+		"$(ROOTDIR)/$</configure" \
+			--host=$(HOST_$*) \
+			--build=$(ARCH_$*) \
+			--disable-ipv6 \
+			ac_cv_file__dev_ptmx=no \
+			ac_cv_file__dev_ptc=no \
+			ac_cv_have_long_long_format=yes \
+			--enable-shared \
+			need_version=no \
+			--prefix="/$*"
+	cd "$<_$*" && make && make install DESTDIR="$(ROOTDIR)/$(INSTALLDIR)/"
 
 .PHONY: build-libs
 build-libs: check build-libs/armv7a build-libs/aarch64 build-libs/i686 build-libs/x86_64
