@@ -37,6 +37,8 @@
 #include <glm/gtx/norm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
+#include <math.h>
+
 #define FloatInfinity std::numeric_limits<float>::infinity()
 #define SQRT1_2  0.7071067811865476
 

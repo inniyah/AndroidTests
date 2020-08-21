@@ -30,6 +30,8 @@
 #include <streambuf>
 #include <vector>
 
+#if defined(__ANDROID__)
+
 #include <android/asset_manager.h>
 
 static AAssetManager * android_asset_manager = NULL;
@@ -78,3 +80,5 @@ extern "C" FILE * asset_fopen(const char * fname, const char * mode) {
   LOGV("Opening asset: '%s' ('%s')", fname, mode);
   return funopen(asset, android_asset_read, android_asset_write, android_asset_seek, android_asset_close);
 }
+
+#endif // __ANDROID__

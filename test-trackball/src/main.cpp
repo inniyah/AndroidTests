@@ -16,8 +16,14 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb/stb_image.h>
 
+#ifndef ASSETS_PREFIX
+#define ASSETS_PREFIX ""
+#endif
+
 static const GLchar* vertex_shader_source =
     "#version 300 es\n"
+    "precision mediump float;"
+    ""
     "uniform mat4 MVP;\n"
     ""
     "layout (location = 0) in vec3 aPos;\n"
@@ -36,6 +42,7 @@ static const GLchar* vertex_shader_source =
 
 static const GLchar* fragment_shader_source =
     "#version 300 es\n"
+    "precision mediump float;"
     ""
     "in vec3 ourColor;\n"
     "in vec2 TexCoord;\n"
@@ -94,8 +101,14 @@ int main() {
 
     std::string diffuse_texture_path;
 
-    std::string obj_filename = "epol.obj";
+    std::string obj_filename = ASSETS_PREFIX "epol.obj";
+
+#if defined(__ANDROID__)
     objl::Loader<asset_istream> obj_loader;
+#else
+    objl::Loader<std::ifstream> obj_loader;
+#endif
+
     if (!obj_loader.LoadFile(obj_filename)) {
         LOGE("Error loading OBJ Model: '%s'", obj_filename.c_str());
     } else {
@@ -182,7 +195,7 @@ int main() {
                 m_faces.push_back(f);
             }
 
-            diffuse_texture_path = curMesh.MeshMaterial.map_Kd;
+            diffuse_texture_path = ASSETS_PREFIX + curMesh.MeshMaterial.map_Kd;
 
             // Print Material
             LOGV("Material: '%s'", curMesh.MeshMaterial.name.c_str());

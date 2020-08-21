@@ -32,10 +32,12 @@
 #include <streambuf>
 #include <vector>
 
-#include <android/asset_manager.h>
-
 #ifndef ASSETS_MANAGEMENT_H
 #define ASSETS_MANAGEMENT_H
+
+#if defined(__ANDROID__)
+
+#include <android/asset_manager.h>
 
 void setAndroidAssetManager(AAssetManager * manager);
 AAssetManager * getAndroidAssetManager();
@@ -134,5 +136,7 @@ public:
         }
     }
 };
+
+#endif // __ANDROID__
 
 #endif // ASSETS_MANAGEMENT_H
