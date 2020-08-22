@@ -21,8 +21,8 @@ BUILD_TOOLS_DIR = $(SDK)/build-tools/debian
 AAPT = $(BUILD_TOOLS_DIR)/aapt
 DX = $(BUILD_TOOLS_DIR)/dx
 ZIPALIGN = $(BUILD_TOOLS_DIR)/zipalign
-APKSIGNER = $(shell which -a apksigner)
-ADB = $(shell which -a adb)
+APKSIGNER = $(shell which -a apksigner | head -n 1)
+ADB = $(shell which -a adb | head -n 1)
 
 ANDROID_API = 23
 PLATFORM = /usr/lib/android-sdk/platforms/android-$(ANDROID_API)/android.jar

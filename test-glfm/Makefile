@@ -25,8 +25,8 @@ BUILD_TOOLS_DIR = $(SDK)/build-tools/debian
 AAPT = $(BUILD_TOOLS_DIR)/aapt
 DX = $(BUILD_TOOLS_DIR)/dx
 ZIPALIGN = $(BUILD_TOOLS_DIR)/zipalign
-APKSIGNER = $(shell which -a apksigner)
-ADB = $(shell which -a adb)
+APKSIGNER = $(shell which -a apksigner | head -n 1)
+ADB = $(shell which -a adb | head -n 1)
 
 PLATFORM = /usr/lib/android-sdk/platforms/android-$(ANDROID_API)/android.jar
 
@@ -39,8 +39,8 @@ NDK_INCLUDE = = $(NDK_SYSROOT)/usr/lib/include
 ORG_DIRS = $(subst .,/,$(PACKAGE_NAME))
 
 CFLAGS = -std=c17 -ggdb -O0 -g3 -fPIC -Wall -DDEBUG -I "$(NDK_INCLUDE)"
-CXXFLAGS = -std=c++17 -ggdb -g3 -O0 -fPIC -Wall -DANDROID_STL=c++_shared -I "$(NDK_INCLUDE)"
-DEFS = -DNDEBUG -DASSETS_PREFIX=\"\"
+CXXFLAGS = -std=c++17 -ggdb -O0 -g3 -fPIC -Wall -DANDROID_STL=c++_shared -I "$(NDK_INCLUDE)"
+DEFS = -DDEBUG -DASSETS_PREFIX=\"\"
 INCS = -I "$(NDK)/sources/android/native_app_glue/"
 LDFLAGS = -Wl,--as-needed -Wl,--no-undefined -Wl,--no-allow-shlib-undefined
 LIBS = -lEGL -lGLESv2 -lGLESv3 -llog -landroid -lm -lz
