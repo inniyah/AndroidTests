@@ -96,13 +96,14 @@ NDK_INCS_mipsel = $(NDK_SYSROOT)/usr/include/mipsel-linux-android
 NDK_INCS_mips64el = $(NDK_SYSROOT)/usr/include/mips64el-linux-android
 
 check:
-	@command -v wget  >/dev/null || ( >&2 echo "Package 'wget' is needed"     ; false )
-	@command -v quilt >/dev/null || ( >&2 echo "Package 'quilt' is needed"    ; false )
-	@command -v unzip >/dev/null || ( >&2 echo "Package 'unzip' is needed"    ; false )
-	@command -v tar   >/dev/null || ( >&2 echo "Package 'tar' is needed"      ; false )
-	@command -v gzip  >/dev/null || ( >&2 echo "Package 'gzip' is needed"     ; false )
-	@command -v bzip2 >/dev/null || ( >&2 echo "Package 'bzip2' is needed"    ; false )
-	@command -v xz    >/dev/null || ( >&2 echo "Package 'xz-utils' is needed" ; false )
+	@command -v wget  >/dev/null  || ( >&2 echo "Package 'wget' is needed"     ; false )
+	@command -v quilt >/dev/null  || ( >&2 echo "Package 'quilt' is needed"    ; false )
+	@command -v unzip >/dev/null  || ( >&2 echo "Package 'unzip' is needed"    ; false )
+	@command -v tar   >/dev/null  || ( >&2 echo "Package 'tar' is needed"      ; false )
+	@command -v gzip  >/dev/null  || ( >&2 echo "Package 'gzip' is needed"     ; false )
+	@command -v bzip2 >/dev/null  || ( >&2 echo "Package 'bzip2' is needed"    ; false )
+	@command -v xz    >/dev/null  || ( >&2 echo "Package 'xz-utils' is needed" ; false )
+	@command -v cmake  >/dev/null || ( >&2 echo "Package 'cmake' is needed"    ; false )
 	@test -n "$(JDK)" -a -d "$(JDK)"                         || ( >&2 echo "Package 'openjdk-8-jdk' is needed" ; false )
 	@test -n "$(SDK)" -a -d "$(SDK)"                         || ( >&2 echo "Package 'android-sdk' is needed" ; false )
 	@test -n "$(NDK)" -a -d "$(NDK)"                         || ( >&2 echo "Package 'google-android-ndk-installer' is needed" ; false )
