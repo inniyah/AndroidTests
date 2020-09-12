@@ -96,14 +96,16 @@ NDK_INCS_mipsel = $(NDK_SYSROOT)/usr/include/mipsel-linux-android
 NDK_INCS_mips64el = $(NDK_SYSROOT)/usr/include/mips64el-linux-android
 
 check:
-	@command -v wget  >/dev/null  || ( >&2 echo "Package 'wget' is needed"     ; false )
-	@command -v quilt >/dev/null  || ( >&2 echo "Package 'quilt' is needed"    ; false )
-	@command -v unzip >/dev/null  || ( >&2 echo "Package 'unzip' is needed"    ; false )
-	@command -v tar   >/dev/null  || ( >&2 echo "Package 'tar' is needed"      ; false )
-	@command -v gzip  >/dev/null  || ( >&2 echo "Package 'gzip' is needed"     ; false )
-	@command -v bzip2 >/dev/null  || ( >&2 echo "Package 'bzip2' is needed"    ; false )
-	@command -v xz    >/dev/null  || ( >&2 echo "Package 'xz-utils' is needed" ; false )
-	@command -v cmake  >/dev/null || ( >&2 echo "Package 'cmake' is needed"    ; false )
+	@command -v wget  >/dev/null  || ( >&2 echo "Package 'wget' is needed"      ; false )
+	@command -v quilt >/dev/null  || ( >&2 echo "Package 'quilt' is needed"     ; false )
+	@command -v unzip >/dev/null  || ( >&2 echo "Package 'unzip' is needed"     ; false )
+	@command -v tar   >/dev/null  || ( >&2 echo "Package 'tar' is needed"       ; false )
+	@command -v gzip  >/dev/null  || ( >&2 echo "Package 'gzip' is needed"      ; false )
+	@command -v bzip2 >/dev/null  || ( >&2 echo "Package 'bzip2' is needed"     ; false )
+	@command -v xz    >/dev/null  || ( >&2 echo "Package 'xz-utils' is needed"  ; false )
+	@command -v cmake  >/dev/null || ( >&2 echo "Package 'cmake' is needed"     ; false )
+	@dpkg -s libc6-dev >/dev/null || ( >&2 echo "Package 'libc6-dev' is needed" ; false )
+
 	@test -n "$(JDK)" -a -d "$(JDK)"                         || ( >&2 echo "Package 'openjdk-8-jdk' is needed" ; false )
 	@test -n "$(SDK)" -a -d "$(SDK)"                         || ( >&2 echo "Package 'android-sdk' is needed" ; false )
 	@test -n "$(NDK)" -a -d "$(NDK)"                         || ( >&2 echo "Package 'google-android-ndk-installer' is needed" ; false )
@@ -295,6 +297,7 @@ build-ogg/% $(INSTALLDIR)/%/lib/libogg.a: $(BUILDDIR)/ogg
 			need_version=no \
 			--enable-shared=no \
 			--host=$(HOST_$*) \
+			--build=$(ARCH_$*) \
 			--with-sysroot="$(NDK_SYSROOT)" \
 			--with-build-sysroot="$(NDK_SYSROOT)" \
 			--prefix="/$*"
@@ -320,6 +323,7 @@ build-vorbis/% $(INSTALLDIR)/%/lib/libvorbisfile.a $(INSTALLDIR)/%/lib/libvorbis
 			need_version=no \
 			--enable-shared=no \
 			--host=$(HOST_$*) \
+			--build=$(ARCH_$*) \
 			--with-sysroot="$(NDK_SYSROOT)" \
 			--with-build-sysroot="$(NDK_SYSROOT)" \
 			--prefix="/$*" \
@@ -343,6 +347,7 @@ build-flac/% $(INSTALLDIR)/%/lib/libFLAC.a: $(BUILDDIR)/flac $(INSTALLDIR)/%/lib
 			need_version=no \
 			--enable-shared=no \
 			--host=$(HOST_$*) \
+			--build=$(ARCH_$*) \
 			--with-sysroot="$(NDK_SYSROOT)" \
 			--with-build-sysroot="$(NDK_SYSROOT)" \
 			--prefix="/$*" \
@@ -367,6 +372,7 @@ build-freetype/% $(INSTALLDIR)/%/lib/libfreetype.a: $(BUILDDIR)/freetype
 			--with-brotli=no \
 			--enable-shared=no \
 			--host=$(HOST_$*) \
+			--build=$(ARCH_$*) \
 			--with-sysroot="$(NDK_SYSROOT)" \
 			--with-build-sysroot="$(NDK_SYSROOT)" \
 			--prefix="/$*"
@@ -505,6 +511,7 @@ build-png/% $(INSTALLDIR)/%/lib/libpng16.a: $(BUILDDIR)/png
 			need_version=no \
 			--enable-shared=no \
 			--host=$(HOST_$*) \
+			--build=$(ARCH_$*) \
 			--with-sysroot="$(NDK_SYSROOT)" \
 			--with-build-sysroot="$(NDK_SYSROOT)" \
 			--prefix="/$*"
@@ -745,14 +752,14 @@ build-python3/% $(INSTALLDIR)/%/lib/python3.a: $(BUILDDIR)/python3
 		CXXFLAGS="$(CXXFLAGS) -I '$(ROOTDIR)/$(INSTALLDIR)/$*/include/' -fno-rtti" \
 		LDFLAGS="$(LDFLAGS) -L'$(ROOTDIR)/$(INSTALLDIR)/$*/lib/' -lm" \
 		"$(ROOTDIR)/$</configure" \
-			--host=$(HOST_$*) \
-			--build=$(ARCH_$*) \
-			--disable-ipv6 \
+			need_version=no \
 			ac_cv_file__dev_ptmx=no \
 			ac_cv_file__dev_ptc=no \
 			ac_cv_have_long_long_format=yes \
+			--host=$(HOST_$*) \
+			--build=$(ARCH_$*) \
+			--disable-ipv6 \
 			--enable-shared \
-			need_version=no \
 			--prefix="/$*"
 	cd "$<_$*" && make && make install DESTDIR="$(ROOTDIR)/$(INSTALLDIR)/"
 
